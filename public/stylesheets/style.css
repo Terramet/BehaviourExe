@@ -71,7 +71,8 @@ select {
 }
 
 input[type="submit"],
-button {
+button,
+.drop-button {
   padding: 10px 30px 10px 30px;
   color: #FFF;
   background-color: #ffb347;
@@ -88,7 +89,8 @@ button {
 
 /* Add a hover effect for buttons */
 input[type="submit"]:hover,
-button:hover {
+button:hover,
+.drop-button:hover {
   opacity: 0.8;
 }
 
@@ -258,4 +260,74 @@ img {
   align-items: center;
   display: flex;
   justify-content: center;
+}
+
+/* Caret icon in drop button */
+.drop-button::after {
+  font-family: FontAwesome;
+  content: "↴";
+  padding-left: 5px;
+}
+
+/* Space between button groups (if needed) */
+.button-group{
+  margin-right: 10px;
+  font-size: 0;
+}
+
+/* Base styles for all immediate button group children */
+.button-group > * {
+  display: inline-block;
+  position: relative;
+  font-size: 16px;
+}
+
+
+/* Dropdown container styles*/
+.drop-pop {
+  width: 180px;
+  position: relative;
+  background: #ffb347;
+  border: 1px solid rgba(0, 0, 0, .4);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Buttons within dropdown container */
+.drop-pop button {
+  width: 100%;
+  background: transparent;
+  color: #ffffff;
+  border-width: 0px;
+  padding: 8px 24px;
+  box-shadow: none;
+}
+
+/* Hide Checkbox */
+.drop-button-wrap input[type="checkbox"] {
+  width: 0px;
+  height: 0px;
+  margin: 0px;
+  display: block;
+  -webkit-appearance: none;
+}
+
+/* "Focus" on label adjacent to focused checkbox, creating ilusion of the label being the button */
+.drop-button-wrap input[type="checkbox"]:focus + label {
+  outline: 0;
+  transition: all 250ms;
+}
+
+/* Dropdown container when hidden */
+.drop-button-wrap input[type="checkbox"] ~ .drop-pop {
+  display: none;
+  opacity: 0;
+  top: 0%;
+  transition: all 200ms;
+}
+
+/* Dropdown container when visible */
+.drop-button-wrap input[type="checkbox"]:checked ~ .drop-pop {
+  display: block;
+  opacity: 1;
+  top: 100%;
 }

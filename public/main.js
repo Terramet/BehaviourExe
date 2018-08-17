@@ -1,8 +1,9 @@
 var sessionP, robot
+var loadedPlaylists = []
 
 function delay(t, v) {
     return new Promise(function(resolve) { 
-        setTimeout(resolve.bind(null, v), t)
+        setTimeout(resolve.bind(null, v), t);
     });
  }
  
@@ -14,18 +15,18 @@ function delay(t, v) {
  
 
 function createSession() {
-    sessionP = new Session(document.getElementById('IP').value)
-    robot = new Robot(sessionP)
+    sessionP = new Session(document.getElementById('IP').value);
+    robot = new Robot(sessionP);
 
     Promise.resolve(sessionP.connected).delay(1000).then(function(v) {
         if (v) {
-            document.getElementById('executionForm').style.visibility = 'visible'
+            document.getElementById('executionForm').style.visibility = 'visible';
         } 
     });
 }
 
 function say() {
-    robot.say(document.getElementById('sayText').value)
+    robot.say(document.getElementById('sayText').value);
 }
 
 function startBehaviour() {
@@ -37,40 +38,77 @@ function stopBehaviour() {
 }
 
 function createPlaylist() {
-    document.getElementById('playlistForm').style.visibility = 'visible'
-    document.getElementById('playlistForm').style.display = 'initial'
-    listBehaviours()
+    return listBehaviours();
 }
 
 function savePlaylist() {
     let name = document.getElementById('playlistName').value
-    let listElements = document.getElementById('behaveListPlaylist').childNodes
+    let listElements = document.getElementById('behaveListPlaylist').childNodes;
+    listElements = Array.prototype.slice.call(listElements);
 
-    playlist = new Playlist(name, listElements)
+    playlist = new Playlist(listElements, name);
 
-    console.log(playlist.getList()) // [ <li>, <li>, ... ]
-    let URL = window.location.href
-    var newWindow = window.open("","_blank");
+    var createModal = document.getElementById('createModal');
 
     $.ajax({
-        type: "POST",
-        url: newWindow.location.href = URL + "playlists/",
-        data: playlist.getList()
-        }).done(function(msg) {
-            alert("Complete: " + msg)
-            newWindow.close()
+        type: 'POST',
+        data: JSON.stringify(playlist),
+        contentType: 'application/json',
+        url: window.location.href + 'playlists/save',						
+        success: function(data) {
+            alert(data + " was saved successfully");
+            createModal.style.display = "none";
+        }
+    }).then(function() {
+        loadPlaylists();
+    });
+}
+
+function removeOptions(selectbox) {
+    for(var i = selectbox.options.length - 1 ; i >= 0 ; i--) {
+        selectbox.remove(i);
+    }
+}
+
+function addPlaylistsToSelects() {
+    var modal = document.getElementById("assignModal");
+    var selects = modal.getElementsByTagName("select");
+    // selects.forEach(function(element) {
+    //     loadedPlaylists.forEach(function(playlist) {
+    //         element.add(playlist.getName)
+    //     })
+    // });
+
+    for (var i = 0; i < selects.length; i++) {
+
+        removeOptions(selects[i]);
+
+        loadedPlaylists.forEach(playlist => {
+            let opt = document.createElement('option');
+            opt.value = playlist;
+            opt.innerHTML = playlist.getName();
+            selects[i].add(opt);
         });
+    }
+}
+
+
+function loadPlaylists() {
+    $.ajax({
+        type: 'POST',
+        url: window.location.href + 'playlists/load',						
+        success: function(data) {
+            console.log(data);
+            data["playlists"].forEach(function(playlist) {
+                loadedPlaylists.push(new Playlist(playlist));
+            });
+        }
+    })
 }
 
 function listBehaviours() {
     if (sessionP) {
         Promise.resolve(robot.getBehaviours()).then(function (array) {
-            document.getElementById('behaveListAvailable').style.display = 'block'
-            document.getElementById('behaveListPlaylist').style.display = 'block'
-            document.getElementById('playlistName').style.display = 'initial'
-            document.getElementById('savePlaylistBtn').style.display = 'initial'
-            document.getElementById('createPlaylistBtn').style.display = 'none'
-
             // Create the list element:
             let list = document.getElementById('behaveListAvailable');
         
@@ -87,7 +125,9 @@ function listBehaviours() {
                 }
             }
         })
+        return true;
     } else {
-        alert("You need to connect to the robot first")
+        alert("You need to connect to the robot first");
+        return false;
     }
 }
