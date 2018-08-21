@@ -1,11 +1,12 @@
 class Session {
-    constructor(ip) {
-        var session = new QiSession(ip)
+    constructor(ip, childName) {
+        this.name = childName
+        this.session = new QiSession(ip)
         /**
          * Create the session by connecting to the robot.
          * Upon connection execute function
          */
-        session.socket().on('connect', function() {
+        this.session.socket().on('connect', function() {
             console.log('QiSession connected!')         //log the connection for debug
             
             document.getElementById('executionForm').style.display = 'block'
@@ -17,6 +18,8 @@ class Session {
 
             let modal = document.getElementById('connectModal');
             modal.style.display = "none";
+
+            console.log("Session successfully created. Current session is for child named: " + childName)
 
             /** Upon disconnect execute function */
         }).on('disconnect', function() {
@@ -30,9 +33,19 @@ class Session {
             connectBtn.innerText = 'Disconnected'
             this.connected = false
 
-            session = new QiSession(ip)
+            this.session = new QiSession(ip)
         })
+    }
 
-        return session
+    getSession() {
+        return this.session;
+    }
+
+    getName() {
+        return this.name;
+    }
+
+    getConnected() {
+        return this.connected;
     }
 }
