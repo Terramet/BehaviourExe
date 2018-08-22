@@ -1,8 +1,7 @@
 class Robot {
-    constructor(robotSession) {
-        this.session = robotSession
-
-        this.session.service("ALBehaviorManager").done(function (bm) {
+    constructor() { 
+        var time = null;
+        sessionP.service("ALBehaviorManager").done(function (bm) {
             bm.behaviorStarted.connect( function(data) {
                 let r = document.getElementById('replayB');
                 let n = document.getElementById('nextB');
@@ -17,6 +16,17 @@ class Robot {
                     for(let i = 0; i < spin.length; i++) {
                         spin[i].remove();
                     }
+
+                time = getTime().replace(/\:/g, '_');
+
+                sessionP.service("ALVideoRecorder").then(function (vr) {
+                    vr.setResolution(1)
+                    vr.setFrameRate(10)
+                    vr.setVideoFormat("MJPG")
+                    vr.startRecording('/home/nao/recordings/cameras/', ses.getName() + "_" + time);
+                    console.log("Recording.");
+                })
+              
                 console.log("Behaviour started successfully.")
             });
 
@@ -30,13 +40,19 @@ class Robot {
                 p.removeAttribute("disabled");
                 neg.removeAttribute("disabled");
 
-                console.log("Behaviour finished.")
+                sessionP.service("ALVideoRecorder").then(function (vr) {
+                    vr.stopRecording();
+                    console.log("Recording finished.");
+                    copyRecording(time);
+                })
+            
+                console.log("Behaviour finished.");
             });
         })
     }
 
     getBehaviours() {
-        return this.session.service("ALBehaviorManager").then(function(bm) {
+        return sessionP.service("ALBehaviorManager").then(function(bm) {
             return bm.getInstalledBehaviors().then(function (data){
                 return data
             })
@@ -45,20 +61,24 @@ class Robot {
 
     startBehaviour(behaviour, btn) {
         btn.innerHTML = "<div class=\"donut-spinner\"></div>";
-        this.session.service("ALBehaviorManager").then(function (bm) {
+        sessionP.service("ALBehaviorManager").then(function (bm) {
             bm.runBehavior(behaviour)
         })
     }
 
     stopBehaviour() {
-        this.session.service("ALBehaviorManager").then(function (bm) {
+        sessionP.service("ALBehaviorManager").then(function (bm) {
             bm.stopAllBehaviors()
         })
     }
 
     say(data) {
-        this.session.service("ALAnimatedSpeech").then(function(as) {
+        sessionP.service("ALAnimatedSpeech").then(function(as) {
             as.say(data)
         })
+    }
+
+    startRecording() {
+        
     }
 }

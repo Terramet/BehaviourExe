@@ -21,7 +21,7 @@ function createSession() {
 
     ses = new Session(document.getElementById('IP').value, document.getElementById('cName').value)
     sessionP = ses.getSession();
-    robot = new Robot(sessionP);
+    robot = new Robot();
 }
 
 function say() {
@@ -114,6 +114,12 @@ function addPlaylistsToSelects(modal) {
     for (var i = 0; i < selects.length; i++) {
         removeOptions(selects[i]);
 
+        let base = document.createElement('option');
+        base.setAttribute('disabled', '');
+        base.setAttribute('selected', '');
+        base.innerHTML = "Select";
+        selects[i].add(base);
+
         loadedPlaylists.forEach(playlist => {
             let opt = document.createElement('option');
             opt.innerHTML = playlist.getName();
@@ -162,6 +168,68 @@ function loadPlaylists() {
             });
         }
     })
+}
+
+function checkSSHKey() {
+    let ip = document.getElementById('IP').value;
+    let fileName = ip.replace(/\./g, '_');
+    fileName += "_rsa";
+
+    $.ajax({
+        url: window.location.href + "ssh\\file_check",
+        data: fileName,
+        contentType: 'text/plain',
+        type:'POST',
+        error: function() {
+            console.error("File check failed or the file does not exist.");
+        },
+        success: function(data) {
+            if (data) {
+                console.log("SSH file found.")
+            } else {
+                console.log("SSH file does not exist. Please create a key.")
+            }
+        }
+    });
+}
+
+function copyRecording(time) {
+    let data = {}
+    data.ip = document.getElementById('IP').value;
+    data.sshKey = data.ip.replace(/\./g, '_') + '_rsa';
+    data.filename = '/home/nao/recordings/cameras/' + ses.getName() + "_" + time + '.avi';
+    data.endDir = './public/videos/' + ses.getName() + "_" + time + '.avi';
+
+    $.ajax({
+        url: window.location.href + "ssh\\copy_recordings",
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        type:'POST',
+        error: function() {
+            console.error("File check failed or the file does not exist.");
+        },
+        success: function(data) {
+            console.log(data);
+        }
+    });
+}
+
+function viewVideos() {
+    $.ajax({
+        url: window.location.href + "videos",
+        type:'POST',
+        success: function(data) {
+            let viewForm = document.getElementById('viewForm');
+            data.forEach(datum => {
+                console.log(datum);
+                let d = document.createElement('DIV');
+                let e = document.createElement('BUTTON');
+                e.innerHTML = datum;
+                d.appendChild(e);
+                viewForm.appendChild(d);
+            })
+        }
+    });
 }
 
 function listBehaviours() {

@@ -1,6 +1,7 @@
 var express = require('express');
 var fs = require('fs');
 var router = express.Router();
+var scp2 = require('scp2')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -29,10 +30,32 @@ router.post('/playlists/load', function(req, res, next) {
   res.send(json);
 });
 
-
-router.get('/users/detail', function(req, res, next) {
-  res.send('detail');
+router.post('/ssh/file_check', function(req, res) {
+  let file_name = __dirname.split('\\routes')[0] + '\\public\\ssh\\' + req.text;
+  
+  res.send(fs.existsSync(file_name));
 });
 
+router.post('/ssh/copy_recordings', function(req, res) {
+  setTimeout( function(){
+    let dir = './public/videos/'
+    let ssh = __dirname.split('\\routes')[0] + '\\public\\ssh\\' + req.body.sshKey;
+
+    scp2.scp({
+      host: req.body.ip,
+      username: 'nao',
+      privateKey: fs.readFileSync(ssh),
+      path: '/' + req.body.filename
+    }, dir, function(err) { if (err !== null) console.log("SCP request failed: " + err); })
+
+    res.send("Copying complete.")
+
+  },5000);
+}); 
+
+router.post('/videos', function(req, res) {
+  let dir = './public/videos'
+  res.send(fs.readdirSync(dir));
+})
 
 module.exports = router;
