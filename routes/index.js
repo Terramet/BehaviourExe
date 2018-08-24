@@ -38,24 +38,40 @@ router.post('/ssh/file_check', function(req, res) {
   res.send(fs.existsSync(file_name));
 });
 
-router.post('/ssh/copy_recordings', function(req, res) {
-  let dir = './public/videos/'
+router.post('/ssh/copy_recordings_video', function(req, res) {
   let ssh = __dirname.split('\\routes')[0] + '\\public\\ssh\\' + req.body.sshKey;
-
-  console.log("Copy: " + ssh);
 
   scp2.scp({
     host: req.body.ip,
     username: req.body.robotName,
     privateKey: fs.readFileSync(ssh),
-    path: '/' + req.body.filename
-  }, dir, function(err) { if (err !== null) console.log('SCP request failed: ' + err); })
+    path: '/' + req.body.filenameVideo
+  }, req.body.endDirVideo, function(err) { if (err !== null) console.log('SCP request failed: ' + err); })
 
   scp2.close();
 
-  fs.watchFile(dir, function() {
-    fs.unwatchFile(dir);
-    res.send('Successfully completed copying ' + req.body.filename + ' to ' + dir);
+  fs.watchFile(req.body.endDirVideo, function() {
+    fs.unwatchFile(req.body.endDirVideo);
+    res.send('Successfully completed copying ' + req.body.filenameVideo + ' to ' + req.body.endDirVideo);
+  })
+
+}); 
+
+router.post('/ssh/copy_recordings_audio', function(req, res) {
+  let ssh = __dirname.split('\\routes')[0] + '\\public\\ssh\\' + req.body.sshKey;
+
+  scp2.scp({
+    host: req.body.ip,
+    username: req.body.robotName,
+    privateKey: fs.readFileSync(ssh),
+    path: '/' + req.body.filenameAudio
+  }, req.body.endDirAudio, function(err) { if (err !== null) console.log('SCP request failed: ' + err); })
+
+  scp2.close();
+
+  fs.watchFile(req.body.endDirAudio, function() {
+    fs.unwatchFile(req.body.endDirAudio);
+    res.send('Successfully completed copying ' + req.body.filenameAudio + ' to ' + req.body.endDirAudio);
   })
 }); 
 
@@ -69,10 +85,13 @@ router.post('/ssh/delete_nao_recording', function(req, res) {
     username: req.body.robotName,
     privateKey: fs.readFileSync(ssh),
   }).then(() => {
-      sftp.delete('/' + req.body.filename);
+      sftp.delete('/' + req.body.filenameVideo);
+      sftp.delete('/' + req.body.filenameAudio);
   }).then((data) => {
       console.log(data, 'the data info');
-      res.send('File ' + req.body.filename + ' removed from Nao.');
+      res.write('File ' + req.body.filenameVideo + ' removed from Nao.');
+      res.write('File ' + req.body.filenameAudio + ' removed from Nao.');
+      res.end();
   }).catch((err) => {
       console.log(err, 'catch error');
       res.status(333);

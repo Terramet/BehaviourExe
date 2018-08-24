@@ -219,12 +219,14 @@ function copyRecording(time) {
         let data = {}
         data.ip = document.getElementById('IP').value;
         data.sshKey = "id_rsa";
-        data.filename = '/home/'+ name +'/recordings/cameras/' + ses.getName() + "_" + time + '.avi';
-        data.endDir = './public/videos/' + ses.getName() + "_" + time + '.avi';
+        data.filenameVideo = '/home/'+ name +'/recordings/cameras/' + ses.getName() + "_" + time + '.avi';
+        data.filenameAudio = '/home/'+ name +'/recordings/microphones/' + ses.getName() + "_" + time + '.wav';
+        data.endDirVideo = './public/videos/' + ses.getName() + "_" + time + '.avi';
+        data.endDirAudio = './public/audio/' + ses.getName() + "_" + time + '.wav';
         data.robotName = name
 
         $.ajax({
-            url: window.location.href + "ssh\\copy_recordings",
+            url: window.location.href + "ssh\\copy_recordings_video",
             data: JSON.stringify(data),
             contentType: 'application/json',
             type:'POST',
@@ -232,10 +234,9 @@ function copyRecording(time) {
                 console.error("File check failed or the file does not exist.");
             },
             success: function(info) {
-                console.log(info);
-    
+                console.log(info)
                 $.ajax({
-                    url: window.location.href + "ssh\\delete_nao_recording",
+                    url: window.location.href + "ssh\\copy_recordings_audio",
                     data: JSON.stringify(data),
                     contentType: 'application/json',
                     type:'POST',
@@ -244,6 +245,18 @@ function copyRecording(time) {
                     },
                     success: function(info) {
                         console.log(info);
+                        $.ajax({
+                            url: window.location.href + "ssh\\delete_nao_recording",
+                            data: JSON.stringify(data),
+                            contentType: 'application/json',
+                            type:'POST',
+                            error: function() {
+                                console.error("File check failed or the file does not exist.");
+                            },
+                            success: function(info) {
+                                console.log(info);
+                            }
+                        });
                     }
                 });
             }

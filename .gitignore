@@ -1,3 +1,7 @@
 node_modules/
 public/ssh/*
-public/videos/
+public/videos/*
+!public/videos/.gitkeep 
+
+public/audio/*
+!public/audio/.gitkeep 

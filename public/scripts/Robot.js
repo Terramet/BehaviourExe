@@ -19,12 +19,17 @@ class Robot {
 
                 time = getTime().replace(/\:/g, '_');
 
+                sessionP.service("ALAudioRecorder").then(function (ar) {
+                    ar.startMicrophonesRecording('/home/nao/recordings/microphones/' + ses.getName() + "_" + time + '.wav', 'wav', 16000, [0,0,1,0])
+                    console.log("Recording audio.");
+                })
+
                 sessionP.service("ALVideoRecorder").then(function (vr) {
                     vr.setResolution(1)
                     vr.setFrameRate(10)
                     vr.setVideoFormat("MJPG")
                     vr.startRecording('/home/nao/recordings/cameras/', ses.getName() + "_" + time);
-                    console.log("Recording.");
+                    console.log("Recording video.");
                 })
               
                 console.log("Behaviour started successfully.")
@@ -40,9 +45,14 @@ class Robot {
                 p.removeAttribute("disabled");
                 neg.removeAttribute("disabled");
 
+                sessionP.service("ALAudioRecorder").then(function (ar) {
+                    ar.stopMicrophonesRecording();
+                    console.log("Recording audio finished.");
+                })
+
                 sessionP.service("ALVideoRecorder").then(function (vr) {
                     vr.stopRecording();
-                    console.log("Recording finished.");
+                    console.log("Recording video finished.");
                     copyRecording(time);
                 })
             
