@@ -100,10 +100,15 @@ html
                         ul#behaveListPlaylist.sortable.connectedSortable
         
         #viewModal.modal
-            .modal-content(style='min-width: 680px;')
+            .modal-content
                 span#viewClose.close x
                 h4.center View Videos
                 form#viewForm(style='margin-top: 10px; display: block; text-align: center;', method='post', onsubmit='return false;', autocomplete='on')
+
+        #videoModal.modal
+            .modal-content
+                span#videoClose.close x
+                form#videoForm(style='margin-top: 10px; display: block; text-align: center;', method='post', onsubmit='return false;', autocomplete='on')
 
         form#executionForm(style='margin-top: 10px;', method='post', onsubmit='return false;', autocomplete='on')
             div
@@ -260,6 +265,12 @@ html
                 if (event.target == viewModal) {
                     viewModal.style.display = "none";
                 }
+            }
+
+            var videoModal = document.getElementById('videoModal');
+
+            videoClose.onclick = function() {
+                videoModal.style.display = "none";
             }
 
         // qimessaging & jquery stuff

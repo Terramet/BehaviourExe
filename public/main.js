@@ -15,8 +15,11 @@ function delay(t, v) {
  
 
 function createSession() {
-    if (ses !== null) {
+    if (ses !== undefined) {
+        robot.disconnect();
         ses = null;
+        sessionP = null;
+        robot = null;
     }
 
     ses = new Session(document.getElementById('IP').value, document.getElementById('cName').value)
@@ -163,6 +166,7 @@ function loadPlaylists() {
         url: window.location.href + 'playlists/load',						
         success: function(data) {
             console.log("Playlists loaded successfully.");
+            loadedPlaylists = [];
             data["playlists"].forEach(function(playlist) {
                 loadedPlaylists.push(new Playlist(playlist));
             });
@@ -172,8 +176,7 @@ function loadPlaylists() {
 
 function checkSSHKey() {
     let ip = document.getElementById('IP').value;
-    let fileName = ip.replace(/\./g, '_');
-    fileName += "_rsa";
+    fileName = "id_rsa";
 
     $.ajax({
         url: window.location.href + "ssh\\file_check",
@@ -187,31 +190,65 @@ function checkSSHKey() {
             if (data) {
                 console.log("SSH file found.")
             } else {
-                console.log("SSH file does not exist. Please create a key.")
+                Promise.resolve(robot.getRobotName()).then(function(name) {
+                    alert('In a moment, a window will appear, all you need to do is type your robots PASSWORD and hit enter!');
+                    let gen = {};
+                    gen.ip = ip;
+                    gen.fileName = fileName;
+                    gen.robotName = name;
+                    $.ajax({
+                        url: window.location.href + "ssh\\gen_key",
+                        data: JSON.stringify(gen),
+                        contentType: 'application/json',
+                        type:'POST',
+                        error: function() {
+                            console.error("File check failed or the file does not exist.");
+                        },
+                        success: function(data) {
+                            console.log(data);
+                        }
+                    });
+                });
             }
         }
     });
 }
 
 function copyRecording(time) {
-    let data = {}
-    data.ip = document.getElementById('IP').value;
-    data.sshKey = data.ip.replace(/\./g, '_') + '_rsa';
-    data.filename = '/home/nao/recordings/cameras/' + ses.getName() + "_" + time + '.avi';
-    data.endDir = './public/videos/' + ses.getName() + "_" + time + '.avi';
+    Promise.resolve(robot.getRobotName()).then(function(name) {
+        let data = {}
+        data.ip = document.getElementById('IP').value;
+        data.sshKey = "id_rsa";
+        data.filename = '/home/'+ name +'/recordings/cameras/' + ses.getName() + "_" + time + '.avi';
+        data.endDir = './public/videos/' + ses.getName() + "_" + time + '.avi';
+        data.robotName = name
 
-    $.ajax({
-        url: window.location.href + "ssh\\copy_recordings",
-        data: JSON.stringify(data),
-        contentType: 'application/json',
-        type:'POST',
-        error: function() {
-            console.error("File check failed or the file does not exist.");
-        },
-        success: function(data) {
-            console.log(data);
-        }
-    });
+        $.ajax({
+            url: window.location.href + "ssh\\copy_recordings",
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            type:'POST',
+            error: function() {
+                console.error("File check failed or the file does not exist.");
+            },
+            success: function(info) {
+                console.log(info);
+    
+                $.ajax({
+                    url: window.location.href + "ssh\\delete_nao_recording",
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    type:'POST',
+                    error: function() {
+                        console.error("File check failed or the file does not exist.");
+                    },
+                    success: function(info) {
+                        console.log(info);
+                    }
+                });
+            }
+        });
+    })
 }
 
 function viewVideos() {
@@ -220,16 +257,37 @@ function viewVideos() {
         type:'POST',
         success: function(data) {
             let viewForm = document.getElementById('viewForm');
+            viewForm.innerHTML = '';
             data.forEach(datum => {
-                console.log(datum);
                 let d = document.createElement('DIV');
                 let e = document.createElement('BUTTON');
                 e.innerHTML = datum;
+                e.addEventListener("click", function () {
+                    playVideo(datum);
+                }, false);
                 d.appendChild(e);
                 viewForm.appendChild(d);
             })
         }
     });
+}
+
+function playVideo(data) {
+    console.log(data);
+    let videoModal = document.getElementById('videoModal');
+    let videoForm = document.getElementById('videoForm');
+    let v = document.createElement('VIDEO');
+    v.setAttribute('width', "320px");
+    v.setAttribute('height', "240px");
+    v.setAttribute('controls', '');
+
+    let s = document.createElement('SOURCE');
+    s.setAttribute('src', './videos/' + data + '.avi');
+    s.setAttribute('type', 'video/avi');
+    v.appendChild(s);
+    videoForm.appendChild(v);
+    videoModal.style.display = 'block';
+
 }
 
 function listBehaviours() {

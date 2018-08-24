@@ -78,7 +78,15 @@ class Robot {
         })
     }
 
-    startRecording() {
-        
+    getRobotName() {
+        return sessionP.service("ALSystem").then(function(s) {
+            return s.robotName();
+        })
+    }
+
+    disconnect() {
+        sessionP.service("ALBehaviorManager").then(function (bm) {
+            bm.behaviorStarted.disconnect();
+        })
     }
 }
