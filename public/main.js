@@ -15,12 +15,6 @@ function delay(t, v) {
  
 
 function createSession() {
-    if (ses !== undefined) {
-        robot.disconnect();
-        ses = null;
-        sessionP = null;
-        robot = null;
-    }
 
     ses = new Session(document.getElementById('IP').value, document.getElementById('cName').value)
     sessionP = ses.getSession();
@@ -191,7 +185,7 @@ function checkSSHKey() {
                 console.log("SSH file found.")
             } else {
                 Promise.resolve(robot.getRobotName()).then(function(name) {
-                    alert('In a moment, a window will appear, all you need to do is type your robots PASSWORD and hit enter!');
+                    alert('In a moment, a window will appear, you may need to type \'yes\' and hit enter and then you need to type your robots PASSWORD and hit enter!');
                     let gen = {};
                     gen.ip = ip;
                     gen.fileName = fileName;
@@ -221,9 +215,38 @@ function copyRecording(time) {
         data.sshKey = "id_rsa";
         data.filenameVideo = '/home/'+ name +'/recordings/cameras/' + ses.getName() + "_" + time + '.avi';
         data.filenameAudio = '/home/'+ name +'/recordings/microphones/' + ses.getName() + "_" + time + '.wav';
-        data.endDirVideo = './public/videos/' + ses.getName() + "_" + time + '.avi';
-        data.endDirAudio = './public/audio/' + ses.getName() + "_" + time + '.wav';
-        data.robotName = name
+        data.endDirVideo = './public/raw_videos/'; 
+        data.endDirAudio = './public/raw_audio/';
+        data.endDir = './public/videos/'
+        data.file = ses.getName() + "_" + time;
+        data.name = ses.getName();
+        data.time = time;
+        data.robotName = name;
+
+        $.ajax({
+            url: window.location.href + "ssh\\copy_recordings_audio",
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            type:'POST',
+            error: function() {
+                console.error("File check failed or the file does not exist.");
+            },
+            success: function(info) {
+                console.log(info);
+                $.ajax({
+                    url: window.location.href + "ssh\\delete_nao_recording_audio",
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    type:'POST',
+                    error: function() {
+                        console.error("File check failed or the file does not exist.");
+                    },
+                    success: function(info) {
+                        console.log(info);
+                    }
+                });
+            }
+        });
 
         $.ajax({
             url: window.location.href + "ssh\\copy_recordings_video",
@@ -234,9 +257,9 @@ function copyRecording(time) {
                 console.error("File check failed or the file does not exist.");
             },
             success: function(info) {
-                console.log(info)
+                console.log(info);
                 $.ajax({
-                    url: window.location.href + "ssh\\copy_recordings_audio",
+                    url: window.location.href + "ssh\\delete_nao_recording_video",
                     data: JSON.stringify(data),
                     contentType: 'application/json',
                     type:'POST',
@@ -245,18 +268,19 @@ function copyRecording(time) {
                     },
                     success: function(info) {
                         console.log(info);
-                        $.ajax({
-                            url: window.location.href + "ssh\\delete_nao_recording",
-                            data: JSON.stringify(data),
-                            contentType: 'application/json',
-                            type:'POST',
-                            error: function() {
-                                console.error("File check failed or the file does not exist.");
-                            },
-                            success: function(info) {
-                                console.log(info);
-                            }
-                        });
+                    }
+                });
+
+                $.ajax({
+                    url: window.location.href + "ssh\\convert_recordings_video",
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    type:'POST',
+                    error: function() {
+                        console.error("File check failed or the file does not exist.");
+                    },
+                    success: function(info) {
+                        console.log(info);
                     }
                 });
             }
@@ -285,18 +309,35 @@ function viewVideos() {
     });
 }
 
+function clearPlaylists() {
+    var response = confirm('Are you sure you want to delete all playlists? This is irreversible!')
+    if (response) {
+        data = {"playlists": []}
+        $.ajax({
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            url: window.location.href + 'playlists/clear',						
+            success: function(data) {
+                console.log("Playlists deleted.");
+            }
+        })
+    }
+}
+
 function playVideo(data) {
     console.log(data);
     let videoModal = document.getElementById('videoModal');
     let videoForm = document.getElementById('videoForm');
+    videoForm.innerHTML = '';
     let v = document.createElement('VIDEO');
     v.setAttribute('width', "320px");
     v.setAttribute('height', "240px");
     v.setAttribute('controls', '');
 
     let s = document.createElement('SOURCE');
-    s.setAttribute('src', './videos/' + data + '.avi');
-    s.setAttribute('type', 'video/avi');
+    s.setAttribute('src', './videos/' + data);
+    s.setAttribute('type', 'video/mp4');
     v.appendChild(s);
     videoForm.appendChild(v);
     videoModal.style.display = 'block';
@@ -332,8 +373,8 @@ function listBehaviours() {
 function getTime() {
     let time = new Date();
 
-    return ("0" + time.getHours()).slice(-2)   + ":" + 
-           ("0" + time.getMinutes()).slice(-2) + ":" + 
+    return time.getDate() + '-' + time.getMonth() + '-' + time.getFullYear() + '@' + ("0" + time.getHours()).slice(-2) + '_'  + 
+           ("0" + time.getMinutes()).slice(-2) + '_' + 
            ("0" + time.getSeconds()).slice(-2);
 }
 

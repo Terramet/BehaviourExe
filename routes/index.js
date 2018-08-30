@@ -4,6 +4,8 @@ var router = express.Router();
 var scp2 = require('scp2')
 var Client = require('ssh2-sftp-client');
 var exec = require('child_process').exec;
+var ffmpeg = require('fluent-ffmpeg');
+var command = ffmpeg();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -32,6 +34,15 @@ router.post('/playlists/load', function(req, res, next) {
   res.send(json);
 });
 
+router.post('/playlists/clear', function(req, res) {
+  let file_name = __dirname.split('\\routes')[0] + '\\public\\playlists\\file.json';
+
+  fs.writeFileSync(file_name, JSON.stringify(req.body));
+  fs.closeSync(2);  
+
+  res.send(req.body);
+});
+
 router.post('/ssh/file_check', function(req, res) {
   let file_name = __dirname.split('\\routes')[0] + '\\public\\ssh\\' + req.text;
   
@@ -57,6 +68,21 @@ router.post('/ssh/copy_recordings_video', function(req, res) {
 
 }); 
 
+router.post('/ssh/convert_recordings_video', function(req, res) {
+  exec('ffmpeg -i \"' + req.body.endDirVideo + req.body.file + '.avi\" -i \"' + req.body.endDirAudio + req.body.file + '.wav\" \"' + req.body.endDir + req.body.file + '.mp4\"',
+  function (error, stdout, stderr) {
+    console.log('stdout: ' + stdout);
+    console.log('stderr: ' + stderr);
+    if (error !== null) {
+      console.log('exec error: ' + error);
+      console.log('This action requires the user has ffmpeg as a command line function.')
+    } else {
+      res.send('Successfully converted ' + req.body.endDirVideo + req.body.file + '.avi' + ' to ' + req.body.endDir + req.body.file + '.mp4');
+    }
+  });
+
+}); 
+
 router.post('/ssh/copy_recordings_audio', function(req, res) {
   let ssh = __dirname.split('\\routes')[0] + '\\public\\ssh\\' + req.body.sshKey;
 
@@ -75,21 +101,17 @@ router.post('/ssh/copy_recordings_audio', function(req, res) {
   })
 }); 
 
-router.post('/ssh/delete_nao_recording', function(req, res) {
+router.post('/ssh/delete_nao_recording_audio', function(req, res) {
   let sftp = new Client();
   let ssh = __dirname.split('\\routes')[0] + '\\public\\ssh\\' + req.body.sshKey;
 
-  console.log("delete: " + ssh);
   sftp.connect({
     host: req.body.ip,
     username: req.body.robotName,
     privateKey: fs.readFileSync(ssh),
   }).then(() => {
-      sftp.delete('/' + req.body.filenameVideo);
       sftp.delete('/' + req.body.filenameAudio);
   }).then((data) => {
-      console.log(data, 'the data info');
-      res.write('File ' + req.body.filenameVideo + ' removed from Nao.');
       res.write('File ' + req.body.filenameAudio + ' removed from Nao.');
       res.end();
   }).catch((err) => {
@@ -99,9 +121,27 @@ router.post('/ssh/delete_nao_recording', function(req, res) {
   });
 });
 
-router.post('/ssh/gen_key', function(req, res) {
-  console.log("Keygen: " + req.body.fileName);
+router.post('/ssh/delete_nao_recording_video', function(req, res) {
+  let sftp = new Client();
+  let ssh = __dirname.split('\\routes')[0] + '\\public\\ssh\\' + req.body.sshKey;
 
+  sftp.connect({
+    host: req.body.ip,
+    username: req.body.robotName,
+    privateKey: fs.readFileSync(ssh),
+  }).then(() => {
+      sftp.delete('/' + req.body.filenameVideo);
+  }).then((data) => {
+      res.write('File ' + req.body.filenameVideo + ' removed from Nao.');
+      res.end();
+  }).catch((err) => {
+      console.log(err, 'catch error');
+      res.status(333);
+      res.send('Failed to delete ' + req.body.filename)
+  });
+});
+
+router.post('/ssh/gen_key', function(req, res) {
   exec('SSH-Keygen.sh \"./public/ssh/' + req.body.fileName + '\" ' + req.body.robotName + '@' + req.body.ip,
   function (error, stdout, stderr) {
     console.log('stdout: ' + stdout);

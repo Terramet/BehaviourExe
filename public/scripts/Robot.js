@@ -17,7 +17,7 @@ class Robot {
                         spin[i].remove();
                     }
 
-                time = getTime().replace(/\:/g, '_');
+                time = getTime()
 
                 sessionP.service("ALAudioRecorder").then(function (ar) {
                     ar.startMicrophonesRecording('/home/nao/recordings/microphones/' + ses.getName() + "_" + time + '.wav', 'wav', 16000, [0,0,1,0])
@@ -32,7 +32,7 @@ class Robot {
                     console.log("Recording video.");
                 })
               
-                console.log("Behaviour started successfully.")
+                console.log("Behaviour "+ data +" started successfully.")
             });
 
             bm.behaviorStopped.connect(function(data) {

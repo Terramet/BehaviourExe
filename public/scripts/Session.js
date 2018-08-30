@@ -31,6 +31,7 @@ class Session {
             connectBtn.classList.remove('green')
             connectBtn.classList.add('red')
             connectBtn.innerText = 'Disconnected'
+            this.session = new QiSession(ip)
             this.connected = false
         })
     }
