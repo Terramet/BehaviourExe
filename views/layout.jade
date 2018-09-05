@@ -262,6 +262,7 @@ html
             var videoModal = document.getElementById('videoModal');
 
             videoClose.onclick = function() {
+                $('video').trigger('pause');
                 videoModal.style.display = "none";
             }
 
