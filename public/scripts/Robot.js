@@ -40,7 +40,7 @@ class Robot {
             });
 
             bm.behaviorStopped.connect(function(data) {
-                if(!data.includes("/.")) {
+                if(data.includes("/.")) {
                     let r = document.getElementById('replayB');
                     let n = document.getElementById('nextB');
                     let p = document.getElementById('posB');
