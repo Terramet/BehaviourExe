@@ -84,22 +84,12 @@ html
                             button#saveAssignments(onclick='saveAssigned()') Save
 
         #editModal.modal
-            .modal-content(style='min-width: 680px;')
+            .modal-content
                 span#editClose.close x
                 h4.center Edit Playlists
                 form#playlistForm(style='margin: auto; margin-top: 20px; display: inline-block; text-align:center;', onsubmit='return false;', method='post', autocomplete='on')
                     div(style='margin: auto; display: block')
                         button#deleteAll(onclick='clearPlaylists()') Delete All Playlists
-                    //- div(style='margin-left: 150px; display: block')
-                    //-     select#editBehaviour
-                    //- div(style='margin: auto; margin-left: -40px; display: block; min-width: 680px')
-                    //-     input#playlistName(style='margin: auto; text-align: center; min-width: 250px', type='text', placeholder='Enter a name for your playlist', tabindex='3', autofocus='')
-                    //-     | &nbsp;
-                    //-     | &nbsp;
-                    //-     input#savePlaylistBtn(style='margin: auto; margin-bottom: 10px;', type='submit', value='Save', onclick='savePlaylist()')
-                    //- div(style='margin: auto; display: inline-block; min-width: 680px')
-                    //-     ul#behaveListAvailable.sortable.connectedSortable
-                    //-     ul#behaveListPlaylist.sortable.connectedSortable
         
         #viewModal.modal
             .modal-content
@@ -120,7 +110,7 @@ html
                 button#nextB(style='float: right; width: 49%; height: 66px', onclick='playNext("main", this)') Next
             div
                 input#sayText(style='margin-bottom: 10px; margin-top: 5px; max-width: 49%;', type='text', placeholder='Enter text to say', tabindex='3', autofocus='')
-                button(style='float: right; width: 49%; margin-top: 7px;', type='submit', onclick='say()') Submit
+                button#sayBtn(style='float: right; width: 49%; margin-top: 7px;', type='submit', onclick='say()') Submit
             div
                 button#posB(style='float: left; width: 49%', onclick='playNext("pos", this)') Positive
                 button#negB(style='float: right; width: 49%', onclick='playNext("neg", this)') Negative
@@ -274,6 +264,11 @@ html
             videoClose.onclick = function() {
                 videoModal.style.display = "none";
             }
+
+            window.onbeforeunload = function() {
+                stopBehaviour();
+                return "anything";
+            };
 
         // qimessaging & jquery stuff
         script(src='libs/qimessaging/1.0/qimessaging.js')

@@ -1,21 +1,20 @@
 var ses, sessionP, robot, assigned
 var loadedPlaylists = []
+var recording = true
 
 function delay(t, v) {
     return new Promise(function(resolve) { 
         setTimeout(resolve.bind(null, v), t);
     });
- }
+}
  
  Promise.prototype.delay = function(t) {
      return this.then(function(v) {
          return delay(t, v);
      });
- }
+}
  
-
 function createSession() {
-
     ses = new Session(document.getElementById('IP').value, document.getElementById('cName').value)
     sessionP = ses.getSession();
     robot = new Robot();
@@ -296,14 +295,16 @@ function viewVideos() {
             let viewForm = document.getElementById('viewForm');
             viewForm.innerHTML = '';
             data.forEach(datum => {
-                let d = document.createElement('DIV');
-                let e = document.createElement('BUTTON');
-                e.innerHTML = datum;
-                e.addEventListener("click", function () {
-                    playVideo(datum);
-                }, false);
-                d.appendChild(e);
-                viewForm.appendChild(d);
+                if(datum.includes('.mp4')) {
+                    let d = document.createElement('DIV');
+                    let e = document.createElement('BUTTON');
+                    e.innerHTML = datum;
+                    e.addEventListener("click", function () {
+                        playVideo(datum);
+                    }, false);
+                    d.appendChild(e);
+                    viewForm.appendChild(d); 
+                }
             })
         }
     });
@@ -349,7 +350,7 @@ function listBehaviours() {
         Promise.resolve(robot.getBehaviours()).then(function (array) {
             // Create the list element:
             let list = document.getElementById('behaveListAvailable');
-        
+            list.innerHTML = "";
             for (let i = 0; i < array.length; i++) {
                 if (!array[i].includes("/")) {
                     // Create the list item:

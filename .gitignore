@@ -1,11 +1,13 @@
 node_modules/
+
 public/ssh/*
+!public/ssh/.gitkeep
+
 public/raw_videos/*
 !public/raw_videos/.gitkeep 
 
 public/videos/*
 !public/videos/.gitkeep 
-
 
 public/raw_audio/*
 !public/raw_audio/.gitkeep 
