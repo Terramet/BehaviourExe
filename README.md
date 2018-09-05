@@ -1,5 +1,5 @@
 # BehaviourExe
-## A mobile friendly behaviour exxection website for the Nao Robot.
+## A mobile friendly behaviour exection website for the Nao Robot.
 
 This project aimed to create a mobile friendly website that would allow the user to execute behaviours that are pre-installed on the Nao Robot.
 
