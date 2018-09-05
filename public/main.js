@@ -22,7 +22,7 @@ function createSession() {
 
 function say() {
     let str = document.getElementById('sayText').value;
-    let textToSay = str.replace("%c", ses.getName());
+    let textToSay = str.replace(/%c/g, ses.getName());
     robot.say(textToSay); 
     console.log("Robot said: " + textToSay + ".")
 }
@@ -52,7 +52,7 @@ function playNext(type, btn) {
     if (assigned === undefined) {
         alert("No playlist assigned to buttons. \nPlease go to Settings > Assign Playlist.");
         console.error("No playlist assigned to " + btn.innerHTML + " button.")
-    } else {
+    } else if (assigned.getPlaylist(type).getNext() !== "Nothing") {
         robot.startBehaviour(assigned.getPlaylist(type).next(), btn);
         // console.log(assigned.getPlaylist(type).next());
     }
