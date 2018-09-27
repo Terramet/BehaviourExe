@@ -4,8 +4,6 @@ var router = express.Router();
 var scp2 = require('scp2')
 var Client = require('ssh2-sftp-client');
 var exec = require('child_process').exec;
-var ffmpeg = require('fluent-ffmpeg');
-var command = ffmpeg();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -26,7 +24,7 @@ router.post('/playlists/save', function(req, res) {
   res.send(req.body.name);
 });
 
-router.post('/playlists/load', function(req, res, next) {
+router.get('/playlists/load', function(req, res) {
   let file_name = __dirname.split('\\routes')[0] + '\\public\\playlists\\file.json';
   let data = fs.readFileSync(file_name);
   let json = JSON.parse(data);
@@ -51,7 +49,8 @@ router.post('/ssh/file_check', function(req, res) {
 
 router.post('/ssh/copy_recordings_video', function(req, res) {
   let ssh = __dirname.split('\\routes')[0] + '\\public\\ssh\\' + req.body.sshKey;
-
+  console.log(req.body.ip)
+  console.log(req.body.robotName)
   scp2.scp({
     host: req.body.ip,
     username: req.body.robotName,
@@ -85,7 +84,8 @@ router.post('/ssh/convert_recordings_video', function(req, res) {
 
 router.post('/ssh/copy_recordings_audio', function(req, res) {
   let ssh = __dirname.split('\\routes')[0] + '\\public\\ssh\\' + req.body.sshKey;
-
+  console.log(req.body.ip)
+  console.log(req.body.robotName)
   scp2.scp({
     host: req.body.ip,
     username: req.body.robotName,

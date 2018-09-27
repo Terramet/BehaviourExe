@@ -128,6 +128,7 @@ html
             $( document ).ready(function() {
                 loadPlaylists();
                 updateView();
+                //- attemptAutoConnect();
             });
 
             var fileName = 'log ' + getTime() + '.html';
@@ -135,7 +136,7 @@ html
             saveLog.onclick = function(){
                 downloadInnerHtml(fileName, 'debugDiv','text/html');
             };
-
+            
             if (typeof console  != "undefined") 
                 if (typeof console.log != 'undefined')
                     console.olog = console.log;
@@ -272,9 +273,9 @@ html
             };
 
         // qimessaging & jquery stuff
-        script(src='libs/qimessaging/1.0/qimessaging.js')
-        script(src='libs/qimessaging/1.0/socket.io.min.js')
-        script(src='scripts/Session.js')
-        script(src='scripts/Robot.js')
-        script(src='scripts/Playlist.js')
-        script(src='scripts/Assigned.js')
+        script(src='/libs/qimessaging/1.0/qimessaging.js')
+        script(src='/libs/qimessaging/1.0/socket.io.min.js')
+        script(src='/scripts/Session.js')
+        script(src='/scripts/Robot.js')
+        script(src='/scripts/Playlist.js')
+        script(src='/scripts/Assigned.js')

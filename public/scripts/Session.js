@@ -18,7 +18,6 @@ class Session {
 
             let modal = document.getElementById('connectModal');
             modal.style.display = "none";
-
             console.log("Session successfully created. Current session is for child named: " + childName)
 
             /** Upon disconnect execute function */
@@ -31,8 +30,11 @@ class Session {
             connectBtn.classList.remove('green')
             connectBtn.classList.add('red')
             connectBtn.innerText = 'Disconnected'
+            if(!alert('Connection to the robot has been lost. The page will now refresh.')){window.location.reload();}
             this.session = new QiSession(ip)
             this.connected = false
+        }).on('error', function() {
+            console.error("Error: Robot connection failed")
         })
     }
 

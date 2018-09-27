@@ -100,6 +100,16 @@ class Robot {
         })
     }
 
+    getIP() {
+        return sessionP.service("ALConnectionManager").then(function(cm) {
+            return cm.scan().then(function(data) {
+                return cm.services().then(function (data) {
+                    return data[0][9][1][1][1];
+                })
+            })
+        })
+    }
+
     disconnect() {
         sessionP.service("ALBehaviorManager").then(function (bm) {
             bm.behaviorStarted.disconnect();

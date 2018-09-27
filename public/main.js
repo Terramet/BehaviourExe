@@ -13,9 +13,16 @@ function delay(t, v) {
          return delay(t, v);
      });
 }
- 
+
 function createSession() {
     ses = new Session(document.getElementById('IP').value, document.getElementById('cName').value)
+    sessionP = ses.getSession();
+    robot = new Robot();
+}
+
+function attemptAutoConnect() {
+    document.getElementById("connectBtn").innerHTML = "<p>Connecting</p> <div class=\"donut-spinner\"></div>";
+    ses = new Session("nao.local")
     sessionP = ses.getSession();
     robot = new Robot();
 }
@@ -23,7 +30,8 @@ function createSession() {
 function say() {
     let str = document.getElementById('sayText').value;
     let textToSay = str.replace(/%c/g, ses.getName());
-    robot.say(textToSay); 
+    robot.say(textToSay);
+    Promise.resolve(robot.getIP()).then(function(d) {console.log(d)}) 
     console.log("Robot said: " + textToSay + ".")
 }
 
@@ -155,7 +163,7 @@ function savePlaylist() {
 function loadPlaylists() {
     console.log("Sending load request to node.js server.")
     $.ajax({
-        type: 'POST',
+        type: 'GET',
         url: window.location.href + 'playlists/load',						
         success: function(data) {
             console.log("Playlists loaded successfully.");
@@ -168,7 +176,6 @@ function loadPlaylists() {
 }
 
 function checkSSHKey() {
-    let ip = document.getElementById('IP').value;
     fileName = "id_rsa";
 
     $.ajax({
@@ -183,12 +190,13 @@ function checkSSHKey() {
             if (data) {
                 console.log("SSH file found.")
             } else {
-                Promise.resolve(robot.getRobotName()).then(function(name) {
+                Promise.all([robot.getRobotName(), robot.getIP()]).then(function(vals) {
+                    console.log(vals);
                     alert('In a moment, a window will appear, you may need to type \'yes\' and hit enter and then you need to type your robots PASSWORD and hit enter!');
                     let gen = {};
-                    gen.ip = ip;
+                    gen.ip = vals[1];
                     gen.fileName = fileName;
-                    gen.robotName = name;
+                    gen.robotName = vals[0];
                     $.ajax({
                         url: window.location.href + "ssh\\gen_key",
                         data: JSON.stringify(gen),
@@ -208,19 +216,20 @@ function checkSSHKey() {
 }
 
 function copyRecording(time) {
-    Promise.resolve(robot.getRobotName()).then(function(name) {
+    Promise.all([robot.getRobotName(), robot.getIP()]).then(function(vals) {
+        console.log(vals);
         let data = {}
-        data.ip = document.getElementById('IP').value;
+        data.ip = vals[1];
         data.sshKey = "id_rsa";
-        data.filenameVideo = '/home/'+ name +'/recordings/cameras/' + ses.getName() + "_" + time + '.avi';
-        data.filenameAudio = '/home/'+ name +'/recordings/microphones/' + ses.getName() + "_" + time + '.wav';
+        data.filenameVideo = '/home/'+ vals[0] +'/recordings/cameras/' + ses.getName() + "_" + time + '.avi';
+        data.filenameAudio = '/home/'+ vals[0] +'/recordings/microphones/' + ses.getName() + "_" + time + '.wav';
         data.endDirVideo = './public/raw_videos/'; 
         data.endDirAudio = './public/raw_audio/';
         data.endDir = './public/videos/'
         data.file = ses.getName() + "_" + time;
         data.name = ses.getName();
         data.time = time;
-        data.robotName = name;
+        data.robotName = vals[0];
 
         $.ajax({
             url: window.location.href + "ssh\\copy_recordings_audio",
