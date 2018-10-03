@@ -1,30 +1,90 @@
-var ses, sessionP, robot, assigned
+var ses, sessionP, robot, assigned, connected = false
 var loadedPlaylists = []
 var recording = true
+var time = null;
 
-function delay(t, v) {
-    return new Promise(function(resolve) { 
-        setTimeout(resolve.bind(null, v), t);
-    });
-}
- 
- Promise.prototype.delay = function(t) {
-     return this.then(function(v) {
-         return delay(t, v);
-     });
+function timeoutPromise (ms, promise){
+    // Create a promise that rejects in <ms> milliseconds
+    let timeout = new Promise((resolve, reject) => {
+      let id = setTimeout(() => {
+        clearTimeout(id);
+        reject('Timed out in '+ ms + 'ms.')
+      }, ms)
+    })
+  
+    // Returns a race between our timeout and the passed in promise
+    return Promise.race([
+      promise,
+      timeout
+    ])
+  }
+
+function whatIsIt(object) {
+    var stringConstructor = "test".constructor;
+    var arrayConstructor = [].constructor;
+    var objectConstructor = {}.constructor;
+
+    if (object === null) {
+        return "null";
+    }
+    else if (object === undefined) {
+        return "undefined";
+    }
+    else if (object.constructor === stringConstructor) {
+        return "String";
+    }
+    else if (object.constructor === arrayConstructor) {
+        return "Array";
+    }
+    else if (object.constructor === objectConstructor) {
+        return "Object";
+    }
+    else {
+        return "don't know";
+    }
 }
 
 function createSession() {
-    ses = new Session(document.getElementById('IP').value, document.getElementById('cName').value)
-    sessionP = ses.getSession();
-    robot = new Robot();
+    robot = new Robot(document.getElementById('IP').value);
+    sessionP = robot.getSession();
+    Promise.resolve(robot.getIP()).then(function(ip) {
+        ses = new Session(document.getElementById('cName').value, loadedPlaylists)
+        checkSSHKey();
+        robot.startBehaviourManager()
+        if (ses.getName()) {
+            updateCookie();
+            updateView();
+        }
+    });
 }
 
 function attemptAutoConnect() {
-    document.getElementById("connectBtn").innerHTML = "<p>Connecting</p> <div class=\"donut-spinner\"></div>";
-    ses = new Session("nao.local")
-    sessionP = ses.getSession();
-    robot = new Robot();
+    document.getElementById("connectBtn").innerHTML = "Attempting to connect...";
+    robot = new Robot("nao.local");
+    sessionP = robot.getSession();
+
+    let ip = timeoutPromise(10000, robot.getIP())
+
+    ip.then(response => {
+        let child = prompt("Please enter the childs name:","")
+        checkSSHKey();
+        robot.startBehaviourManager();
+        if (checkCookieData(child) != null) {
+            if (confirm("You have a previous session stored for a child named: " + child + ". Would you like to restore it?")) {
+                ses = new Session(JSON.parse(checkCookieData(child)), loadedPlaylists)
+            } else {
+                ses = new Session(child, loadedPlaylists)    
+            }
+        } else {
+            ses = new Session(child, loadedPlaylists)
+        }
+        updateCookie();
+        updateView();
+    });
+
+    ip.catch(error => {
+        alert("Autoconnect failed")
+    })
 }
 
 function say() {
@@ -37,31 +97,62 @@ function say() {
 
 function updateView() {
     setInterval(function () {
-        if (assigned !== undefined && document.getElementsByClassName("donut-spinner").length === 0) {
-            document.getElementById("replayB").innerHTML = "Replay <br/><small>(" + assigned.getPlaylist("main").returnLast() + ")</small>";
-            document.getElementById("nextB").innerHTML = "Next <br/><small>(" + assigned.getPlaylist("main").getNext() + ")</small>";
+        if (ses.getAssigned() !== null && document.getElementsByClassName("donut-spinner").length === 0) {
+            document.getElementById("replayB").innerHTML = "Replay <br/><small>(" + ses.getAssigned().getPlaylist("main").returnLast() + ")</small>";
+            document.getElementById("nextB").innerHTML = "Next <br/><small>(" + ses.getAssigned().getPlaylist("main").getNext() + ")</small>";
             document.getElementById('posB').innerHTML = "Positive";
             document.getElementById('negB').innerHTML = "Negative";
         }
     }, 1000)
 }
 
+function checkCookieData(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return null;
+}
+
+function setCookie(cname,cvalue,exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires=" + d.toGMTString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function updateCookie() {
+    setInterval(function () {
+        if (ses.getAssigned() != null)  {
+            setCookie(ses.getName(), ses.asJSON(), 7);
+        }
+    }, 1000)
+}
+
 function playCurrent(type, btn) {
-    if (assigned === undefined) {
+    if (ses.getAssigned() === undefined) {
         alert("No playlist assigned to buttons. \nPlease go to Settings > Assign Playlist.");
         console.error("No playlist assigned to " + btn.innerHTML + " button.")
-    } else if (assigned.getPlaylist(type).returnLast() !== "Nothing") {
-        robot.startBehaviour(assigned.getPlaylist(type).returnLast(), btn);
+    } else if (ses.getAssigned().getPlaylist(type).returnLast() !== "Nothing") {
+        robot.startBehaviour(ses.getAssigned().getPlaylist(type).returnLast(), btn);
         // console.log(assigned.getPlaylist(type).returnLast());
     }
 }
 
 function playNext(type, btn) {
-    if (assigned === undefined) {
+    if (ses.getAssigned() === undefined) {
         alert("No playlist assigned to buttons. \nPlease go to Settings > Assign Playlist.");
         console.error("No playlist assigned to " + btn.innerHTML + " button.")
-    } else if (assigned.getPlaylist(type).getNext() !== "Nothing") {
-        robot.startBehaviour(assigned.getPlaylist(type).next(), btn);
+    } else if (ses.getAssigned().getPlaylist(type).getNext() !== "Nothing") {
+        robot.startBehaviour(ses.getAssigned().getPlaylist(type).next(), btn);
         // console.log(assigned.getPlaylist(type).next());
     }
 }
@@ -96,8 +187,9 @@ function saveAssigned() {
     if (mp === pp || mp === np || np === pp) {
         alert("Is it highly suggested that you choose a different playlist for each button. Failing to do so will cause un-expected behaviour.")
     }
-    
+
     assigned = new Assigned(mp, pp, np);
+    ses.setAssigned(assigned);
 
     document.getElementById('assignModal').style.display = 'none';
 
@@ -176,26 +268,27 @@ function loadPlaylists() {
 }
 
 function checkSSHKey() {
-    fileName = "id_rsa";
-
-    $.ajax({
-        url: window.location.href + "ssh\\file_check",
-        data: fileName,
-        contentType: 'text/plain',
-        type:'POST',
-        error: function() {
-            console.error("File check failed or the file does not exist.");
-        },
-        success: function(data) {
-            if (data) {
-                console.log("SSH file found.")
-            } else {
-                Promise.all([robot.getRobotName(), robot.getIP()]).then(function(vals) {
+    console.log("Beginning check for SSH file.")
+    Promise.all([robot.getRobotName(), robot.getIP()]).then(function(vals) {
+        let file_name = vals[1].replace(/\./g, '_');
+        
+        $.ajax({
+            url: window.location.href + "ssh\\file_check",
+            data: file_name,
+            contentType: 'text/plain',
+            type:'POST',
+            error: function() {
+                console.error("File check failed or the file does not exist.");
+            },
+            success: function(data) {
+                if (data) {
+                    console.log("SSH file found.")
+                } else {
                     console.log(vals);
                     alert('In a moment, a window will appear, you may need to type \'yes\' and hit enter and then you need to type your robots PASSWORD and hit enter!');
                     let gen = {};
                     gen.ip = vals[1];
-                    gen.fileName = fileName;
+                    gen.fileName = file_name;
                     gen.robotName = vals[0];
                     $.ajax({
                         url: window.location.href + "ssh\\gen_key",
@@ -209,18 +302,19 @@ function checkSSHKey() {
                             console.log(data);
                         }
                     });
-                });
+                }
             }
-        }
-    });
+        });
+    })
 }
 
 function copyRecording(time) {
     Promise.all([robot.getRobotName(), robot.getIP()]).then(function(vals) {
+        let file_name = vals[1].replace(/\./g, '_');
         console.log(vals);
         let data = {}
         data.ip = vals[1];
-        data.sshKey = "id_rsa";
+        data.sshKey = file_name;
         data.filenameVideo = '/home/'+ vals[0] +'/recordings/cameras/' + ses.getName() + "_" + time + '.avi';
         data.filenameAudio = '/home/'+ vals[0] +'/recordings/microphones/' + ses.getName() + "_" + time + '.wav';
         data.endDirVideo = './public/raw_videos/'; 
@@ -355,7 +449,7 @@ function playVideo(data) {
 }
 
 function listBehaviours() {
-    if (sessionP) {
+    if (robot.getSession()) {
         Promise.resolve(robot.getBehaviours()).then(function (array) {
             // Create the list element:
             let list = document.getElementById('behaveListAvailable');

@@ -43,7 +43,7 @@ html
                         h4(style='text-align:center; padding-top: 15px') Please enter the name of the child
                         input#cName(style='display: inline-block; width: 100%;', type='text', placeholder='Childs name', tabindex='1', required='', autofocus='')
                 div(style='text-align:center')
-                    input(style='display: block; margin: auto;', type='submit', onclick='createSession(), checkSSHKey()')
+                    input(style='display: block; margin: auto;', type='submit', onclick='createSession()')
 
         #createModal.modal
             .modal-content(style='min-width: 680px;')
@@ -127,8 +127,7 @@ html
 
             $( document ).ready(function() {
                 loadPlaylists();
-                updateView();
-                //- attemptAutoConnect();
+                attemptAutoConnect();
             });
 
             var fileName = 'log ' + getTime() + '.html';
@@ -269,7 +268,6 @@ html
 
             window.onbeforeunload = function() {
                 stopBehaviour();
-                return "anything";
             };
 
         // qimessaging & jquery stuff

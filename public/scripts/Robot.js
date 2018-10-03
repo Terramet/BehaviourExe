@@ -1,10 +1,49 @@
 class Robot {
-    constructor() { 
-        var time = null;
+    constructor(ip) { 
+        this.ip = ip
+        this.session = new QiSession(ip)
+        /**
+         * Create the session by connecting to the robot.
+         * Upon connection execute function
+         */
+        this.session.socket().on('connect', function() {
+            console.log('QiSession connected!')         //log the connection for debug
+            
+            document.getElementById('executionForm').style.display = 'block'
+            let connectBtn = document.getElementById('connectBtn')
+            connectBtn.classList.remove('red')
+            connectBtn.classList.add('green')
+            connectBtn.innerText = 'Connected'
+            connected = true
+
+            let modal = document.getElementById('connectModal');
+            modal.style.display = "none";
+
+            /** Upon disconnect execute function */
+        }).on('disconnect', function() {
+            console.log('QiSession disconnected!')      //log the connection for debug
+
+            document.getElementById('executionForm').style.display = 'none'
+
+            let connectBtn = document.getElementById('connectBtn')
+            connectBtn.classList.remove('green')
+            connectBtn.classList.add('red')
+            connectBtn.innerText = 'Disconnected'
+            if(!alert('Connection to the robot has been lost. The page will now refresh.')){window.location.reload();}
+            session = new QiSession(ip)
+            connected = false
+        })
+    }
+
+    getSession() {
+        return this.session;
+    }
+
+    startBehaviourManager() {
         sessionP.service("ALBehaviorManager").done(function (bm) {
             bm.behaviorStarted.connect( function(data) {
                 console.log(data);
-                if(data.includes("/.")) {
+                if(data.includes("/.") && data !== "run_dialog_dev/.") {
                     let r = document.getElementById('replayB');
                     let n = document.getElementById('nextB');
                     let p = document.getElementById('posB');
@@ -40,7 +79,7 @@ class Robot {
             });
 
             bm.behaviorStopped.connect(function(data) {
-                if(data.includes("/.")) {
+                if(data.includes("/.") && data !== "run_dialog_dev/.") {
                     let r = document.getElementById('replayB');
                     let n = document.getElementById('nextB');
                     let p = document.getElementById('posB');

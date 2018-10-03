@@ -1,52 +1,55 @@
 class Session {
-    constructor(ip, childName) {
-        this.name = childName
-        this.session = new QiSession(ip)
-        /**
-         * Create the session by connecting to the robot.
-         * Upon connection execute function
-         */
-        this.session.socket().on('connect', function() {
-            console.log('QiSession connected!')         //log the connection for debug
-            
-            document.getElementById('executionForm').style.display = 'block'
-            let connectBtn = document.getElementById('connectBtn')
-            connectBtn.classList.remove('red')
-            connectBtn.classList.add('green')
-            connectBtn.innerText = 'Connected'
-            this.connected = true
+    constructor(input, loadedPlaylists) {
+        console.log(input)
+        if (whatIsIt(input) === "Object") {
+            this.name = input["name"];
 
-            let modal = document.getElementById('connectModal');
-            modal.style.display = "none";
-            console.log("Session successfully created. Current session is for child named: " + childName)
+            let mp, pp, np = null
 
-            /** Upon disconnect execute function */
-        }).on('disconnect', function() {
-            console.log('QiSession disconnected!')      //log the connection for debug
+            for(let i = 0; i < loadedPlaylists.length; i++) {
+                if (loadedPlaylists[i].getName() === input["assigned"]["main"]["name"]) {
+                    mp = loadedPlaylists[i];
+                } else if (loadedPlaylists[i].getName() === input["assigned"]["negative"]["name"]) {
+                    pp = loadedPlaylists[i];
+                } else if (loadedPlaylists[i].getName() === input["assigned"]["positive"]["name"]) {
+                    np = loadedPlaylists[i];
+                }
+            }
 
-            document.getElementById('executionForm').style.display = 'none'
+            mp.setCurrent(input["assigned"]["main"]["current"])
+            pp.setCurrent(input["assigned"]["negative"]["current"])
+            np.setCurrent(input["assigned"]["positive"]["current"])
 
-            let connectBtn = document.getElementById('connectBtn')
-            connectBtn.classList.remove('green')
-            connectBtn.classList.add('red')
-            connectBtn.innerText = 'Disconnected'
-            if(!alert('Connection to the robot has been lost. The page will now refresh.')){window.location.reload();}
-            this.session = new QiSession(ip)
-            this.connected = false
-        }).on('error', function() {
-            console.error("Error: Robot connection failed")
-        })
-    }
-
-    getSession() {
-        return this.session;
+            this.assigned = new Assigned(mp, pp, np);
+        } else {
+            this.name = input
+            this.assigned = null
+        }
+        console.log("Session successfully created. Current session is for child named: " + this.name)
     }
 
     getName() {
         return this.name;
     }
 
+    setName(name) {
+        this.name = name;
+    } 
+
     getConnected() {
         return this.connected;
+    }
+
+    getAssigned() {
+        return this.assigned;
+    }
+
+
+    setAssigned(assigned) {
+        this.assigned = assigned;
+    }
+
+    asJSON() {
+        return JSON.stringify(this);
     }
 }

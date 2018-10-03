@@ -18,6 +18,10 @@ class Playlist {
         this.current = 0;
     }
 
+    setCurrent(current) {
+        this.current = current;
+    }
+
     getList() {
         return this.list;
     }
