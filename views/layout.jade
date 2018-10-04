@@ -16,7 +16,7 @@ html
         div(style='width: 100%; height: 3.5em;')
             div(style='float: right; padding: 10px 10px 10px 10px;')
                 button#connectBtn Connect
-            div(style='float: right; padding: 10px 10px 10px 10px; width: 180px')
+            div(style='float: right; padding: 10px 10px 10px 10px; width: 200px')
                 //- button#settingsBtn Settings
                 .drop-button-wrap
                     input#settings(type='checkbox')
@@ -26,7 +26,7 @@ html
                             button#createPlaylistBtn(type='reset') Create Playlist
                             button#editPlaylistsBtn(type='reset') Edit Playlists
                         button#assignPlaylistsBtn(type='reset') Assign Playlist
-                        button#saveLog(type='reset') Save log to file
+                        button#changeLangBtn(type='reset') Language
                         button#viewVideosBtn(type='reset') View Videos
 
         // The Modal
@@ -36,11 +36,11 @@ html
                 span#connectClose.close ×
                 div
                     form#IPentry(method='post', style='display: block', onsubmit='return false;', autocomplete='on')
-                        h4(style='text-align:center; padding-top: 15px') Please enter the IP Address of the robot below
+                        h4#enterIPTitle(style='text-align:center; padding-top: 15px') Please enter the IP Address of the robot below
                         input#IP(style='display: inline-block; width: 100%;', type='text', placeholder='IP Address', tabindex='1', required='', autofocus='')
                 div
                     form#childsName(method='post', style='display: block', onsubmit='return false;', autocomplete='on')
-                        h4(style='text-align:center; padding-top: 15px') Please enter the name of the child
+                        h4#enterNameTitle(style='text-align:center; padding-top: 15px') Please enter the name of the child
                         input#cName(style='display: inline-block; width: 100%;', type='text', placeholder='Childs name', tabindex='1', required='', autofocus='')
                 div(style='text-align:center')
                     input(style='display: block; margin: auto;', type='submit', onclick='createSession()')
@@ -48,7 +48,7 @@ html
         #createModal.modal
             .modal-content(style='min-width: 680px;')
                 span#createClose.close ×
-                h4.center Create Playlist
+                h4#createPlaylistTitle.center Create Playlist
                 form#playlistForm(style='margin: auto; margin-top: 20px; display: inline-block; text-align:center;', onsubmit='return false;', method='post', autocomplete='on')
                     div(style='margin: auto; margin-left: -40px; display: block; min-width: 680px')
                         input#playlistName(style='margin: auto; text-align: center; min-width: 250px', type='text', placeholder='Enter a name for your playlist', tabindex='3', autofocus='')
@@ -62,21 +62,21 @@ html
         #assignModal.modal
             .modal-content.autoModal
                 span#assignClose.close ×
-                h4.center Assign Playlist
+                h4#assignPlaylistTitle.center Assign Playlist
                 form#assignForm(style='margin: auto; margin-top: 20px; display: block; text-align:center;', onsubmit='return false;', method='post', autocomplete='on')
                     div(style='margin: auto; display: block')
                         div
-                            button Interaction
+                            button#mainBehave Interaction
                             | &nbsp;
                             | &nbsp;
                             select#mainBehaviour
                         div
-                            button Positive
+                            button#positiveBehave Positive
                             | &nbsp;
                             | &nbsp;
                             select#positiveBehaviour
                         div
-                            button Negative
+                            button#negativeBehave Negative
                             | &nbsp;
                             | &nbsp;
                             select#negativeBehaviour
@@ -86,7 +86,7 @@ html
         #editModal.modal
             .modal-content
                 span#editClose.close x
-                h4.center Edit Playlists
+                h4#editPlaylistsTitle.center Edit Playlists
                 form#playlistForm(style='margin: auto; margin-top: 20px; display: inline-block; text-align:center;', onsubmit='return false;', method='post', autocomplete='on')
                     div(style='margin: auto; display: block')
                         button#deleteAll(onclick='clearPlaylists()') Delete All Playlists
@@ -94,17 +94,35 @@ html
         #viewModal.modal
             .modal-content
                 span#viewClose.close x
-                h4.center View Videos
+                h4#viewVideosTitle.center View Videos
                 form#viewForm(style='margin-top: 10px; display: block; text-align: center;', method='post', onsubmit='return false;', autocomplete='on')
 
         #videoModal.modal
             .modal-content
                 span#videoClose.close x
                 form#videoForm(style='margin-top: 10px; display: block; text-align: center;', method='post', onsubmit='return false;', autocomplete='on')
+        
+        #langModal.modal
+            .modal-content.autoModal
+                span#langClose.close x
+                h4#changeLangTitle.center Change Language
+                form#langForm(style='margin-top: 10px; display: block; text-align: center;', method='post', onsubmit='return false;', autocomplete='on')
+                  div.radio
+                    input(id="radio-1", type="radio", name="radio")
+                    label.light(for="radio-1") English
+                  div.radio
+                    input(id="radio-2", type="radio", name="radio")
+                    label.light(for="radio-2") English
+                  div.radio
+                    input(id="radio-3", type="radio", name="radio")
+                    label.light(for="radio-3") English
+                  div.radio
+                    input(id="radio-4", type="radio", name="radio")
+                    label.light(for="radio-4") English
 
         form#executionForm(style='margin-top: 10px;', method='post', onsubmit='return false;', autocomplete='on')
             div
-                h4(style='text-align:center; padding-top: 15px') Behaviour Execution
+                h4#executionFormTitle(style='text-align:center; padding-top: 15px') Behaviour Execution
             div
                 button#replayB(style='float: left; width: 49%; height: 66px', onclick='playCurrent("main", this)') Repeat 
                 button#nextB(style='float: right; width: 49%; height: 66px', onclick='playNext("main", this)') Next
@@ -115,7 +133,7 @@ html
                 button#posB(style='float: left; width: 49%', onclick='playNext("pos", this)') Positive
                 button#negB(style='float: right; width: 49%', onclick='playNext("neg", this)') Negative
             div
-                button.red(style='float: centre; width: 100%;', onclick='stopBehaviour()') STOP
+                button#stopB.red(style='float: centre; width: 100%;', onclick='stopBehaviour()') STOP
 
         div#debugDiv.footer(style="margin-top: 10px; background-color: black; color: green; overflow-y: scroll;")
         script.
@@ -127,16 +145,12 @@ html
 
             $( document ).ready(function() {
                 loadPlaylists();
-                attemptAutoConnect();
+                modalEvents();
+                loadLanguage();
+                //- attemptAutoConnect();
             });
-
-            var fileName = 'log ' + getTime() + '.html';
-
-            saveLog.onclick = function(){
-                downloadInnerHtml(fileName, 'debugDiv','text/html');
-            };
             
-            if (typeof console  != "undefined") 
+            if (typeof console != "undefined") 
                 if (typeof console.log != 'undefined')
                     console.olog = console.log;
                 else
@@ -150,121 +164,6 @@ html
                 }
             };
             console.error = console.debug = console.info =  console.log
-
-            // Get the modal
-            var connectModal = document.getElementById('connectModal');
-            // Get the button that opens the modal
-            var connectBtn = document.getElementById('connectBtn');
-            // Get the <span> element that closes the modal
-            var connectClose = document.getElementById("connectClose");
-            // When the user clicks on the button, open the modal
-            connectBtn.onclick = function() {
-                connectModal.style.display = "block";
-            }
-            // When the user clicks on <span> (x), close the modal
-            connectClose.onclick = function() {
-                connectModal.style.display = "none";
-            }
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function(event) {
-                if (event.target == connectModal) {
-                    connectModal.style.display = "none";
-                }
-            }
-
-            // Get the modal
-            var createModal = document.getElementById('createModal');
-            // Get the button that opens the modal
-            var createBtn = document.getElementById('createPlaylistBtn');
-            // Get the <span> element that closes the modal
-            var createClose = document.getElementById("createClose");
-            // When the user clicks on the button, open the modal
-            createBtn.onclick = function() {
-                if (createPlaylist())
-                    createModal.style.display = "block";
-            }
-            // When the user clicks on <span> (x), close the modal
-            createClose.onclick = function() {
-                createModal.style.display = "none";
-            }
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function(event) {
-                if (event.target == createModal) {
-                    createModal.style.display = "none";
-                }
-            }
-
-            // Get the modal
-            var assignModal = document.getElementById('assignModal');
-            // Get the button that opens the modal
-            var assignBtn = document.getElementById('assignPlaylistsBtn');
-            // Get the <span> element that closes the modal
-            var assignClose = document.getElementById("assignClose");
-            // When the user clicks on the button, open the modal
-            assignBtn.onclick = function() {
-                addPlaylistsToSelects(assignModal);
-                assignModal.style.display = "block";
-            }
-            // When the user clicks on <span> (x), close the modal
-            assignClose.onclick = function() {
-                assignModal.style.display = "none";
-            }
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function(event) {
-                if (event.target == assignModal) {
-                    assignModal.style.display = "none";
-                }
-            }
-
-            // Get the modal
-            var editModal = document.getElementById('editModal');
-            // Get the button that opens the modal
-            var editBtn = document.getElementById('editPlaylistsBtn');
-            // Get the <span> element that closes the modal
-            var editClose = document.getElementById("editClose");
-            // When the user clicks on the button, open the modal
-            editBtn.onclick = function() {
-                addPlaylistsToSelects(editModal);
-                editModal.style.display = "block";
-            }
-            // When the user clicks on <span> (x), close the modal
-            editClose.onclick = function() {
-                editModal.style.display = "none";
-            }
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function(event) {
-                if (event.target == editModal) {
-                    editModal.style.display = "none";
-                }
-            }
-
-            var viewModal = document.getElementById('viewModal');
-            // Get the button that opens the modal
-            var viewBtn = document.getElementById('viewVideosBtn');
-            // Get the <span> element that closes the modal
-            var viewClose = document.getElementById("viewClose");
-            // When the user clicks on the button, open the modal
-            viewBtn.onclick = function() {
-                viewModal.style.display = "block";
-                viewVideos();
-            }
-            // When the user clicks on <span> (x), close the modal
-            viewClose.onclick = function() {
-                viewModal.style.display = "none";
-            }
-            // When the user clicks anywhere outside of the modal, close it
-            window.onclick = function(event) {
-                if (event.target == viewModal) {
-                    viewModal.style.display = "none";
-                }
-            }
-
-            var videoModal = document.getElementById('videoModal');
-
-            videoClose.onclick = function() {
-                $('video').trigger('pause');
-                videoModal.style.display = "none";
-            }
 
             window.onbeforeunload = function() {
                 stopBehaviour();

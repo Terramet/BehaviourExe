@@ -5,13 +5,15 @@ var scp2 = require('scp2')
 var Client = require('ssh2-sftp-client');
 var exec = require('child_process').exec;
 
+var baseDir = __dirname.split('/routes')[0];
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Behaviour Executor', condition: false });
 });
 
 router.post('/playlists/save', function(req, res) {
-  let file_name = __dirname.split('\\routes')[0] + '\\public\\playlists\\file.json';
+  let file_name = baseDir + '/public/playlists/file.json';
   let data = fs.readFileSync(file_name);
   fs.closeSync(2);
 
@@ -19,13 +21,21 @@ router.post('/playlists/save', function(req, res) {
   json.playlists.push(JSON.stringify(req.body));
 
   fs.writeFileSync(file_name, JSON.stringify(json));
-  fs.closeSync(2);  
+  fs.closeSync(2);
 
   res.send(req.body.name);
 });
 
 router.get('/playlists/load', function(req, res) {
-  let file_name = __dirname.split('\\routes')[0] + '\\public\\playlists\\file.json';
+  let file_name = baseDir + '/public/playlists/file.json';
+  let data = fs.readFileSync(file_name);
+  let json = JSON.parse(data);
+
+  res.send(json);
+});
+
+router.get('/language/load', function(req, res) {
+  let file_name = baseDir + '/public/languages/lang.json';
   let data = fs.readFileSync(file_name);
   let json = JSON.parse(data);
 
@@ -33,22 +43,22 @@ router.get('/playlists/load', function(req, res) {
 });
 
 router.post('/playlists/clear', function(req, res) {
-  let file_name = __dirname.split('\\routes')[0] + '\\public\\playlists\\file.json';
+  let file_name = baseDir + '/public/playlists/file.json';
 
   fs.writeFileSync(file_name, JSON.stringify(req.body));
-  fs.closeSync(2);  
+  fs.closeSync(2);
 
   res.send(req.body);
 });
 
 router.post('/ssh/file_check', function(req, res) {
-  let file_name = __dirname.split('\\routes')[0] + '\\public\\ssh\\' + req.text;
-  
+  let file_name = baseDir + '/public/ssh/' + req.text;
+
   res.send(fs.existsSync(file_name));
 });
 
 router.post('/ssh/copy_recordings_video', function(req, res) {
-  let ssh = __dirname.split('\\routes')[0] + '\\public\\ssh\\' + req.body.sshKey;
+  let ssh = baseDir + '/public/ssh/' + req.body.sshKey;
   console.log(req.body.ip)
   console.log(req.body.robotName)
   scp2.scp({
@@ -65,7 +75,7 @@ router.post('/ssh/copy_recordings_video', function(req, res) {
     res.send('Successfully completed copying ' + req.body.filenameVideo + ' to ' + req.body.endDirVideo);
   })
 
-}); 
+});
 
 router.post('/ssh/convert_recordings_video', function(req, res) {
   exec('ffmpeg -i \"' + req.body.endDirVideo + req.body.file + '.avi\" -i \"' + req.body.endDirAudio + req.body.file + '.wav\" \"' + req.body.endDir + req.body.file + '.mp4\"',
@@ -80,10 +90,10 @@ router.post('/ssh/convert_recordings_video', function(req, res) {
     }
   });
 
-}); 
+});
 
 router.post('/ssh/copy_recordings_audio', function(req, res) {
-  let ssh = __dirname.split('\\routes')[0] + '\\public\\ssh\\' + req.body.sshKey;
+  let ssh = baseDir + '/public/ssh/' + req.body.sshKey;
   console.log(req.body.ip)
   console.log(req.body.robotName)
   scp2.scp({
@@ -99,11 +109,11 @@ router.post('/ssh/copy_recordings_audio', function(req, res) {
     fs.unwatchFile(req.body.endDirAudio);
     res.send('Successfully completed copying ' + req.body.filenameAudio + ' to ' + req.body.endDirAudio);
   })
-}); 
+});
 
 router.post('/ssh/delete_nao_recording_audio', function(req, res) {
   let sftp = new Client();
-  let ssh = __dirname.split('\\routes')[0] + '\\public\\ssh\\' + req.body.sshKey;
+  let ssh = baseDir + '/public/ssh/' + req.body.sshKey;
 
   sftp.connect({
     host: req.body.ip,
@@ -123,7 +133,7 @@ router.post('/ssh/delete_nao_recording_audio', function(req, res) {
 
 router.post('/ssh/delete_nao_recording_video', function(req, res) {
   let sftp = new Client();
-  let ssh = __dirname.split('\\routes')[0] + '\\public\\ssh\\' + req.body.sshKey;
+  let ssh = baseDir + '/public/ssh/' + req.body.sshKey;
 
   sftp.connect({
     host: req.body.ip,
@@ -142,7 +152,7 @@ router.post('/ssh/delete_nao_recording_video', function(req, res) {
 });
 
 router.post('/ssh/gen_key', function(req, res) {
-  exec('SSH-Keygen.sh \"./public/ssh/' + req.body.fileName + '\" ' + req.body.robotName + '@' + req.body.ip,
+  exec(baseDir + '/SSH-Keygen.sh \"' + baseDir + '/public/ssh/' + req.body.fileName + '\" ' + req.body.robotName + '@' + req.body.ip,
   function (error, stdout, stderr) {
     console.log('stdout: ' + stdout);
     console.log('stderr: ' + stderr);
