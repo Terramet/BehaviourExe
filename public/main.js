@@ -129,8 +129,15 @@ function modalEvents() {
   // Get the <span> element that closes the modal
   var langClose = document.getElementById("langClose");
   // When the user clicks on the button, open the modal
+  var applyLangBtn = document.getElementById("applyLang");
+
+  applyLangBtn.onclick = function () {
+    applyLanguage($('input[name=radio]:checked', '#langForm').parent().find("label")[0].innerHTML)
+  }
+
   changeLangBtn.onclick = function() {
       langModal.style.display = "block";
+      populateLanguageModal();
   }
   // When the user clicks on <span> (x), close the modal
   langClose.onclick = function() {
@@ -234,7 +241,6 @@ function say() {
   let str = document.getElementById('sayText').value
   let textToSay = str.replace(/%c/g, ses.getName())
   robot.say(textToSay)
-  Promise.resolve(robot.getIP()).then(function(d) {console.log(d)})
   console.log("Robot said: " + textToSay + ".")
 }
 
@@ -252,7 +258,7 @@ function updateView() {
 function checkCookieData(cname) {
   var name = cname + "="
   var decodedCookie = decodeURIComponent(document.cookie)
-  var ca = decodedCookie.split('')
+  var ca = decodedCookie.split(';')
   for(var i = 0; i < ca.length; i++) {
     var c = ca[i]
     while (c.charAt(0) == ' ') {
@@ -265,18 +271,18 @@ function checkCookieData(cname) {
   return null
 }
 
-function setCookie(cname,cvalue,exdays) {
-  var d = new Date()
-  d.setTime(d.getTime() + (exdays*24*60*60*1000))
-  var expires = "expires=" + d.toGMTString()
-  document.cookie = cname + "=" + cvalue + "" + expires + "path=/"
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  var expires = "expires="+d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
 function updateCookie() {
   setInterval(function () {
+    setCookie("language", language, 7)
     if (ses.getAssigned() != null)  {
       setCookie(ses.getName(), ses.asJSON(), 7)
-      setCookie("language", language, 7)
     }
   }, 1000)
 }
@@ -370,7 +376,6 @@ function addPlaylistsToSelects(modal) {
 }
 
 function playVideo(data) {
-  console.log(data)
   let videoModal = document.getElementById('videoModal')
   let videoForm = document.getElementById('videoForm')
   videoForm.innerHTML = ''
@@ -389,7 +394,7 @@ function playVideo(data) {
 }
 
 function listBehaviours() {
-  if (robot.getSession()) {
+  if (robot !== undefined) {
     Promise.resolve(robot.getBehaviours()).then(function (array) {
       // Create the list element:
       let list = document.getElementById('behaveListAvailable')
@@ -432,13 +437,46 @@ function downloadInnerHtml(filename, elId, mimeType) {
   link.click()
 }
 
-function applyLanguage() {
+function populateLanguageModal() {
+  let container = document.getElementById("langRadioContainer")
+  let x = 0
+  while (container.firstChild) {
+      container.removeChild(container.firstChild);
+  }
+
+  Object.entries(loadedLanguageJSON["Languages"]).forEach(([key, value]) => {
+    let radioDiv = document.createElement('div')
+    let id = "radio-" + x++
+    let item = document.createElement('input')
+    item.setAttribute("name", "radio")
+    item.setAttribute("id", id)
+    item.setAttribute("type", "radio")
+
+    let text = document.createElement('label')
+    text.innerHTML = key
+    text.setAttribute('for', id)
+    text.classList.add('light')
+    radioDiv.appendChild(item)
+    radioDiv.appendChild(text)
+    container.appendChild(radioDiv)
+  })
+}
+
+function applyLanguageCookie(lang) {
   language = checkCookieData("language")
+  console.log(language)
   if (language === null) {
     language = "English"
   }
 
   loadedLanguageJSON["Languages"][language].forEach(function(lang) {
+    document.getElementById(lang["id"]).innerHTML = lang["text"];
+  })
+}
+
+function applyLanguage(lang) {
+  language = lang
+  loadedLanguageJSON["Languages"][lang].forEach(function(lang) {
     document.getElementById(lang["id"]).innerHTML = lang["text"];
   })
 }
@@ -453,7 +491,7 @@ function loadLanguage() {
     success: function(data) {
       console.log("Languages loaded successfully.")
       loadedLanguageJSON = data;
-      applyLanguage()
+      applyLanguageCookie()
     }
   })
 }

@@ -2,111 +2,217 @@
   "Languages": {
     "English": [
       {
-        "id": "connectBtn",
-        "text": "Connect"
+        "text": "Connect",
+        "id": "connectBtn"
       },
       {
-        "id": "createPlaylistBtn",
-        "text": "Create Playlist"
+        "text": "Create Playlist",
+        "id": "createPlaylistBtn"
       },
       {
-        "id": "editPlaylistsBtn",
-        "text": "Edit Playlists"
+        "text": "Edit Playlists",
+        "id": "editPlaylistsBtn"
       },
       {
-        "id": "assignPlaylistsBtn",
-        "text": "Assign Playlist"
+        "text": "Assign Playlist",
+        "id": "assignPlaylistsBtn"
       },
       {
-        "id": "changeLangBtn",
-        "text": "Language"
+        "text": "Language",
+        "id": "changeLangBtn"
       },
       {
-        "id": "viewVideosBtn",
-        "text": "View Videos"
+        "text": "View Videos",
+        "id": "viewVideosBtn"
       },
       {
-        "id": "enterIPTitle",
-        "text": "Please enter the IP Address of the robot below"
+        "text": "Please enter the IP Address of the robot below",
+        "id": "enterIPTitle"
       },
       {
-        "id": "enterNameTitle",
-        "text": "Please enter the name of the child"
+        "text": "Please enter the name of the child",
+        "id": "enterNameTitle"
       },
       {
-        "id": "cName",
-        "text": "Childs Name"
+        "text": "Childs Name",
+        "id": "cName"
       },
       {
-        "id": "createPlaylistTitle",
-        "text": "Create Playlist"
+        "text": "Create Playlist",
+        "id": "createPlaylistTitle"
       },
       {
-        "id": "playlistName",
-        "text": "Enter a name for your playlist"
+        "text": "Enter a name for your playlist",
+        "id": "playlistName"
       },
       {
-        "id": "assignPlaylistTitle",
-        "text": "Assign Playlist"
+        "text": "Assign Playlist",
+        "id": "assignPlaylistTitle"
       },
       {
-        "id": "mainBehave",
-        "text": "Interaction"
+        "text": "Interaction",
+        "id": "mainBehave"
       },
       {
-        "id": "positiveBehave",
-        "text": "Positive"
+        "text": "Positive",
+        "id": "positiveBehave"
       },
       {
-        "id": "negativeBehave",
-        "text": "Negative"
+        "text": "Negative",
+        "id": "negativeBehave"
       },
       {
-        "id": "saveAssignments",
-        "text": "Save"
+        "text": "Save",
+        "id": "saveAssignments"
       },
       {
-        "id": "editPlaylistsTitle",
-        "text": "Edit Playlists"
+        "text": "Edit Playlists",
+        "id": "editPlaylistsTitle"
       },
       {
-        "id": "deleteAll",
-        "text": "Delete All Playlists"
+        "text": "Delete All Playlists",
+        "id": "deleteAll"
       },
       {
-        "id": "viewVideosTitle",
-        "text": "View Videos"
+        "text": "View Videos",
+        "id": "viewVideosTitle"
       },
       {
-        "id": "executionFormTitle",
-        "text": "Behaviour Execution"
+        "text": "Behaviour Execution",
+        "id": "executionFormTitle"
       },
       {
-        "id": "replayB",
-        "text": "Repeat"
+        "text": "Repeat",
+        "id": "replayB"
       },
       {
-        "id": "nextB",
-        "text": "Next"
+        "text": "Next",
+        "id": "nextB"
       },
       {
-        "id": "sayBtn",
-        "text": "Say"
+        "text": "Say",
+        "id": "sayBtn"
       },
       {
-        "id": "posB",
-        "text": "Positive"
+        "text": "Positive",
+        "id": "posB"
       },
       {
-        "id": "negB",
-        "text": "Negative"
+        "text": "Negative",
+        "id": "negB"
       },
       {
-        "id": "stopB",
-        "text": "STOP"
+        "text": "STOP",
+        "id": "stopB"
       }
     ],
     "French": [
+      {
+        "text": "Relier",
+        "id": "connectBtn"
+      },
+      {
+        "text": "Créer une playlist",
+        "id": "createPlaylistBtn"
+      },
+      {
+        "text": "Editer la playlist",
+        "id": "editPlaylistsBtn"
+      },
+      {
+        "text": "Attribuer une liste de lecture",
+        "id": "assignPlaylistsBtn"
+      },
+      {
+        "text": "La langue",
+        "id": "changeLangBtn"
+      },
+      {
+        "text": "Voir les vidéos",
+        "id": "viewVideosBtn"
+      },
+      {
+        "text": "S'il vous plaît entrer l'adresse IP du robot ci-dessous",
+        "id": "enterIPTitle"
+      },
+      {
+        "text": "S'il vous plaît entrer le nom de l'enfant",
+        "id": "enterNameTitle"
+      },
+      {
+        "text": "Nom de l'enfant",
+        "id": "cName"
+      },
+      {
+        "text": "Créer une playlist",
+        "id": "createPlaylistTitle"
+      },
+      {
+        "text": "Entrez un nom pour votre playlist",
+        "id": "playlistName"
+      },
+      {
+        "text": "Attribuer une liste de lecture",
+        "id": "assignPlaylistTitle"
+      },
+      {
+        "text": "Interaction",
+        "id": "mainBehave"
+      },
+      {
+        "text": "Positif",
+        "id": "positiveBehave"
+      },
+      {
+        "text": "Négatif",
+        "id": "negativeBehave"
+      },
+      {
+        "text": "Enregistrer",
+        "id": "saveAssignments"
+      },
+      {
+        "text": "Editer les playlists",
+        "id": "editPlaylistsTitle"
+      },
+      {
+        "text": "Supprimer toutes les listes de lecture",
+        "id": "deleteAll"
+      },
+      {
+        "text": "Voir les vidéos",
+        "id": "viewVideosTitle"
+      },
+      {
+        "text": "Exécution du comportement",
+        "id": "executionFormTitle"
+      },
+      {
+        "text": "Répéter",
+        "id": "replayB"
+      },
+      {
+        "text": "Prochain",
+        "id": "nextB"
+      },
+      {
+        "text": "Dire",
+        "id": "sayBtn"
+      },
+      {
+        "text": "Positif",
+        "id": "posB"
+      },
+      {
+        "text": "Négatif",
+        "id": "negB"
+      },
+      {
+        "text": "ARRÊTEZ",
+        "id": "stopB"
+      }
+    ],
+    "Italian": [
       {
         "id": "connectBtn",
         "text": "Connect"
