@@ -1,5 +1,5 @@
 class Robot {
-    constructor(ip) { 
+    constructor(ip) {
         this.ip = ip
         this.session = new QiSession(ip)
         /**
@@ -8,12 +8,14 @@ class Robot {
          */
         this.session.socket().on('connect', function() {
             console.log('QiSession connected!')         //log the connection for debug
-            
+
             document.getElementById('executionForm').style.display = 'block'
             let connectBtn = document.getElementById('connectBtn')
             connectBtn.classList.remove('red')
             connectBtn.classList.add('green')
-            connectBtn.innerText = 'Connected'
+            getLanguageValue("connectBtn", 2).then(function(value) {
+              connectBtn.innerText = value
+            })
             connected = true
 
             let modal = document.getElementById('connectModal');
@@ -28,7 +30,9 @@ class Robot {
             let connectBtn = document.getElementById('connectBtn')
             connectBtn.classList.remove('green')
             connectBtn.classList.add('red')
-            connectBtn.innerText = 'Disconnected'
+            getLanguageValue("connectBtn", 3).then(function(value) {
+              connectBtn.innerText = value
+            })
             if(!alert('Connection to the robot has been lost. The page will now refresh.')){window.location.reload();}
             session = new QiSession(ip)
             connected = false
@@ -72,7 +76,7 @@ class Robot {
                         vr.startRecording('/home/nao/recordings/cameras/', ses.getName() + "_" + time);
                         console.log("Recording video.");
                     })
-                
+
                     recording = true;
                     console.log("Behaviour "+ data +" started successfully.")
                 }
@@ -99,7 +103,7 @@ class Robot {
                         copyRecording(time);
                     })
                     recording = false;
-                
+
                     console.log("Behaviour finished.");
                 }
             });
