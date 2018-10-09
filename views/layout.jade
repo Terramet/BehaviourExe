@@ -137,8 +137,9 @@ html
             $( document ).ready(function() {
                 loadPlaylists();
                 modalEvents();
-                loadLanguage();
-                attemptAutoConnect();
+                $.when(loadLanguage()).then(function() {
+                  attemptAutoConnect();
+                });
             });
             
             if (typeof console != "undefined") 

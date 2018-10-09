@@ -188,7 +188,7 @@ function whatIsIt(object) {
     return "Object"
   }
   else {
-    return "don't know"
+    return "Unknown"
   }
 }
 
@@ -476,7 +476,6 @@ function populateLanguageModal() {
 
 function applyLanguageCookie(lang) {
   language = checkCookieData("language")
-  console.log(language)
   if (language === null) {
     language = "English"
   }
@@ -498,7 +497,7 @@ function applyLanguage(lang) {
 }
 
 function getLanguageValue(elementId, index) {
-  var prom = new Promise(function(resolve, reject) {
+  let prom = new Promise(function(resolve, reject) {
     loadedLanguageJSON["Languages"][language].forEach(function(lang) {
       if (lang["id"] === elementId)
         if (elementId === "connectBtn") {
@@ -510,17 +509,18 @@ function getLanguageValue(elementId, index) {
   })
   return prom
 }
-//AJAX REQUESTS
 
+//AJAX REQUESTS
 function loadLanguage() {
   console.log("Sending load language request to node.js server.")
-  $.ajax({
+  return $.ajax({
     type: 'GET',
     url: window.location.href + 'language/load',
     success: function(data) {
       console.log("Languages loaded successfully.")
       loadedLanguageJSON = data;
       applyLanguageCookie()
+      return loadedLanguageJSON
     }
   })
 }
@@ -644,68 +644,73 @@ function copyRecording(time) {
     data.time = time
     data.robotName = vals[0]
 
-    $.ajax({
-      url: window.location.href + "ssh\\copy_recordings_audio",
-      data: JSON.stringify(data),
-      contentType: 'application/json',
-      type:'POST',
-      error: function() {
-        console.error("File check failed or the file does not exist.")
-      },
-      success: function(info) {
-        console.log(info)
-        $.ajax({
-          url: window.location.href + "ssh\\delete_nao_recording_audio",
-          data: JSON.stringify(data),
-          contentType: 'application/json',
-          type:'POST',
-          error: function() {
-            console.error("File check failed or the file does not exist.")
-          },
-          success: function(info) {
-            console.log(info)
-          }
-        })
-      }
+    $.when(audioAJAX(data), videoAJAX(data)).done(function (aa, va) {
+      $.ajax({
+        url: window.location.href + "ssh\\convert_recordings_video",
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        type:'POST',
+        error: function() {
+          console.error("ERROR: Creation of .mp4 file failed")
+        },
+        success: function(info) {
+          console.log(info)
+        }
+      })
     })
+  })
+}
 
-    $.ajax({
-      url: window.location.href + "ssh\\copy_recordings_video",
-      data: JSON.stringify(data),
-      contentType: 'application/json',
-      type:'POST',
-      error: function() {
-        console.error("File check failed or the file does not exist.")
-      },
-      success: function(info) {
-        console.log(info)
-        $.ajax({
-          url: window.location.href + "ssh\\delete_nao_recording_video",
-          data: JSON.stringify(data),
-          contentType: 'application/json',
-          type:'POST',
-          error: function() {
-            console.error("File check failed or the file does not exist.")
-          },
-          success: function(info) {
-            console.log(info)
-          }
-        })
+function audioAJAX(data) {
+  return $.ajax({
+    url: window.location.href + "ssh\\copy_recordings_audio",
+    data: JSON.stringify(data),
+    contentType: 'application/json',
+    type:'POST',
+    error: function() {
+      console.error("File check failed or the file does not exist.")
+    },
+    success: function(info) {
+      return $.ajax({
+        url: window.location.href + "ssh\\delete_nao_recording_audio",
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        type:'POST',
+        error: function() {
+          console.error("ERROR: Deletion of Nao audio recording failed")
+        },
+        success: function(info) {
+          return console.log(info)
+        }
+      })
+    }
+  })
+}
 
-        $.ajax({
-          url: window.location.href + "ssh\\convert_recordings_video",
-          data: JSON.stringify(data),
-          contentType: 'application/json',
-          type:'POST',
-          error: function() {
-            console.error("File check failed or the file does not exist.")
-          },
-          success: function(info) {
-            console.log(info)
-          }
-        })
-      }
-    })
+function videoAJAX(data) {
+  return $.ajax({
+    url: window.location.href + "ssh\\copy_recordings_video",
+    data: JSON.stringify(data),
+    contentType: 'application/json',
+    type:'POST',
+    error: function() {
+      console.error("File check failed or the file does not exist.")
+    },
+    success: function(info) {
+      console.log(info)
+      return $.ajax({
+        url: window.location.href + "ssh\\delete_nao_recording_video",
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        type:'POST',
+        error: function() {
+          console.error("ERROR: Deletion of Nao video recording failed")
+        },
+        success: function(info) {
+          return console.log(info)
+        }
+      })
+    }
   })
 }
 

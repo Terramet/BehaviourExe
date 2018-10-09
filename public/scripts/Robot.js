@@ -2,6 +2,8 @@ class Robot {
     constructor(ip) {
         this.ip = ip
         this.session = new QiSession(ip)
+        let connectBtn = document.getElementById('connectBtn')
+
         /**
          * Create the session by connecting to the robot.
          * Upon connection execute function
@@ -10,7 +12,6 @@ class Robot {
             console.log('QiSession connected!')         //log the connection for debug
 
             document.getElementById('executionForm').style.display = 'block'
-            let connectBtn = document.getElementById('connectBtn')
             connectBtn.classList.remove('red')
             connectBtn.classList.add('green')
             getLanguageValue("connectBtn", 2).then(function(value) {
@@ -27,7 +28,6 @@ class Robot {
 
             document.getElementById('executionForm').style.display = 'none'
 
-            let connectBtn = document.getElementById('connectBtn')
             connectBtn.classList.remove('green')
             connectBtn.classList.add('red')
             getLanguageValue("connectBtn", 3).then(function(value) {
