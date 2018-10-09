@@ -43,7 +43,7 @@ html
                         h4#enterNameTitle(style='text-align:center; padding-top: 15px') Please enter the name of the child
                         input#cName(style='display: inline-block; width: 100%;', type='text', placeholder='Childs name', tabindex='1', required='', autofocus='')
                 div(style='text-align:center')
-                    input(style='display: block; margin: auto;', type='submit', onclick='createSession()')
+                    button#connectSave(style='display: block; margin: auto;', onclick='createSession()') Save
 
         #createModal.modal
             .modal-content(style='min-width: 680px;')
@@ -110,7 +110,17 @@ html
                   div#langRadioContainer.container(style='text-align: center; margin-top: 20px;')
                   div#applyDiv.container(style='text-align: center')
                     button#applyLang(style="margin-top: 20px") Apply
-                  
+        
+        #childModal.modal(style='display: none') 
+          .modal-content.autoModal(style='display: table')
+              span#childClose.close ×
+              div
+                  form#childsName2(method='post', style='display: block', onsubmit='return false;', autocomplete='on')
+                      h4#enterNameTitle2(style='text-align:center; padding-top: 15px') Please enter the name of the child
+                      input#cName2(style='display: inline-block; width: 100%;', type='text', placeholder='Childs name', tabindex='1', required='', autofocus='')
+              div(style='text-align:center')
+                  button#childSave(style='display: block; margin: auto;', onclick='createSession()') Save
+                
         form#executionForm(style='margin-top: 10px;', method='post', onsubmit='return false;', autocomplete='on')
             div
                 h4#executionFormTitle(style='text-align:center; padding-top: 15px') Behaviour Execution
@@ -133,6 +143,10 @@ html
                     connectWith: ".connectedSortable"
                 }).disableSelection();
             });
+            
+            $(".close").click(function() {
+              closeModal(this.parentElement.parentElement.id);
+            })
 
             $( document ).ready(function() {
                 loadPlaylists();

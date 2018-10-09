@@ -6,20 +6,18 @@ var loadedLanguageJSON = {}
 var recording = true
 var time = null
 
+function closeModal(id) {
+  document.getElementById(id).style.display = "none";
+}
+
 function modalEvents() {
   // Get the modal
   var connectModal = document.getElementById('connectModal');
   // Get the button that opens the modal
   var connectBtn = document.getElementById('connectBtn');
-  // Get the <span> element that closes the modal
-  var connectClose = document.getElementById("connectClose");
   // When the user clicks on the button, open the modal
   connectBtn.onclick = function() {
       connectModal.style.display = "block";
-  }
-  // When the user clicks on <span> (x), close the modal
-  connectClose.onclick = function() {
-      connectModal.style.display = "none";
   }
   // When the user clicks anywhere outside of the modal, close it
   window.onclick = function(event) {
@@ -32,18 +30,12 @@ function modalEvents() {
   var createModal = document.getElementById('createModal');
   // Get the button that opens the modal
   var createBtn = document.getElementById('createPlaylistBtn');
-  // Get the <span> element that closes the modal
-  var createClose = document.getElementById("createClose");
   // When the user clicks on the button, open the modal
   createBtn.onclick = function() {
       if (createPlaylist())
           createModal.style.display = "block";
   }
-  // When the user clicks on <span> (x), close the modal
-  createClose.onclick = function() {
-      createModal.style.display = "none";
-  }
-  // When the user clicks anywhere outside of the modal, close it
+
   window.onclick = function(event) {
       if (event.target == createModal) {
           createModal.style.display = "none";
@@ -54,17 +46,13 @@ function modalEvents() {
   var assignModal = document.getElementById('assignModal');
   // Get the button that opens the modal
   var assignBtn = document.getElementById('assignPlaylistsBtn');
-  // Get the <span> element that closes the modal
-  var assignClose = document.getElementById("assignClose");
+
   // When the user clicks on the button, open the modal
   assignBtn.onclick = function() {
       addPlaylistsToSelects(assignModal);
       assignModal.style.display = "block";
   }
-  // When the user clicks on <span> (x), close the modal
-  assignClose.onclick = function() {
-      assignModal.style.display = "none";
-  }
+
   // When the user clicks anywhere outside of the modal, close it
   window.onclick = function(event) {
       if (event.target == assignModal) {
@@ -76,17 +64,15 @@ function modalEvents() {
   var editModal = document.getElementById('editModal');
   // Get the button that opens the modal
   var editBtn = document.getElementById('editPlaylistsBtn');
-  // Get the <span> element that closes the modal
-  var editClose = document.getElementById("editClose");
+
+
   // When the user clicks on the button, open the modal
   editBtn.onclick = function() {
       addPlaylistsToSelects(editModal);
       editModal.style.display = "block";
   }
   // When the user clicks on <span> (x), close the modal
-  editClose.onclick = function() {
-      editModal.style.display = "none";
-  }
+
   // When the user clicks anywhere outside of the modal, close it
   window.onclick = function(event) {
       if (event.target == editModal) {
@@ -97,17 +83,13 @@ function modalEvents() {
   var viewModal = document.getElementById('viewModal');
   // Get the button that opens the modal
   var viewBtn = document.getElementById('viewVideosBtn');
-  // Get the <span> element that closes the modal
-  var viewClose = document.getElementById("viewClose");
+
   // When the user clicks on the button, open the modal
   viewBtn.onclick = function() {
       viewModal.style.display = "block";
       viewVideos();
   }
-  // When the user clicks on <span> (x), close the modal
-  viewClose.onclick = function() {
-      viewModal.style.display = "none";
-  }
+
   // When the user clicks anywhere outside of the modal, close it
   window.onclick = function(event) {
       if (event.target == viewModal) {
@@ -126,8 +108,6 @@ function modalEvents() {
   var langModal = document.getElementById('langModal');
   // Get the button that opens the modal
   var changeLangBtn = document.getElementById('changeLangBtn');
-  // Get the <span> element that closes the modal
-  var langClose = document.getElementById("langClose");
   // When the user clicks on the button, open the modal
   var applyLangBtn = document.getElementById("applyLang");
 
@@ -138,10 +118,6 @@ function modalEvents() {
   changeLangBtn.onclick = function() {
       langModal.style.display = "block";
       populateLanguageModal();
-  }
-  // When the user clicks on <span> (x), close the modal
-  langClose.onclick = function() {
-      langModal.style.display = "none";
   }
   // When the user clicks anywhere outside of the modal, close it
   window.onclick = function(event) {

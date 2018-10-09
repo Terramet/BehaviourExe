@@ -43,6 +43,10 @@
         "id": "enterNameTitle"
       },
       {
+        "text": "Save",
+        "id": "connectSave"
+      },
+      {
         "text": "Childs Name",
         "id": "cName"
       },
