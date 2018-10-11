@@ -13,12 +13,7 @@ function closeModal(id) {
 function modalEvents() {
   // Get the modal
   var connectModal = $('#connectModal')[0]
-  // Get the button that opens the modal
-  var connectBtn = $('#connectBtn')[0]
-  // When the user clicks on the button, open the modal
-  connectBtn.onclick = function() {
-      connectModal.style.display = 'block'
-  }
+
   // When the user clicks anywhere outside of the modal, close it
   window.onclick = function(event) {
       if (event.target == connectModal) {
@@ -108,12 +103,6 @@ function modalEvents() {
   var langModal = $('#langModal')[0]
   // Get the button that opens the modal
   var changeLangBtn = $('#changeLangBtn')[0]
-  // When the user clicks on the button, open the modal
-  var applyLangBtn = $('#applyLang')[0]
-
-  applyLangBtn.onclick = function () {
-    applyLanguage($('input[name=radio]:checked', '#langForm').parent().find('label')[0].innerHTML)
-  }
 
   changeLangBtn.onclick = function() {
       langModal.style.display = 'block'
@@ -203,11 +192,13 @@ function attemptAutoConnect() {
 
     getChildNameAsync(function (child) {
       if (checkCookieData(child) != null) {
-        if (confirm('You have a previous session stored for a child named: ' + child + '. Would you like to restore it?')) {
-          ses = new Session(JSON.parse(checkCookieData(child)), loadedPlaylists)
-        } else {
-          ses = new Session(child, loadedPlaylists)
-        }
+        restoreSessionAsync(child, function (ans){
+          if (ans) {
+            ses = new Session(JSON.parse(checkCookieData(child)), loadedPlaylists)
+          } else {
+            ses = new Session(child, loadedPlaylists)
+          }
+        })
       } else {
         ses = new Session(child, loadedPlaylists)
       }
@@ -221,6 +212,19 @@ function attemptAutoConnect() {
     getLanguageValue('connectBtn', 0).then(function(value) {
       connectBtn.innerHTML = value
     })
+  })
+}
+function restoreSessionAsync(child, callback) {
+  $('#restoreTitle')[0].innerHTML = $('#restoreTitle')[0].innerHTML.replace(/%child%/g, child)
+  $('#restoreModal')[0].style.display = 'block'
+  $('#restoreYes').click(function() {
+    $('#restoreModal')[0].style.display = 'none'
+    callback(true)
+  })
+
+  $('#restoreNo').click(function() {
+    $('#restoreModal')[0].style.display = 'none'
+    callback(false)
   })
 }
 
@@ -283,7 +287,6 @@ function setCookie(cname, cvalue, exdays) {
 
 function updateCookie() {
   setInterval(function () {
-    setCookie('language', language, 7)
     if (ses.getAssigned() != null)  {
       setCookie(ses.getName(), ses.asJSON(), 7)
     }
@@ -462,6 +465,11 @@ function populateLanguageModal() {
     radioDiv.appendChild(item)
     radioDiv.appendChild(text)
     container.appendChild(radioDiv)
+  })
+
+  $('input[type=radio]', '#langForm').change(function () {
+    setCookie('language', $('input[name=radio]:checked', '#langForm').parent().find('label')[0].innerHTML, 7)
+    applyLanguage($('input[name=radio]:checked', '#langForm').parent().find('label')[0].innerHTML)
   })
 }
 

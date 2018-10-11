@@ -12,6 +12,7 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Behaviour Executor', condition: false })
 })
 
+/* POST to save the list of playlists */
 router.post('/playlists/save', function(req, res) {
   let file_name = baseDir + '/public/playlists/file.json'
   let data = fs.readFileSync(file_name)
@@ -26,6 +27,7 @@ router.post('/playlists/save', function(req, res) {
   res.send(req.body.name)
 })
 
+/* GET the list of playlists */
 router.get('/playlists/load', function(req, res) {
   let file_name = baseDir + '/public/playlists/file.json'
   let data = fs.readFileSync(file_name)
@@ -34,6 +36,7 @@ router.get('/playlists/load', function(req, res) {
   res.send(json)
 })
 
+/* GET the language file */
 router.get('/language/load', function(req, res) {
   let file_name = baseDir + '/public/languages/lang.json'
   let data = fs.readFileSync(file_name)
@@ -42,6 +45,7 @@ router.get('/language/load', function(req, res) {
   res.send(json)
 })
 
+/* POST clear all playlists */
 router.post('/playlists/clear', function(req, res) {
   let file_name = baseDir + '/public/playlists/file.json'
 
@@ -51,12 +55,14 @@ router.post('/playlists/clear', function(req, res) {
   res.send(req.body)
 })
 
+/* POST check for robot ssh key*/
 router.post('/ssh/file_check', function(req, res) {
   let file_name = baseDir + '/public/ssh/' + req.text
 
   res.send(fs.existsSync(file_name))
 })
 
+/* POST send SCP command to copy videos off the robot */
 router.post('/ssh/copy_recordings_video', function(req, res) {
   let ssh = baseDir + '/public/ssh/' + req.body.sshKey
   console.log(req.body.ip)
@@ -77,6 +83,7 @@ router.post('/ssh/copy_recordings_video', function(req, res) {
 
 })
 
+/* POST ffmpeg command to combine video recordings and audio recordings */
 router.post('/ssh/convert_recordings_video', function(req, res) {
   exec('ffmpeg -i \'' + req.body.endDirVideo + req.body.file + '.avi\' -i \'' + req.body.endDirAudio + req.body.file + '.wav\' \'' + req.body.endDir + req.body.file + '.mp4\'',
   function (error, stdout, stderr) {
@@ -92,6 +99,7 @@ router.post('/ssh/convert_recordings_video', function(req, res) {
 
 })
 
+/* POST send SCP command to copy audio off the robot */
 router.post('/ssh/copy_recordings_audio', function(req, res) {
   let ssh = baseDir + '/public/ssh/' + req.body.sshKey
   console.log(req.body.ip)
@@ -111,6 +119,7 @@ router.post('/ssh/copy_recordings_audio', function(req, res) {
   })
 })
 
+/* POST send ftp command to delete the stored audio on the robot */
 router.post('/ssh/delete_nao_recording_audio', function(req, res) {
   let sftp = new Client()
   let ssh = baseDir + '/public/ssh/' + req.body.sshKey
@@ -131,6 +140,7 @@ router.post('/ssh/delete_nao_recording_audio', function(req, res) {
   })
 })
 
+/* POST send ftp command to delete the stored video on the robot */
 router.post('/ssh/delete_nao_recording_video', function(req, res) {
   let sftp = new Client()
   let ssh = baseDir + '/public/ssh/' + req.body.sshKey
@@ -151,6 +161,7 @@ router.post('/ssh/delete_nao_recording_video', function(req, res) {
   })
 })
 
+/* POST create SSH key from interfacing with the robots file system */
 router.post('/ssh/gen_key', function(req, res) {
   exec(baseDir + '/SSH-Keygen.sh \'' + baseDir + '/public/ssh/' + req.body.fileName + '\' ' + req.body.robotName + '@' + req.body.ip,
   function (error, stdout, stderr) {
@@ -165,6 +176,7 @@ router.post('/ssh/gen_key', function(req, res) {
 
 })
 
+/* GET videos */
 router.post('/videos', function(req, res) {
   let dir = './public/videos'
   res.send(fs.readdirSync(dir))

@@ -15,13 +15,13 @@ html
         // Trigger/Open The Modal
         div(style='width: 100%; height: 3.5em;')
             div(style='float: right; padding: 10px 10px 10px 10px;')
-                button#connectBtn Connect
+                button#connectBtn(onclick="$('#connectModal')[0].style.display = \"block\"") Connect
             div(style='float: right; padding: 10px 10px 10px 10px; width: 200px')
                 //- button#settingsBtn Settings
                 .drop-button-wrap
                     input#settings(type='checkbox')
                     label#settingsLabel.drop-button(for='settings') Settings
-                    .drop-pop
+                    .drop-pop(style="z-index: 1")
                         .show-large
                             button#createPlaylistBtn(type='reset') Create Playlist
                             button#editPlaylistsBtn(type='reset') Edit Playlists
@@ -40,6 +40,26 @@ html
                         input#IP(style='display: inline-block; width: 100%;', type='text', placeholder='IP Address', tabindex='1', required='', autofocus='')
                 div(style='text-align:center')
                     button#connectSave(style='display: block; margin: auto;', onclick='createSession()') Save
+                    
+        #childModal.modal
+          .modal-content.autoModal(style='display: table')
+              span#childClose.close ×
+              div
+                  form#childsName(method='post', style='display: block', onsubmit='return false;', autocomplete='on')
+                      h4#enterNameTitle(style='text-align:center; padding-top: 15px') Please enter the name of the child
+                      input#cName(style='display: inline-block; width: 100%;', type='text', placeholder='Childs name', tabindex='1', required='', autofocus='')
+              div(style='text-align:center')
+                  button#childSave(style='display: block; margin: auto;') Save
+                  
+        #restoreModal.modal 
+          .modal-content.autoModal(style='display: table')
+              span#restoreClose.close ×
+              div
+                  form#restoreForm(method='post', style='display: block', onsubmit='return false;', autocomplete='on')
+                      h4#restoreTitle(style='text-align:center; padding-top: 15px') You have a previous session stored for a child named: %child%. Would you like to restore it?
+              div(style='text-align:center')
+                  button#restoreYes(style='display: block; margin: auto; float: left; width: 49%') Yes
+                  button#restoreNo(style='display: block; margin: auto; float: right; width: 49%') No
 
         #createModal.modal
             .modal-content(style='min-width: 680px;')
@@ -104,20 +124,8 @@ html
                 h4#changeLangTitle.center(style='margin: auto') Change Language
                 form#langForm(style='margin-top: 10px; display: block; text-align: center;', method='post', onsubmit='return false;', autocomplete='on')
                   div#langRadioContainer.container(style='text-align: center; margin-top: 20px;')
-                  div#applyDiv.container(style='text-align: center')
-                    button#applyLang(style="margin-top: 20px") Apply
-        
-        #childModal.modal(style='display: none') 
-          .modal-content.autoModal(style='display: table')
-              span#childClose.close ×
-              div
-                  form#childsName(method='post', style='display: block', onsubmit='return false;', autocomplete='on')
-                      h4#enterNameTitle(style='text-align:center; padding-top: 15px') Please enter the name of the child
-                      input#cName(style='display: inline-block; width: 100%;', type='text', placeholder='Childs name', tabindex='1', required='', autofocus='')
-              div(style='text-align:center')
-                  button#childSave(style='display: block; margin: auto;') Save
                 
-        form#executionForm(style='margin-top: 10px;', method='post', onsubmit='return false;', autocomplete='on')
+        form#executionForm(style='position: absolute; margin-left: auto; margin-right: auto; left: 0; right: 0; margin-top: 10px;', method='post', onsubmit='return false;', autocomplete='on')
             div
                 h4#executionFormTitle(style='text-align:center; padding-top: 15px') Behaviour Execution
             div
