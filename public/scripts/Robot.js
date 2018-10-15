@@ -121,7 +121,8 @@ class Robot {
     startBehaviour(behaviour, btn) {
         btn.innerHTML = '<div class=\'donut-spinner\'></div>'
         sessionP.service('ALBehaviorManager').then(function (bm) {
-            bm.runBehavior(behaviour)
+          bm.isBehaviorInstalled(behaviour).then(function(a) {console.log(a)} )
+          bm.runBehavior(behaviour)
         })
     }
 
@@ -151,6 +152,12 @@ class Robot {
                 })
             })
         })
+    }
+
+    setALMemoryValue(key, val) {
+      sessionP.service('ALMemory').then(function(mem) {
+          mem.insertData(key, val)
+      })
     }
 
     disconnect() {

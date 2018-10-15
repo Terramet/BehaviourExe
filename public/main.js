@@ -1,4 +1,4 @@
-var ses, sessionP, robot, assigned
+var ses = null, sessionP, robot, assigned
 var connected = false
 var language = null
 var loadedPlaylists = []
@@ -116,6 +116,16 @@ function modalEvents() {
   }
 }
 
+function xhrGetStatus(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('HEAD', url);
+    xhr.onreadystatechange = function(e) {
+        xhr.onreadystatechange = null;
+        callback({status: xhr.status, statusText: xhr.statusText});
+    };
+    xhr.send();
+}
+
 function timeoutPromise (ms, promise){
   // Create a promise that rejects in <ms> milliseconds
   let timeout = new Promise((resolve, reject) => {
@@ -163,14 +173,18 @@ function createSession() {
 
   getChildNameAsync(function (child) {
     if (checkCookieData(child) != null) {
-      if (confirm('You have a previous session stored for a child named: ' + child + '. Would you like to restore it?')) {
-        ses = new Session(JSON.parse(checkCookieData(child)), loadedPlaylists)
-      } else {
-        ses = new Session(child, loadedPlaylists)
-      }
+      restoreSessionAsync(child, function (ans){
+        if (ans) {
+          ses = new Session(JSON.parse(checkCookieData(child)), loadedPlaylists)
+        } else {
+          ses = new Session(child, loadedPlaylists)
+        }
+      })
     } else {
       ses = new Session(child, loadedPlaylists)
     }
+    changeMemValue("child_name", child)
+
     updateCookie()
     updateView()
   })
@@ -192,7 +206,7 @@ function attemptAutoConnect() {
 
     getChildNameAsync(function (child) {
       if (checkCookieData(child) != null) {
-        restoreSessionAsync(child, function (ans){
+        restoreSessionAsync(child, function (ans) {
           if (ans) {
             ses = new Session(JSON.parse(checkCookieData(child)), loadedPlaylists)
           } else {
@@ -202,6 +216,8 @@ function attemptAutoConnect() {
       } else {
         ses = new Session(child, loadedPlaylists)
       }
+      changeMemValue("child_name", child)
+
       updateCookie()
       updateView()
     })
@@ -214,6 +230,7 @@ function attemptAutoConnect() {
     })
   })
 }
+
 function restoreSessionAsync(child, callback) {
   $('#restoreTitle')[0].innerHTML = $('#restoreTitle')[0].innerHTML.replace(/%child%/g, child)
   $('#restoreModal')[0].style.display = 'block'
@@ -509,6 +526,10 @@ function getLanguageValue(elementId, index) {
   return prom
 }
 
+function changeMemValue(key, val) {
+  robot.setALMemoryValue(key, val)
+}
+
 //AJAX REQUESTS
 function loadLanguage() {
   console.log('Sending load language request to node.js server.')
@@ -519,7 +540,7 @@ function loadLanguage() {
       console.log('Languages loaded successfully.')
       loadedLanguageJSON = data
       applyLanguageCookie()
-      return loadedLanguageJSON
+      return "complete"
     }
   })
 }
@@ -553,7 +574,7 @@ function savePlaylist() {
 
 function loadPlaylists() {
   console.log('Sending load playlists request to node.js server.')
-  $.ajax({
+  return $.ajax({
     type: 'GET',
     url: window.location.href + 'playlists/load',
     success: function(data) {
@@ -562,6 +583,7 @@ function loadPlaylists() {
       data['playlists'].forEach(function(playlist) {
         loadedPlaylists.push(new Playlist(playlist))
       })
+      return "complete"
     }
   })
 }

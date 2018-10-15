@@ -9,20 +9,23 @@ var baseDir = __dirname.split('/routes')[0]
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Behaviour Executor', condition: false })
+  res.render('layout', { title: 'Behaviour Executor', condition: false })
+})
+
+/* GET home page. */
+router.get('/slave', function(req, res, next) {
+  res.render('slave', { title: 'Behaviour Executor - Slave', condition: false })
 })
 
 /* POST to save the list of playlists */
 router.post('/playlists/save', function(req, res) {
   let file_name = baseDir + '/public/playlists/file.json'
   let data = fs.readFileSync(file_name)
-  fs.closeSync(2)
 
   let json = JSON.parse(data)
   json.playlists.push(JSON.stringify(req.body))
 
   fs.writeFileSync(file_name, JSON.stringify(json))
-  fs.closeSync(2)
 
   res.send(req.body.name)
 })
@@ -30,27 +33,25 @@ router.post('/playlists/save', function(req, res) {
 /* GET the list of playlists */
 router.get('/playlists/load', function(req, res) {
   let file_name = baseDir + '/public/playlists/file.json'
-  let data = fs.readFileSync(file_name)
-  let json = JSON.parse(data)
-
-  res.send(json)
+  fs.readFile(file_name, (err, data) => {
+    let json = JSON.parse(data)
+    res.send(json)
+  })
 })
 
 /* GET the language file */
 router.get('/language/load', function(req, res) {
   let file_name = baseDir + '/public/languages/lang.json'
-  let data = fs.readFileSync(file_name)
-  let json = JSON.parse(data)
-
-  res.send(json)
+  fs.readFile(file_name, (err, data) => {
+    let json = JSON.parse(data)
+    res.send(json)
+  })
 })
 
 /* POST clear all playlists */
 router.post('/playlists/clear', function(req, res) {
   let file_name = baseDir + '/public/playlists/file.json'
-
   fs.writeFileSync(file_name, JSON.stringify(req.body))
-  fs.closeSync(2)
 
   res.send(req.body)
 })

@@ -153,9 +153,8 @@ html
             })
 
             $( document ).ready(function() {
-                loadPlaylists();
                 modalEvents();
-                $.when(loadLanguage()).then(function() {
+                $.when(loadLanguage(), loadPlaylists()).then(function() {
                   attemptAutoConnect();
                 });
             });
