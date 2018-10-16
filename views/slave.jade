@@ -13,7 +13,14 @@ html
     body.unselectable.wrapper
         a Hello
         
+        script(src='http://localhost:3000/socket.io/socket.io.js')
         script.
+          console.log();
+          var socket = io.connect('http://localhost:3000');
+          socket.emit('recieveUserNameSlave', {
+          //normally this would be dynamically added based on user input, but for examples sake
+            name: 'slave-'
+          });
 
         // qimessaging & jquery stuff
         script(src='/libs/qimessaging/1.0/qimessaging.js')
