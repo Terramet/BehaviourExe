@@ -6,6 +6,42 @@ var Client = require('ssh2-sftp-client')
 var exec = require('child_process').exec
 
 var baseDir = __dirname.split('/routes')[0]
+var io = require('socket.io').listen(3000);
+var socket = io.sockets;
+
+var connectedUserMapSlave = new Map();
+var connectedUserMapMaster = new Map();
+
+socket.on('connect', function(socket){
+  console.log('a user connected');
+  let connectedUserId = socket.id;
+
+  socket.on('recieveUserNameSlave', function(data){
+    //find user by there socket in the map the update name property of value
+    connectedUserMapSlave.set(socket.id, { status:'online', name: 'none' });
+    let user = connectedUserMapSlave.get(connectedUserId);
+    user.name = data.name + connectedUserId;
+    console.log(connectedUserMapSlave)
+  });
+
+  socket.on('recieveUserNameMaster', function(data){
+    //find user by there socket in the map the update name property of value
+    connectedUserMapMaster.set(socket.id, { status:'online', name: 'none' });
+    let user = connectedUserMapMaster.get(connectedUserId);
+    user.name = data.name + connectedUserId;
+    console.log(connectedUserMapMaster)
+  });
+
+  socket.on('sendToSlave', function(data){
+    socket.broadcast.to(data.socket).emit('message', data.message)
+  });
+
+  socket.on('disconnect', function () {
+    console.log('a user disconnected')
+    connectedUserMapSlave.delete(connectedUserId)
+    connectedUserMapMaster.delete(connectedUserId)
+  });
+});
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -181,6 +217,11 @@ router.post('/ssh/gen_key', function(req, res) {
 router.post('/videos', function(req, res) {
   let dir = './public/videos'
   res.send(fs.readdirSync(dir))
+})
+
+router.get('/get_slaves', function(req, res, next) {
+
+  res.send(Array.from(connectedUserMapSlave.keys()))
 })
 
 module.exports = router

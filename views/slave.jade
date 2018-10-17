@@ -21,6 +21,10 @@ html
           //normally this would be dynamically added based on user input, but for examples sake
             name: 'slave-'
           });
+          
+          socket.on('message', function(data){
+            console.log(data)
+          });
 
         // qimessaging & jquery stuff
         script(src='/libs/qimessaging/1.0/qimessaging.js')

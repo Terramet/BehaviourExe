@@ -28,6 +28,7 @@ html
                         button#assignPlaylistsBtn(type='reset') Assign Playlist
                         button#changeLangBtn(type='reset') Language
                         button#viewVideosBtn(type='reset') View Videos
+                        button#getSlavesBtn(type='reset', onclick=('getSlaves()')) Get Slaves
 
         // The Modal
         #connectModal.modal
@@ -137,7 +138,7 @@ html
             div
                 button#posB(style='float: left; width: 49%', onclick='playNext("pos", this)') Positive
                 button#negB(style='float: right; width: 49%', onclick='playNext("neg", this)') Negative
-            div
+            divconnectedUserMapSlave
                 button#stopB.red(style='float: centre; width: 100%;', onclick='stopBehaviour()') STOP
 
         div#debugDiv.footer(style="margin-top: 10px; background-color: black; color: green; overflow-y: scroll;")

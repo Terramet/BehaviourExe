@@ -757,3 +757,18 @@ function viewVideos() {
     }
   })
 }
+
+function getSlaves() {
+  $.ajax({
+    url: window.location.href + 'get_slaves',
+    type:'get',
+    success: function(data) {
+      console.log(data)
+      socket.emit('sendToSlave', {
+      //normally this would be dynamically added based on user input, but for examples sake
+        socket: data[0],
+        message: ''
+      });
+    }
+  })
+}
