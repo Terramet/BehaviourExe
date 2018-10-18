@@ -28,7 +28,7 @@ html
                         button#assignPlaylistsBtn(type='reset') Assign Playlist
                         button#changeLangBtn(type='reset') Language
                         button#viewVideosBtn(type='reset') View Videos
-                        button#getSlavesBtn(type='reset', onclick=('getSlaves()')) Get Slaves
+                        button#connectToSlavesBtn(type='reset', onclick=('getSlaves()')) Connect To Slaves
 
         // The Modal
         #connectModal.modal
@@ -125,7 +125,14 @@ html
                 h4#changeLangTitle.center(style='margin: auto') Change Language
                 form#langForm(style='margin-top: 10px; display: block; text-align: center;', method='post', onsubmit='return false;', autocomplete='on')
                   div#langRadioContainer.container(style='text-align: center; margin-top: 20px;')
-                
+        
+        #connectSlavesModal.modal
+            .modal-content
+                span#slavesClose.close x
+                h4#connectSlavesTitle.center(style='margin: auto') Connect To Slaves
+                form#slaveForm(style='margin-top: 10px; display: block; text-align: center;', method='post', onsubmit='return false;', autocomplete='on')
+                  div#slaveCheckBoxContainer.container(style='text-align: center; margin-top: 20px;')
+                            
         form#executionForm(style='position: absolute; margin-left: auto; margin-right: auto; left: 0; right: 0; margin-top: 10px;', method='post', onsubmit='return false;', autocomplete='on')
             div
                 h4#executionFormTitle(style='text-align:center; padding-top: 15px') Behaviour Execution
@@ -183,10 +190,17 @@ html
         script(src='http://localhost:3000/socket.io/socket.io.js')
         script.
           var socket = io.connect('http://localhost:3000');
-          socket.emit('recieveUserNameMaster', {
-          //normally this would be dynamically added based on user input, but for examples sake
-            name: 'master-'
-          });
+          socket.on('connect', function() {
+            
+            socket.emit('recieveUserNameMaster', {
+            //normally this would be dynamically added based on user input, but for examples sake
+              name: 'master-'
+            });
+            
+            socket.on('message', function(data){ 
+              console.log(data.message)
+            })
+          })
 
         // qimessaging & jquery stuff
         script(src='/libs/qimessaging/1.0/qimessaging.js')

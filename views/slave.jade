@@ -11,20 +11,41 @@ html
         script(src='http://code.jquery.com/ui/1.11.4/jquery-ui.js')
 
     body.unselectable.wrapper
-        a Hello
+        form#socketID(style='position: absolute; text-align: center; margin-left: auto; margin-right: auto; left: 0; right: 0; margin-top: -5px;')
+        div#debugDiv.footer(style="margin-top: 10px; background-color: black; color: green; overflow-y: scroll;")
         
         script(src='http://localhost:3000/socket.io/socket.io.js')
         script.
-          console.log();
+          var robot = null
           var socket = io.connect('http://localhost:3000');
-          socket.emit('recieveUserNameSlave', {
-          //normally this would be dynamically added based on user input, but for examples sake
-            name: 'slave-'
-          });
-          
-          socket.on('message', function(data){
-            console.log(data)
-          });
+          socket.on('connect', function() {
+            console.log(socket.id)
+            $('#socketID')[0].innerHTML = socket.id
+            $('#socketID')[0].style.display = 'block'
+            
+            socket.emit('recieveUserNameSlave', {
+            //normally this would be dynamically added based on user input, but for examples sake
+              name: 'slave-'
+            });
+            
+            socket.on('message', function(data){
+              console.log(data)
+              if(robot === null) {
+                robot = new Robot(data.message, function() {
+                  socket.emit('sendToMaster', { socket: data.masterSocket, mySocket: socket.id, message: 'Connection Established' })
+                })
+                sessionP = robot.getSession()
+                sessionP.service("ALMemory").then(function (ALMemory) {            
+                  ALMemory.subscriber("ALTextToSpeech/CurrentWord").then(function (sub){
+                      sub.signal.connect(function(value){
+                          console.log(value);
+                          $('#debugDiv').append(" " + value);                     
+                      });
+                  });
+              });
+              }
+            });
+          })
 
         // qimessaging & jquery stuff
         script(src='/libs/qimessaging/1.0/qimessaging.js')

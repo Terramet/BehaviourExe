@@ -1,41 +1,23 @@
 class Robot {
-    constructor(ip) {
+    constructor(ip, callbackConnect=null, callbackDisconnect=null) {
         this.ip = ip
         this.session = new QiSession(ip)
-        let connectBtn = $('#connectBtn')[0]
-
         /**
          * Create the session by connecting to the robot.
          * Upon connection execute function
          */
         this.session.socket().on('connect', function() {
             console.log('QiSession connected!')         //log the connection for debug
-
-            $('#executionForm')[0].style.display = 'block'
-            connectBtn.classList.remove('red')
-            connectBtn.classList.add('green')
-            getLanguageValue('connectBtn', 2).then(function(value) {
-              connectBtn.innerText = value
-            })
-            connected = true
-
-            let modal = $('#connectModal')[0]
-            modal.style.display = 'none'
-
+            if(callbackConnect !== null) {
+              callbackConnect()
+            }
             /** Upon disconnect execute function */
         }).on('disconnect', function() {
             console.log('QiSession disconnected!')      //log the connection for debug
-
-            $('#executionForm')[0].style.display = 'none'
-
-            connectBtn.classList.remove('green')
-            connectBtn.classList.add('red')
-            getLanguageValue('connectBtn', 3).then(function(value) {
-              connectBtn.innerText = value
-            })
-            if(!alert('Connection to the robot has been lost. The page will now refresh.')){window.location.reload();}
+            if(callbackDisconnect !== null) {
+              callbackDisconnect()
+            }
             session = new QiSession(ip)
-            connected = false
         })
     }
 
@@ -43,68 +25,18 @@ class Robot {
         return this.session
     }
 
-    startBehaviourManager() {
+    startBehaviourManager(callbackStart=null, callbackStop=null) {
         sessionP.service('ALBehaviorManager').done(function (bm) {
             bm.behaviorStarted.connect( function(data) {
                 console.log(data)
-                if(data.includes('/.') && data !== 'run_dialog_dev/.') {
-                    let r = $('#replayB')[0]
-                    let n = $('#nextB')[0]
-                    let p = $('#posB')[0]
-                    let neg = $('#negB')[0]
-                    r.setAttribute('disabled', '')
-                    n.setAttribute('disabled', '')
-                    p.setAttribute('disabled', '')
-                    neg.setAttribute('disabled', '')
-                    let spin = document.getElementsByClassName('donut-spinner')
-                    if (spin.length !== 0)
-                        for(let i = 0; i < spin.length; i++) {
-                            spin[i].remove()
-                        }
-
-                    time = getTime()
-
-                    sessionP.service('ALAudioRecorder').then(function (ar) {
-                        ar.startMicrophonesRecording('/home/nao/recordings/microphones/' + ses.getName() + '_' + time + '.wav', 'wav', 16000, [0,0,1,0])
-                        console.log('Recording audio.')
-                    })
-
-                    sessionP.service('ALVideoRecorder').then(function (vr) {
-                        vr.setResolution(1)
-                        vr.setFrameRate(10)
-                        vr.setVideoFormat('MJPG')
-                        vr.startRecording('/home/nao/recordings/cameras/', ses.getName() + '_' + time)
-                        console.log('Recording video.')
-                    })
-
-                    recording = true
-                    console.log('Behaviour '+ data +' started successfully.')
+                if (callbackStart !== null) {
+                  callbackStart(data)
                 }
             })
 
             bm.behaviorStopped.connect(function(data) {
-                if(data.includes('/.') && data !== 'run_dialog_dev/.') {
-                    let r = $('#replayB')[0]
-                    let n = $('#nextB')[0]
-                    let p = $('#posB')[0]
-                    let neg = $('#negB')[0]
-                    r.removeAttribute('disabled')
-                    n.removeAttribute('disabled')
-                    p.removeAttribute('disabled')
-                    neg.removeAttribute('disabled')
-                    sessionP.service('ALAudioRecorder').then(function (ar) {
-                        ar.stopMicrophonesRecording()
-                        console.log('Recording audio finished.')
-                    })
-
-                    sessionP.service('ALVideoRecorder').then(function (vr) {
-                        vr.stopRecording()
-                        console.log('Recording video finished.')
-                        copyRecording(time)
-                    })
-                    recording = false
-
-                    console.log('Behaviour finished.')
+                if(callbackStop !== null) {
+                  callbackStop(data)
                 }
             })
         })

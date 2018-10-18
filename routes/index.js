@@ -33,7 +33,11 @@ socket.on('connect', function(socket){
   });
 
   socket.on('sendToSlave', function(data){
-    socket.broadcast.to(data.socket).emit('message', data.message)
+    socket.broadcast.to(data.socket).emit('message', data)
+  });
+
+  socket.on('sendToMaster', function(data){
+    socket.broadcast.to(data.socket).emit('message', data)
   });
 
   socket.on('disconnect', function () {
