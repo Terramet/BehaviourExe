@@ -22,6 +22,27 @@ function populateSlavesModal() {
       checkboxDiv.appendChild(text)
       container.appendChild(checkboxDiv)
     })
-
   })
+}
+
+function connectToSlaves(slaves) {
+  let ip = timeoutPromise(5000, robot.getIP())
+  ip.then(response => {
+    slaves.forEach((slave) => {
+      socket.emit('sendToSlave', {
+        socket: slave,
+        masterSocket: socket.id,
+        message: response
+      });
+    })
+  })
+}
+
+function getCheckedBoxes() {
+  let elements = $('input[name=checkbox]:checked', '#connectSlavesModal').toArray();
+  let names = []
+  for(let i = 0; i < elements.length; i++) {
+    names.push($('label[for='+ elements[i].id +']').text())
+  }
+  return names
 }

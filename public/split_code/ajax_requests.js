@@ -215,16 +215,6 @@ function getSlaves() {
     url: window.location.href + 'get_slaves',
     type:'get',
     success: function(data) {
-      // let ip = timeoutPromise(5000, robot.getIP())
-      // console.log(data)
-      // ip.then(response => {
-      //   socket.emit('sendToSlave', {
-      //     //normally this would be dynamically added based on user input, but for examples sake
-      //     socket: data[0],
-      //     masterSocket: socket.id,
-      //     message: response
-      //   });
-      // })
       return data
     }
   })

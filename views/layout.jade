@@ -8,6 +8,14 @@ html
 
         script(src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
         script(src='main.js', type='text/javascript')
+        script(src='/split_code/ajax_requests.js', type='text/javascript')
+        script(src='/split_code/assign_modal.js', type='text/javascript')
+        script(src='/split_code/connect_slaves_modal.js', type='text/javascript')
+        script(src='/split_code/create_modal.js', type='text/javascript')
+        script(src='/split_code/edit_modal.js', type='text/javascript')
+        script(src='/split_code/lang_modal.js', type='text/javascript')
+        script(src='/split_code/video_modal.js', type='text/javascript')
+        script(src='/split_code/view_modal.js', type='text/javascript')
         script(src='http://code.jquery.com/ui/1.11.4/jquery-ui.js')
 
     body.unselectable.wrapper
@@ -132,7 +140,8 @@ html
                 h4#connectSlavesTitle.center(style='margin: auto') Connect To Slaves
                 form#slaveForm(style='margin-top: 10px; display: block; text-align: center;', method='post', onsubmit='return false;', autocomplete='on')
                   div#slaveCheckBoxContainer.container(style='text-align: center; margin-top: 20px;')
-                            
+                  div
+                    button#connectToListOfSlaves(style="margin-top: 10px;", onclick='connectToSlaves(getCheckedBoxes())') Connect
         form#executionForm(style='position: absolute; margin-left: auto; margin-right: auto; left: 0; right: 0; margin-top: 10px;', method='post', onsubmit='return false;', autocomplete='on')
             div
                 h4#executionFormTitle(style='text-align:center; padding-top: 15px') Behaviour Execution
@@ -209,11 +218,3 @@ html
         script(src='/scripts/Robot.js')
         script(src='/scripts/Playlist.js')
         script(src='/scripts/Assigned.js')
-        script(src='/split_code/ajax_requests.js')
-        script(src='/split_code/assign_modal.js')
-        script(src='/split_code/connect_slaves_modal.js')
-        script(src='/split_code/create_modal.js')
-        script(src='/split_code/edit_modal.js')
-        script(src='/split_code/lang_modal.js')
-        script(src='/split_code/video_modal.js')
-        script(src='/split_code/view_modal.js')
