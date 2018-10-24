@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- application css-->
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, height=device-height">
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="main.js" type="text/javascript"></script>
+  <script src="/split_code/ajax_requests.js" type="text/javascript"></script>
+  <script src="/split_code/assign_modal.js" type="text/javascript"></script>
+  <script src="/split_code/connect_slaves_modal.js" type="text/javascript"></script>
+  <script src="/split_code/create_modal.js" type="text/javascript"></script>
+  <script src="/split_code/edit_modal.js" type="text/javascript"></script>
+  <script src="/split_code/lang_modal.js" type="text/javascript"></script>
+  <script src="/split_code/video_modal.js" type="text/javascript"></script>
+  <script src="/split_code/view_modal.js" type="text/javascript"></script>
+  <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+</head>
+
+<body class="unselectable wrapper">
+  <!-- Trigger/Open The Modal-->
+  <div style="width: 100%; height: 3.5em;">
+    <div style="float: right; padding: 10px 10px 10px 10px;">
+      <button id="connectBtn" onclick="$('#connectModal')[0].style.display = &quot;block&quot;">Connect</button>
+    </div>
+    <div style="float: right; padding: 10px 10px 10px 10px; width: 200px;">
+      <div class="drop-button-wrap">
+        <input id="settings" type="checkbox">
+        <label class="drop-button" id="settingsLabel" for="settings">Settings</label>
+        <div class="drop-pop" style="z-index: 1;">
+          <div class="show-large">
+            <button id="createPlaylistBtn" type="reset">Create Playlist</button>
+            <button id="editPlaylistsBtn" type="reset">Edit Playlists</button>
+          </div>
+          <button id="assignPlaylistsBtn" type="reset">Assign Playlist</button>
+          <button id="changeLangBtn" type="reset">Language</button>
+          <button id="viewVideosBtn" type="reset">View Videos</button>
+          <button id="connectToSlavesBtn" type="reset" onclick="getSlaves()">Connect To Slaves</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- The Modal-->
+  <div class="modal" id="connectModal">
+    <!-- Modal content-->
+    <div class="modal-content autoModal" style="display: table;"><span class="close" id="connectClose">×</span>
+      <div>
+        <form id="IPentry" method="post" style="display: block;" onsubmit="return false;" autocomplete="on">
+          <h4 id="enterIPTitle" style="text-align:center; padding-top: 15px;">Please enter the IP Address of the robot below</h4>
+          <input id="IP" style="display: inline-block; width: 100%;" type="text" placeholder="IP Address" tabindex="1" required="" autofocus="">
+        </form>
+      </div>
+      <div style="text-align:center;">
+        <button id="connectSave" style="display: block; margin: auto;" onclick="createSession()">Save</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="childModal">
+    <div class="modal-content autoModal" style="display: table;"><span class="close" id="childClose">×</span>
+      <div>
+        <form id="childsName" method="post" style="display: block;" onsubmit="return false;" autocomplete="on">
+          <h4 id="enterNameTitle" style="text-align:center; padding-top: 15px;">Please enter the name of the child</h4>
+          <input id="cName" style="display: inline-block; width: 100%;" type="text" placeholder="Childs name" tabindex="1" required="" autofocus="">
+        </form>
+      </div>
+      <div style="text-align:center;">
+        <button id="childSave" style="display: block; margin: auto;">Save</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="restoreModal">
+    <div class="modal-content autoModal" style="display: table;"><span class="close" id="restoreClose">×</span>
+      <div>
+        <form id="restoreForm" method="post" style="display: block;" onsubmit="return false;" autocomplete="on">
+          <h4 id="restoreTitle" style="text-align:center; padding-top: 15px;">You have a previous session stored for a child named: %child%. Would you like to restore it?</h4>
+        </form>
+      </div>
+      <div style="text-align:center;">
+        <button id="restoreYes" style="display: block; margin: auto; float: left; width: 49%;">Yes</button>
+        <button id="restoreNo" style="display: block; margin: auto; float: right; width: 49%;">No</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="createModal">
+    <div class="modal-content" style="min-width: 680px;"><span class="close" id="createClose">×</span>
+      <h4 class="center" id="createPlaylistTitle">Create Playlist</h4>
+      <form id="playlistForm" style="margin: auto; margin-top: 20px; display: inline-block; text-align:center;" onsubmit="return false;" method="post" autocomplete="on">
+        <div style="margin: auto; margin-left: -40px; display: block; min-width: 680px;">
+          <input id="playlistName" style="margin: auto; text-align: center; min-width: 250px;" type="text" placeholder="Enter a name for your playlist" tabindex="3" autofocus="">&nbsp;
+          &nbsp;
+          <input id="savePlaylistBtn" style="margin: auto; margin-bottom: 10px;" type="submit" value="Save" onclick="savePlaylist()">
+        </div>
+        <div style="margin: auto; display: inline-block; min-width: 680px;">
+          <ul class="sortable connectedSortable" id="behaveListAvailable"></ul>
+          <ul class="sortable connectedSortable" id="behaveListPlaylist"></ul>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal" id="assignModal">
+    <div class="modal-content autoModal"><span class="close" id="assignClose">×</span>
+      <h4 class="center" id="assignPlaylistTitle">Assign Playlist</h4>
+      <form id="assignForm" style="margin: auto; margin-top: 20px; display: block; text-align:center;" onsubmit="return false;" method="post" autocomplete="on">
+        <div style="margin: auto; display: block;">
+          <div>
+            <button id="mainBehave">Interaction</button>&nbsp;
+            &nbsp;
+            <select id="mainBehaviour"></select>
+          </div>
+          <div>
+            <button id="positiveBehave">Positive</button>&nbsp;
+            &nbsp;
+            <select id="positiveBehaviour"></select>
+          </div>
+          <div>
+            <button id="negativeBehave">Negative</button>&nbsp;
+            &nbsp;
+            <select id="negativeBehaviour"></select>
+          </div>
+          <div>
+            <button id="saveAssignments" onclick="saveAssigned()">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal" id="editModal">
+    <div class="modal-content"><span class="close" id="editClose">x</span>
+      <h4 class="center" id="editPlaylistsTitle">Edit Playlists</h4>
+      <form id="playlistForm" style="margin: auto; margin-top: 20px; display: inline-block; text-align:center;" onsubmit="return false;" method="post" autocomplete="on">
+        <div style="margin: auto; display: block;">
+          <button id="deleteAll" style="float: center;" onclick="clearPlaylists()">Delete All Playlists</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal" id="viewModal">
+    <div class="modal-content"><span class="close" id="viewClose">x</span>
+      <h4 class="center" id="viewVideosTitle">View Videos</h4>
+      <form id="viewForm" style="margin-top: 10px; display: block; text-align: center;" method="post" onsubmit="return false;" autocomplete="on"></form>
+    </div>
+  </div>
+  <div class="modal" id="videoModal">
+    <div class="modal-content"><span class="close" id="videoClose">x</span>
+      <form id="videoForm" style="margin-top: 10px; display: block; text-align: center;" method="post" onsubmit="return false;" autocomplete="on"></form>
+    </div>
+  </div>
+  <div class="modal" id="langModal">
+    <div class="modal-content"><span class="close" id="langClose">x</span>
+      <h4 class="center" id="changeLangTitle" style="margin: auto;">Change Language</h4>
+      <form id="langForm" style="margin-top: 10px; display: block; text-align: center;" method="post" onsubmit="return false;" autocomplete="on">
+        <div class="container" id="langRadioContainer" style="text-align: center; margin-top: 20px;"></div>
+      </form>
+    </div>
+  </div>
+  <div class="modal" id="connectSlavesModal">
+    <div class="modal-content"><span class="close" id="slavesClose">x</span>
+      <h4 class="center" id="connectSlavesTitle" style="margin: auto;">Connect To Slaves</h4>
+      <form id="slaveForm" style="margin-top: 10px; display: block; text-align: center;" method="post" onsubmit="return false;" autocomplete="on">
+        <div class="container" id="slaveCheckBoxContainer" style="text-align: center; margin-top: 20px;"></div>
+        <div>
+          <button id="connectToListOfSlaves" style="margin-top: 10px;" onclick="connectToSlaves(getCheckedBoxes())">Connect</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <form id="executionForm" style="position: absolute; margin-left: auto; margin-right: auto; left: 0; right: 0; margin-top: 10px;" method="post" onsubmit="return false;" autocomplete="on">
+    <div>
+      <h4 id="executionFormTitle" style="text-align:center; padding-top: 15px;">Behaviour Execution</h4>
+    </div>
+    <div>
+      <button id="replayB" style="float: left; width: 49%; height: 66px;" onclick="playCurrent(&quot;main&quot;, this)">Repeat </button>
+      <button id="nextB" style="float: right; width: 49%; height: 66px;" onclick="playNext(&quot;main&quot;, this)">Next</button>
+    </div>
+    <div>
+      <input id="sayText" style="margin-bottom: 10px; margin-top: 5px; max-width: 49%;" type="text" placeholder="Enter text to say" tabindex="3" autofocus="">
+      <button id="sayBtn" style="float: right; width: 49%; margin-top: 7px;" type="submit" onclick="say()">Submit</button>
+    </div>
+    <div>
+      <button id="posB" style="float: left; width: 49%;" onclick="playNext(&quot;pos&quot;, this)">Positive</button>
+      <button id="negB" style="float: right; width: 49%;" onclick="playNext(&quot;neg&quot;, this)">Negative</button>
+    </div>
+    <divconnectedUserMapSlave>
+      <button class="red" id="stopB" style="float: centre; width: 100%;" onclick="stopBehaviour()">STOP</button>
+    </divconnectedUserMapSlave>
+  </form>
+  <div class="footer" id="debugDiv" style="margin-top: 10px; background-color: black; color: green; overflow-y: scroll;"></div>
+  <script>
+    $(function() {
+      $(".sortable").sortable({
+        connectWith: ".connectedSortable"
+      }).disableSelection();
+    });
+
+    $(".close").click(function() {
+      closeModal(this.parentElement.parentElement.id);
+    })
+
+    $(document).ready(function() {
+      modalEvents();
+      $.when(loadLanguage(), loadPlaylists()).then(function() {
+        attemptAutoConnect();
+      });
+    });
+
+    if (typeof console != "undefined")
+      if (typeof console.log != 'undefined')
+        console.olog = console.log;
+      else
+        console.olog = function() {};
+
+    console.log = function(message) {
+      console.olog(message);
+      if (message !== undefined) {
+        $('#debugDiv').append('<p> > ' + getTime() + " " + message + '</p>');
+        document.getElementById('debugDiv').scrollTop = document.getElementById('debugDiv').scrollHeight;
+      }
+    };
+    console.error = console.debug = console.info = console.log
+
+    window.onbeforeunload = function() {
+      stopBehaviour();
+    };
+  </script>
+  <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io.connect('http://localhost:3000');
+    socket.on('connect', function() {
+
+      socket.emit('recieveUserNameMaster', {
+        //normally this would be dynamically added based on user input, but for examples sake
+        name: 'master-'
+      });
+
+      socket.on('message', function(data) {
+        console.log(data.message)
+      })
+    })
+  </script>
+  <!-- qimessaging & jquery stuff-->
+  <script src="/libs/qimessaging/1.0/qimessaging.js"></script>
+  <script src="/libs/qimessaging/1.0/socket.io.min.js"></script>
+  <script src="/scripts/Session.js"></script>
+  <script src="/scripts/Robot.js"></script>
+  <script src="/scripts/Playlist.js"></script>
+  <script src="/scripts/Assigned.js"></script>
+</body>
+
+</html>

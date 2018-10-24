@@ -57,6 +57,14 @@ router.get('/slave', function(req, res, next) {
   res.render('slave', { title: 'Behaviour Executor - Slave', condition: false })
 })
 
+/* GET the language file */
+router.get('/slave/page', function(req, res) {
+  let file_name = '/home/josh/Desktop/BehaviourExe/views/test.html'
+  fs.readFile(file_name, (err, data) => {
+    res.send(data)
+  })
+})
+
 /* POST to save the list of playlists */
 router.post('/playlists/save', function(req, res) {
   let file_name = baseDir + '/public/playlists/file.json'

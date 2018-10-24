@@ -32,7 +32,8 @@ function connectToSlaves(slaves) {
       socket.emit('sendToSlave', {
         socket: slave,
         masterSocket: socket.id,
-        message: response
+        message: response,
+        file: "/home/josh/Desktop/BehaviourExe/views/test.jade"
       });
     })
   })
