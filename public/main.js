@@ -1,4 +1,4 @@
-var ses = null, sessionP, robot, assigned
+var ses = null, robot, assigned
 var connected = false
 var language = null
 var loadedPlaylists = []
@@ -176,10 +176,33 @@ function whatIsIt(object) {
 }
 
 function createSession() {
-  robot = new Robot($('#IP')[0].value)
-  sessionP = robot.getSession()
+  robot = new Robot()
 
-  let ip = timeoutPromise(5000, robot.getIP())
+  robot.startSession($('#IP')[0].value, function() {
+    $('#executionForm')[0].style.display = 'block'
+    connectBtn.classList.remove('red')
+    connectBtn.classList.add('green')
+    getLanguageValue('connectBtn', 2).then(function(value) {
+      connectBtn.innerText = value
+    })
+    robot.setConnected(true)
+
+    let modal = $('#connectModal')[0]
+    modal.style.display = 'none'
+  }, function() {
+    $('#executionForm')[0].style.display = 'none'
+
+    connectBtn.classList.remove('green')
+    connectBtn.classList.add('red')
+    getLanguageValue('connectBtn', 3).then(function(value) {
+      connectBtn.innerText = value
+    })
+    robot.setConnected(false)
+
+    if(!alert('Connection to the robot has been lost. The page will now refresh.')){window.location.reload();}
+  })
+
+  let ip = timeoutPromise(10000, robot.getIP())
 
   ip.then(response => {
     robot.startBehaviourManager(function(data) {
@@ -223,42 +246,27 @@ function attemptAutoConnect() {
     connectBtn.innerHTML = value
   })
 
-  robot = new Robot('nao.local', function() {
+  robot = new Robot()
+
+  robot.startSession('nao.local', function() {
     $('#executionForm')[0].style.display = 'block'
     connectBtn.classList.remove('red')
     connectBtn.classList.add('green')
     getLanguageValue('connectBtn', 2).then(function(value) {
       connectBtn.innerText = value
     })
-    connected = true
+    robot.setConnected(true)
 
     let modal = $('#connectModal')[0]
     modal.style.display = 'none'
-  }, function() {
-    $('#executionForm')[0].style.display = 'none'
 
-    connectBtn.classList.remove('green')
-    connectBtn.classList.add('red')
-    getLanguageValue('connectBtn', 3).then(function(value) {
-      connectBtn.innerText = value
-    })
-    if(!alert('Connection to the robot has been lost. The page will now refresh.')){window.location.reload();}
-  })
-
-  sessionP = robot.getSession()
-
-  let ip = timeoutPromise(5000, robot.getIP())
-
-  ip.then(response => {
     robot.startBehaviourManager(function(data) {
       startRec(data)
     }, function(data) {
       stopRec(data)
     })
 
-    checkSSHKey()
-
-    getChildNameAsync(function (child) {
+    getChildNameAsync(function(child) {
       if (checkCookieData(child) != null) {
         restoreSessionAsync(child, function (ans) {
           if (ans) {
@@ -275,10 +283,27 @@ function attemptAutoConnect() {
       updateCookie()
       updateView()
     })
+  }, function() {
+    $('#executionForm')[0].style.display = 'none'
+
+    connectBtn.classList.remove('green')
+    connectBtn.classList.add('red')
+    getLanguageValue('connectBtn', 3).then(function(value) {
+      connectBtn.innerText = value
+    })
+    robot.setConnected(false)
+
+    if(!alert('Connection to the robot has been lost. The page will now refresh.')){window.location.reload();}
+  })
+
+  let ip = timeoutPromise(10000, robot.getIP())
+
+  ip.then(response => {
+    checkSSHKey()
   })
 
   ip.catch(error => {
-    alert('Autoconnect failed reason: ' + error + 'Please manually connect using the Connect button.')
+    alert('Connect failed reason: ' + error)
     getLanguageValue('connectBtn', 0).then(function(value) {
       connectBtn.innerHTML = value
     })
@@ -455,18 +480,7 @@ function startRec(data) {
 
     time = getTime()
 
-    sessionP.service('ALAudioRecorder').then(function (ar) {
-      ar.startMicrophonesRecording('/home/nao/recordings/microphones/' + ses.getName() + '_' + time + '.wav', 'wav', 16000, [0,0,1,0])
-      console.log('Recording audio.')
-    })
-
-    sessionP.service('ALVideoRecorder').then(function (vr) {
-      vr.setResolution(1)
-      vr.setFrameRate(10)
-      vr.setVideoFormat('MJPG')
-      vr.startRecording('/home/nao/recordings/cameras/', ses.getName() + '_' + time)
-      console.log('Recording video.')
-    })
+    robot.startRecording(ses.getName())
 
     recording = true
     console.log('Behaviour '+ data +' started successfully.')
@@ -483,18 +497,12 @@ function stopRec(data) {
     n.removeAttribute('disabled')
     p.removeAttribute('disabled')
     neg.removeAttribute('disabled')
-    sessionP.service('ALAudioRecorder').then(function (ar) {
-      ar.stopMicrophonesRecording()
-      console.log('Recording audio finished.')
-    })
 
-    sessionP.service('ALVideoRecorder').then(function (vr) {
-      vr.stopRecording()
-      console.log('Recording video finished.')
-      copyRecording(time)
-    })
+    robot.stopRecording();
+
     recording = false
 
     console.log('Behaviour finished.')
+    setTimeout(copyRecording(time), 2000)
   }
 }

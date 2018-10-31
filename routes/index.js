@@ -57,10 +57,9 @@ router.get('/slave', function(req, res, next) {
   res.render('slave', { title: 'Behaviour Executor - Slave', condition: false })
 })
 
-/* GET the language file */
-router.get('/slave/page', function(req, res) {
-  let file_name = '/home/josh/Desktop/BehaviourExe/views/test.html'
-  fs.readFile(file_name, (err, data) => {
+/* POST to get the slave page to run */
+router.post('/slave/page', function(req, res) {
+  fs.readFile(req.text, (err, data) => {
     res.send(data)
   })
 })
@@ -114,8 +113,12 @@ router.post('/ssh/file_check', function(req, res) {
 /* POST send SCP command to copy videos off the robot */
 router.post('/ssh/copy_recordings_video', function(req, res) {
   let ssh = baseDir + '/public/ssh/' + req.body.sshKey
-  console.log(req.body.ip)
-  console.log(req.body.robotName)
+
+  fs.watchFile(req.body.endDirVideo, function() {
+    fs.unwatchFile(req.body.endDirVideo)
+    res.send('Successfully completed copying ' + req.body.filenameVideo + ' to ' + req.body.endDirVideo)
+  })
+
   scp2.scp({
     host: req.body.ip,
     username: req.body.robotName,
@@ -124,17 +127,11 @@ router.post('/ssh/copy_recordings_video', function(req, res) {
   }, req.body.endDirVideo, function(err) { if (err !== null) console.log('SCP request failed: ' + err); })
 
   scp2.close()
-
-  fs.watchFile(req.body.endDirVideo, function() {
-    fs.unwatchFile(req.body.endDirVideo)
-    res.send('Successfully completed copying ' + req.body.filenameVideo + ' to ' + req.body.endDirVideo)
-  })
-
 })
 
 /* POST ffmpeg command to combine video recordings and audio recordings */
 router.post('/ssh/convert_recordings_video', function(req, res) {
-  exec('ffmpeg -i \'' + req.body.endDirVideo + req.body.file + '.avi\' -i \'' + req.body.endDirAudio + req.body.file + '.wav\' \'' + req.body.endDir + req.body.file + '.mp4\'',
+  exec('ffmpeg -i \'' + req.body.endDirVideo + req.body.file + '.avi\' -i \'' + req.body.endDirAudio + req.body.file + '.wav\' -strict -2  \'' + req.body.endDir + req.body.file + '.mp4\'',
   function (error, stdout, stderr) {
     console.log('stdout: ' + stdout)
     console.log('stderr: ' + stderr)
@@ -151,8 +148,12 @@ router.post('/ssh/convert_recordings_video', function(req, res) {
 /* POST send SCP command to copy audio off the robot */
 router.post('/ssh/copy_recordings_audio', function(req, res) {
   let ssh = baseDir + '/public/ssh/' + req.body.sshKey
-  console.log(req.body.ip)
-  console.log(req.body.robotName)
+
+  fs.watchFile(req.body.endDirAudio, function() {
+    fs.unwatchFile(req.body.endDirAudio)
+    res.send('Successfully completed copying ' + req.body.filenameAudio + ' to ' + req.body.endDirAudio)
+  })
+
   scp2.scp({
     host: req.body.ip,
     username: req.body.robotName,
@@ -161,11 +162,6 @@ router.post('/ssh/copy_recordings_audio', function(req, res) {
   }, req.body.endDirAudio, function(err) { if (err !== null) console.log('SCP request failed: ' + err); })
 
   scp2.close()
-
-  fs.watchFile(req.body.endDirAudio, function() {
-    fs.unwatchFile(req.body.endDirAudio)
-    res.send('Successfully completed copying ' + req.body.filenameAudio + ' to ' + req.body.endDirAudio)
-  })
 })
 
 /* POST send ftp command to delete the stored audio on the robot */

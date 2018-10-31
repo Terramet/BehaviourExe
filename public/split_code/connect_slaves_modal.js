@@ -33,7 +33,7 @@ function connectToSlaves(slaves) {
         socket: slave,
         masterSocket: socket.id,
         message: response,
-        file: "/home/josh/Desktop/BehaviourExe/views/test.jade"
+        file: "/home/josh/Desktop/BehaviourExe/views/test.html"
       });
     })
   })

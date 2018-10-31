@@ -4,7 +4,7 @@ function loadLanguage() {
   return $.ajax({
     type: 'GET',
     url: window.location.href + 'language/load',
-    success: function(data) {
+    success: (data) => {
       console.log('Languages loaded successfully.')
       loadedLanguageJSON = data
       applyLanguageCookie()
@@ -27,15 +27,15 @@ function savePlaylist() {
     data: JSON.stringify(playlist),
     contentType: 'application/json',
     url: window.location.href + 'playlists/save',
-    success: function(data) {
+    success: (data) => {
       alert(data + ' was saved successfully')
       createModal.style.display = 'none'
     },
-    error: function(xhr, aO, thrown) {
+    error: (xhr, aO, thrown) => {
       console.log(xhr.status)
       console.log('Error thrown: ' + thrown)
     }
-  }).then(function() {
+  }).then(() => {
     loadPlaylists()
   })
 }
@@ -45,10 +45,10 @@ function loadPlaylists() {
   return $.ajax({
     type: 'GET',
     url: window.location.href + 'playlists/load',
-    success: function(data) {
+    success: (data) => {
       console.log('Playlists loaded successfully.')
       loadedPlaylists = []
-      data['playlists'].forEach(function(playlist) {
+      data['playlists'].forEach((playlist) => {
         loadedPlaylists.push(new Playlist(playlist))
       })
       return "complete"
@@ -58,7 +58,7 @@ function loadPlaylists() {
 
 function checkSSHKey() {
   console.log('Beginning check for SSH file.')
-  Promise.all([robot.getRobotName(), robot.getIP()]).then(function(vals) {
+  Promise.all([robot.getRobotName(), robot.getIP()]).then((vals) => {
     let file_name = vals[1].replace(/\./g, '_')
 
     $.ajax({
@@ -66,10 +66,10 @@ function checkSSHKey() {
       data: file_name,
       contentType: 'text/plain',
       type:'POST',
-      error: function() {
+      error: () => {
         console.error('File check failed or the file does not exist.')
       },
-      success: function(data) {
+      success: (data) => {
         if (data) {
           console.log('SSH file found.')
         } else {
@@ -87,10 +87,10 @@ function checkSSHKey() {
             data: JSON.stringify(gen),
             contentType: 'application/json',
             type:'POST',
-            error: function() {
+            error: () => {
               console.error('File check failed or the file does not exist.')
             },
-            success: function(data) {
+            success: (data) => {
               console.log(data)
             }
           })
@@ -101,9 +101,8 @@ function checkSSHKey() {
 }
 
 function copyRecording(time) {
-  Promise.all([robot.getRobotName(), robot.getIP()]).then(function(vals) {
+  Promise.all([robot.getRobotName(), robot.getIP()]).then((vals) => {
     let file_name = vals[1].replace(/\./g, '_')
-    console.log(vals)
     let data = {}
     data.ip = vals[1]
     data.sshKey = file_name
@@ -117,16 +116,16 @@ function copyRecording(time) {
     data.time = time
     data.robotName = vals[0]
 
-    $.when(audioAJAX(data), videoAJAX(data)).done(function (aa, va) {
+    $.when(audioAJAX(data), videoAJAX(data)).done((aa, va) => {
       $.ajax({
         url: window.location.href + 'ssh\\convert_recordings_video',
         data: JSON.stringify(data),
         contentType: 'application/json',
         type:'POST',
-        error: function() {
+        error: () => {
           console.error('ERROR: Creation of .mp4 file failed')
         },
-        success: function(info) {
+        success: (info) => {
           console.log(info)
         }
       })
@@ -140,19 +139,20 @@ function audioAJAX(data) {
     data: JSON.stringify(data),
     contentType: 'application/json',
     type:'POST',
-    error: function() {
+    error: () => {
       console.error('File check failed or the file does not exist.')
     },
-    success: function(info) {
+    success: (info) => {
+      console.log(info)
       return $.ajax({
         url: window.location.href + 'ssh\\delete_nao_recording_audio',
         data: JSON.stringify(data),
         contentType: 'application/json',
         type:'POST',
-        error: function() {
+        error: () => {
           console.error('ERROR: Deletion of Nao audio recording failed')
         },
-        success: function(info) {
+        success: (info) => {
           return console.log(info)
         }
       })
@@ -166,20 +166,20 @@ function videoAJAX(data) {
     data: JSON.stringify(data),
     contentType: 'application/json',
     type:'POST',
-    error: function() {
+    error: () => {
       console.error('File check failed or the file does not exist.')
     },
-    success: function(info) {
+    success: (info) => {
       console.log(info)
       return $.ajax({
         url: window.location.href + 'ssh\\delete_nao_recording_video',
         data: JSON.stringify(data),
         contentType: 'application/json',
         type:'POST',
-        error: function() {
+        error: () => {
           console.error('ERROR: Deletion of Nao video recording failed')
         },
-        success: function(info) {
+        success: (info) => {
           return console.log(info)
         }
       })
@@ -191,7 +191,7 @@ function viewVideos() {
   $.ajax({
     url: window.location.href + 'videos',
     type:'POST',
-    success: function(data) {
+    success: (data) => {
       let viewForm = document.getElementById('viewForm')
       viewForm.innerHTML = ''
       data.forEach(datum => {
@@ -199,7 +199,7 @@ function viewVideos() {
           let d = document.createElement('DIV')
           let e = document.createElement('BUTTON')
           e.innerHTML = datum
-          e.addEventListener('click', function () {
+          e.addEventListener('click', () => {
             playVideo(datum)
           }, false)
           d.appendChild(e)
@@ -214,7 +214,7 @@ function getSlaves() {
   return $.ajax({
     url: window.location.href + 'get_slaves',
     type:'get',
-    success: function(data) {
+    success: (data) => {
       return data
     }
   })

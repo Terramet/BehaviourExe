@@ -13,56 +13,58 @@
 </head>
 
 <body class="unselectable wrapper">
-  <form id="socketID" style="position: absolute; text-align: center; margin-left: auto; margin-right: auto; left: 0; right: 0; margin-top: -5px;"></form>
+  <form id="socketID" style="position: fixed; text-align: center; margin-left: auto; margin-right: auto; left: 0; right: 0; margin-top: -5px;"></form>
   <div id="content"></div>
   <div class="footer" id="debugDiv" style="margin-top: 10px; background-color: black; color: green; overflow-y: scroll;"></div>
   <script src="http://localhost:3000/socket.io/socket.io.js"></script>
   <script>
-    var robot = null
-    var socket = io.connect('http://localhost:3000');
-    socket.on('connect', function() {
-      console.log(socket.id)
-      $('#socketID')[0].innerHTML = socket.id
-      $('#socketID')[0].style.display = 'block'
+  var robot = null
+  var socket = io.connect('http://localhost:3000');
+  socket.on('connect', function() {
+    console.log(socket.id)
+    $('#socketID')[0].innerHTML = socket.id
+    $('#socketID')[0].style.display = 'block'
 
-      socket.emit('recieveUserNameSlave', {
-        //normally this would be dynamically added based on user input, but for examples sake
-        name: 'slave-'
-      });
+    socket.emit('recieveUserNameSlave', {
+      //normally this would be dynamically added based on user input, but for examples sake
+      name: 'slave-'
+    });
 
-      socket.on('message', function(data) {
-        console.log(data)
+    socket.on('message', function(m) {
+      console.log(m)
 
-        $.ajax({
-          crossOrigin: true,
-          type: 'GET',
-          url: window.location.href + '/page',
-          success: function(d) {
-            $('#content').html(d)
+      $.ajax({
+        crossOrigin: true,
+        type: 'POST',
+        url: window.location.href + '/page',
+        data: m.file,
+        contentType: 'text/plain',
+        success: function(d) {
+          $('#content').html(d)
+        }
+      })
+
+
+      if (robot === null) {
+        robot = new Robot()
+        sessionP = robot.startSession(m.message, function() {
+          $('#socketID')[0].style.display = 'none'
+          socket.emit('sendToMaster', {
+            socket: m.masterSocket,
+            mySocket: socket.id,
+            message: 'Connection Established'
+          }), function() {
+            $('#socketID')[0].style.display = 'block'
+            socket.emit('sendToMaster', {
+              socket: m.masterSocket,
+              mySocket: socket.id,
+              message: 'Connection Lost'
+            })
           }
         })
-
-
-        if (robot === null) {
-          robot = new Robot(data.message, function() {
-            socket.emit('sendToMaster', {
-              socket: data.masterSocket,
-              mySocket: socket.id,
-              message: 'Connection Established'
-            })
-          })
-          sessionP = robot.getSession()
-          sessionP.service("ALMemory").then(function(ALMemory) {
-            ALMemory.subscriber("ALTextToSpeech/CurrentWord").then(function(sub) {
-              sub.signal.connect(function(value) {
-                console.log(value);
-                $('#debugDiv').append(" " + value);
-              });
-            });
-          });
-        }
-      });
-    })
+      }
+    });
+  })
   </script>
   <!-- qimessaging & jquery stuff-->
   <script src="/libs/qimessaging/1.0/qimessaging.js"></script>

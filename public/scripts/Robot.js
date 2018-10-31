@@ -1,100 +1,144 @@
 class Robot {
-    constructor(ip, callbackConnect=null, callbackDisconnect=null) {
-        this.ip = ip
-        this.session = new QiSession(ip)
-        /**
-         * Create the session by connecting to the robot.
-         * Upon connection execute function
-         */
-        this.session.socket().on('connect', function() {
-            console.log('QiSession connected!')         //log the connection for debug
-            if(callbackConnect !== null) {
-              callbackConnect()
-            }
-            /** Upon disconnect execute function */
-        }).on('disconnect', function() {
-            console.log('QiSession disconnected!')      //log the connection for debug
-            if(callbackDisconnect !== null) {
-              callbackDisconnect()
-            }
-            session = new QiSession(ip)
-        })
-    }
+  constructor() {
+    this.ip = null
+    this.session = null
+    this.connected = false
+  }
 
-    getSession() {
-        return this.session
-    }
+  startSession(ip, callbackConnect=null, callbackDisconnect=null) {
+    this.session = new QiSession(ip)
+    /**
+    * Create the session by connecting to the robot.
+    * Upon connection execute function
+    */
+    this.session.socket().on('connect', () => {
+      console.log('QiSession connected!')         //log the connection for debug
+      if(callbackConnect !== null) {
+        callbackConnect()
+      }
+      /** Upon disconnect execute function */
+    }).on('disconnect', () => {
+      console.log('QiSession disconnected!')      //log the connection for debug
+      if(callbackDisconnect !== null) {
+        callbackDisconnect()
+      }
+    })
 
-    startBehaviourManager(callbackStart=null, callbackStop=null) {
-        sessionP.service('ALBehaviorManager').done(function (bm) {
-            bm.behaviorStarted.connect( function(data) {
-                console.log(data)
-                if (callbackStart !== null) {
-                  callbackStart(data)
-                }
-            })
+    return this.session
+  }
 
-            bm.behaviorStopped.connect(function(data) {
-                if(callbackStop !== null) {
-                  callbackStop(data)
-                }
-            })
-        })
-    }
+  getSession() {
+    return this.session
+  }
 
-    getBehaviours() {
-        return sessionP.service('ALBehaviorManager').then(function(bm) {
-            return bm.getInstalledBehaviors().then(function (data){
-                return data
-            })
-        })
-    }
+  setConnected(state) {
+    this.connected = state
+  }
 
-    startBehaviour(behaviour, btn) {
-        btn.innerHTML = '<div class=\'donut-spinner\'></div>'
-        sessionP.service('ALBehaviorManager').then(function (bm) {
-          bm.isBehaviorInstalled(behaviour).then(function(a) {console.log(a)} )
-          bm.runBehavior(behaviour)
-        })
-    }
-
-    stopBehaviour() {
-        sessionP.service('ALBehaviorManager').then(function (bm) {
-            bm.stopAllBehaviors()
-        })
-    }
-
-    say(data) {
-        sessionP.service('ALAnimatedSpeech').then(function(as) {
-            as.say(data)
-        })
-    }
-
-    getRobotName() {
-        return sessionP.service('ALSystem').then(function(s) {
-            return s.robotName()
-        })
-    }
-
-    getIP() {
-        return sessionP.service('ALConnectionManager').then(function(cm) {
-            return cm.scan().then(function(data) {
-                return cm.services().then(function (data) {
-                    return data[0][9][1][1][1]
-                })
-            })
-        })
-    }
-
-    setALMemoryValue(key, val) {
-      sessionP.service('ALMemory').then(function(mem) {
-          mem.insertData(key, val)
+  startBehaviourManager(callbackStart=null, callbackStop=null) {
+    this.session.service('ALBehaviorManager').done((bm) => {
+      bm.behaviorStarted.connect((data) => {
+        console.log(data)
+        if (callbackStart !== null) {
+          callbackStart(data)
+        }
       })
-    }
 
-    disconnect() {
-        sessionP.service('ALBehaviorManager').then(function (bm) {
-            bm.behaviorStarted.disconnect()
-        })
-    }
+      bm.behaviorStopped.connect((data) => {
+        if(callbackStop !== null) {
+          callbackStop(data)
+        }
+      })
+    })
+  }
+
+  getBehaviours() {
+    return this.session.service('ALBehaviorManager').then((bm) => {
+      return bm.getInstalledBehaviors().then((data) =>{
+        return data
+      })
+    })
+  }
+
+  isBehaviorInstalled(behaviour) {
+    return this.session.service('ALBehaviorManager').then((bm) => {
+      return bm.isBehaviorInstalled(behaviour).then((a) => {
+        return a
+      })
+    })
+  }
+
+  startBehaviour(behaviour, btn) {
+    btn.innerHTML = '<div class=\'donut-spinner\'></div>'
+    this.session.service('ALBehaviorManager').then((bm) => {
+      if(this.isBehaviorInstalled(behaviour)) {
+        bm.runBehavior(behaviour)
+      }
+    })
+  }
+
+  stopBehaviour() {
+    this.session.service('ALBehaviorManager').then((bm) => {
+      bm.stopAllBehaviors()
+    })
+  }
+
+  say(data) {
+    this.session.service('ALAnimatedSpeech').then((as) => {
+      as.say(data)
+    })
+  }
+
+  getRobotName() {
+    return this.session.service('ALSystem').then((s) => {
+      return s.robotName()
+    })
+  }
+
+  getIP () {
+    return this.session.service('ALConnectionManager').then((cm) => {
+      return cm.services().then((data) => {
+        return data[0][9][1][1][1]
+      })
+    })
+  }
+
+  setALMemoryValue(key, val) {
+    this.session.service('ALMemory').then((mem) => {
+      mem.insertData(key, val)
+    })
+  }
+
+  disconnect() {
+    this.session.service('ALBehaviorManager').then((bm) => {
+      bm.behaviorStarted.disconnect()
+    })
+  }
+
+  startRecording(childName) {
+    this.session.service('ALAudioRecorder').then((ar) => {
+      ar.startMicrophonesRecording('/home/nao/recordings/microphones/' + childName + '_' + time + '.wav', 'wav', 16000, [0,0,1,0])
+      console.log('Recording audio.')
+    })
+
+    this.session.service('ALVideoRecorder').then((vr) => {
+      vr.setResolution(1)
+      vr.setFrameRate(10)
+      vr.setVideoFormat('MJPG')
+      vr.startRecording('/home/nao/recordings/cameras/', childName + '_' + time)
+      console.log('Recording video.')
+    })
+  }
+
+  stopRecording() {
+    this.session.service('ALAudioRecorder').then((ar) => {
+      ar.stopMicrophonesRecording()
+      console.log('Recording audio finished.')
+    })
+
+    this.session.service('ALVideoRecorder').then((vr) => {
+      vr.stopRecording()
+      console.log('Recording video finished.')
+    })
+  }
 }
