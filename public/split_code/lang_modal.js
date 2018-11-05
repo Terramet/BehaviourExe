@@ -35,7 +35,9 @@ function applyLanguageCookie(lang) {
   }
 
   loadedLanguageJSON['Languages'][language].forEach(function(lang) {
-    $('#' + lang['id'])[0].innerHTML = lang['text']
+    if($('#' + lang['id'])[0] != null) {
+      $('#' + lang['id'])[0].innerHTML = lang['text']
+    }
   })
 }
 
@@ -44,7 +46,7 @@ function applyLanguage(lang) {
   loadedLanguageJSON['Languages'][lang].forEach(function(lang) {
     if (lang['id'] === 'connectBtn') {
       $('#' + lang['id'])[0].innerHTML = lang['text'][0]
-    } else {
+    } else if ($('#' + lang['id'])[0] != null) {
       $('#' + lang['id'])[0].innerHTML = lang['text']
     }
   })

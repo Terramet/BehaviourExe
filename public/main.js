@@ -114,14 +114,6 @@ function modalEvents() {
       langModal.style.display = 'none'
     }
   }
-
-  var slaveModal = $('#connectSlavesModal')[0]
-  var slaveBtn = $('#connectToSlavesBtn')[0]
-
-  slaveBtn.onclick = function() {
-    slaveModal.style.display = 'block'
-    populateSlavesModal()
-  }
 }
 
 function xhrGetStatus(url, callback) {
@@ -199,7 +191,7 @@ function createSession() {
     })
     robot.setConnected(false)
 
-    if(!alert('Connection to the robot has been lost. The page will now refresh.')){window.location.reload();}
+    if(!alert(getLanguageValue('connectionLostAlert'))){window.location.reload();}
   })
 
   let ip = timeoutPromise(10000, robot.getIP())
@@ -293,7 +285,9 @@ function attemptAutoConnect() {
     })
     robot.setConnected(false)
 
-    if(!alert('Connection to the robot has been lost. The page will now refresh.')){window.location.reload();}
+    getLanguageValue('connectionLostAlert').then((value) => {
+      if(!alert(value)) {window.location.reload();}
+    })
   })
 
   let ip = timeoutPromise(10000, robot.getIP())
@@ -303,7 +297,9 @@ function attemptAutoConnect() {
   })
 
   ip.catch(error => {
-    alert('Connect failed reason: ' + error)
+    getLanguageValue('connectIPCatch').then(value => {
+      alert(value + error)
+    })
     getLanguageValue('connectBtn', 0).then(function(value) {
       connectBtn.innerHTML = value
     })
@@ -390,8 +386,10 @@ function updateCookie() {
 }
 
 function playCurrent(type, btn) {
-  if (ses.getAssigned() === undefined) {
-    alert('No playlist assigned to buttons. \nPlease go to Settings > Assign Playlist.')
+  if (ses.getAssigned() === null) {
+    getLanguageValue('noPlaylists').then(value => {
+      alert(value)
+    })
     console.error('No playlist assigned to ' + btn.innerHTML + ' button.')
   } else if (ses.getAssigned().getPlaylist(type).returnLast() !== 'Nothing') {
     robot.startBehaviour(ses.getAssigned().getPlaylist(type).returnLast(), btn)
@@ -400,8 +398,10 @@ function playCurrent(type, btn) {
 }
 
 function playNext(type, btn) {
-  if (ses.getAssigned() === undefined) {
-    alert('No playlist assigned to buttons. \nPlease go to Settings > Assign Playlist.')
+  if (ses.getAssigned() === null) {
+    getLanguageValue('noPlaylists').then(value => {
+      alert(value)
+    })
     console.error('No playlist assigned to ' + btn.innerHTML + ' button.')
   } else if (ses.getAssigned().getPlaylist(type).getNext() !== 'Nothing') {
     robot.startBehaviour(ses.getAssigned().getPlaylist(type).next(), btn)

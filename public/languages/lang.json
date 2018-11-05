@@ -35,6 +35,10 @@
         "id": "viewVideosBtn"
       },
       {
+        "text": "Connect To Slaves",
+        "id": "connectToSlavesBtn"
+      },
+      {
         "text": "Please enter the IP Address of the robot below",
         "id": "enterIPTitle"
       },
@@ -108,6 +112,14 @@
         "id": "changeLangTitle"
       },
       {
+        "text": "Connect To Slaves",
+        "id": "connectSlavesTitle"
+      },
+      {
+        "text": "Connect",
+        "id": "connectToListOfSlaves"
+      },
+      {
         "text": "Behaviour Execution",
         "id": "executionFormTitle"
       },
@@ -134,6 +146,18 @@
       {
         "text": "STOP",
         "id": "stopB"
+      },
+      {
+        "text": "Connection to the robot has been lost. The page will now refresh.",
+        "id": "connectionLostAlert"
+      },
+      {
+        "text": "Connect failed reason: ",
+        "id": "connectIPCatch"
+      },
+      {
+        "text": "No playlist assigned to buttons. \nPlease go to Settings > Assign Playlist.",
+        "id": "noPlaylists"
       }
     ],
     "Français": [
@@ -169,6 +193,10 @@
       {
         "text": "Voir les vidéos",
         "id": "viewVideosBtn"
+      },
+      {
+        "text": "Se connecter à des esclaves",
+        "id": "connectToSlavesBtn"
       },
       {
         "text": "S'il vous plaît entrer l'adresse IP du robot ci-dessous",
@@ -266,6 +294,18 @@
       {
         "text": "ARRÊTEZ",
         "id": "stopB"
+      },
+      {
+        "text": "La connexion au robot a été perdue. La page va maintenant s'actualiser.",
+        "id": "connectionLostAlert"
+      },
+      {
+        "text": "La connexion a échoué: ",
+        "id": "connectIPCatch"
+      },
+      {
+        "text": "Aucune playlist assignée aux boutons. \nVeuillez accéder à Paramètres > Attribuer une liste de lecture.",
+        "id": "noPlaylists"
       }
     ],
     "Italiano": [
@@ -303,6 +343,10 @@
         "id": "viewVideosBtn"
       },
       {
+        "text": "Connect To Slaves",
+        "id": "connectToSlavesBtn"
+      },
+      {
         "text": "Please enter the IP Address of the robot below",
         "id": "enterIPTitle"
       },
@@ -317,6 +361,19 @@
       {
         "text": "Childs Name",
         "id": "cName"
+      },
+      {
+        "NOTE": "DO NOT REMOVE %child% WHEN TRANSLATING THIS FILE",
+        "text": "You have a previous session stored for a child named: %child%. Would you like to restore it?",
+        "id": "restoreTitle"
+      },
+      {
+        "text": "Yes",
+        "id": "restoreYes"
+      },
+      {
+        "text": "No",
+        "id": "restoreNo"
       },
       {
         "text": "Create Playlist",
@@ -363,6 +420,14 @@
         "id": "changeLangTitle"
       },
       {
+        "text": "Connect To Slaves",
+        "id": "connectSlavesTitle"
+      },
+      {
+        "text": "Connect",
+        "id": "connectToListOfSlaves"
+      },
+      {
         "text": "Behaviour Execution",
         "id": "executionFormTitle"
       },
@@ -389,6 +454,18 @@
       {
         "text": "STOP",
         "id": "stopB"
+      },
+      {
+        "text": "Connection to the robot has been lost. The page will now refresh.",
+        "id": "connectionLostAlert"
+      },
+      {
+        "text": "Connect failed reason: ",
+        "id": "connectIPCatch"
+      },
+      {
+        "text": "No playlist assigned to buttons. \nPlease go to Settings > Assign Playlist.",
+        "id": "noPlaylists"
       }
     ]
   }
