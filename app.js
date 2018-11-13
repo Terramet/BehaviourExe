@@ -5,8 +5,20 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-// var server = require('http').Server(app);
+var auto = require('auto_updater')
+var pjson = require('./package.json');
+var EventEmitter = require('events').EventEmitter
 var app = express();
+
+let ee = new EventEmitter();
+
+if (!process.argv.includes("-nu") && !process.argv.includes("--no-update")) {
+  ee.on('check.up-to-date', function (version) {
+    console.log('Current local version: ' + pjson.version + '\n Current release version: ' + version);
+  })
+
+  auto.downloadUpdate();
+}
 
 //implementation to accept text/plain
 app.use(function(req, res, next){
