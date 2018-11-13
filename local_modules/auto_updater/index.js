@@ -113,7 +113,7 @@ module.exports = {
               let result = versionNumberCompare(rootJSON.version, remote.tag_name)
               if(result === 1) {
                 console.log(remote.assets[0].browser_download_url)
-                resolve([remote.tag_name, remote.assets[0].browser_download_url])
+                resolve([result, remote.tag_name, remote.assets[0].browser_download_url])
               } else {
                 resolve([result, remote.tag_name])
               }
@@ -137,7 +137,7 @@ module.exports = {
       if (res[0] === 0 || res[0] === -1) {
         return "Project is up to date"
       } else {
-        const site = new URL(res[1])
+        const site = new URL(res[2])
         let opts = {
           host: site.host,
           path: site.pathname,
@@ -145,12 +145,12 @@ module.exports = {
           'content-type': '.zip'}
         }
 
-        return remoteDownloadUpdate(res[0], opts).then(function(exist) {
+        return remoteDownloadUpdate(res[1], opts).then(function(exist) {
           if (exist === true) {
             console.log('Update already exists')
           }
           console.log('Extracting...')
-          return extract(res[0])
+          return extract(res[1])
         })
       }
     })
