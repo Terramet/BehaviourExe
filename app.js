@@ -7,17 +7,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var auto = require('auto_updater')
 var pjson = require('./package.json');
-var EventEmitter = require('events').EventEmitter
 var app = express();
 
-let ee = new EventEmitter();
-
 if (!process.argv.includes("-nu") && !process.argv.includes("--no-update")) {
-  ee.on('check.up-to-date', function (version) {
-    console.log('Current local version: ' + pjson.version + '\n Current release version: ' + version);
+  auto.compareVersions().then((remote) => {
+    console.log('Current local version: ' + pjson.version + '\nCurrent release version: ' + remote[1]);
+    console.log(auto.downloadUpdate() == null ? 'Updated':'');
   })
-
-  auto.downloadUpdate();
 }
 
 //implementation to accept text/plain

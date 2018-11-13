@@ -115,7 +115,7 @@ module.exports = {
                 console.log(remote.assets[0].browser_download_url)
                 resolve([remote.tag_name, remote.assets[0].browser_download_url])
               } else {
-                resolve(result)
+                resolve([result, remote.tag_name])
               }
             } else {
               reject("ERROR: Remote was reachable but no tag_name was found")
@@ -134,10 +134,10 @@ module.exports = {
 
   downloadUpdate: function() {
     return Promise.resolve(this.compareVersions()).then((res) => {
-      const site = new URL(res[1])
       if (res[0] === 0 || res[0] === -1) {
-        return "Project is up to date, no download needed"
+        return "Project is up to date"
       } else {
+        const site = new URL(res[1])
         let opts = {
           host: site.host,
           path: site.pathname,
@@ -147,9 +147,9 @@ module.exports = {
 
         return remoteDownloadUpdate(res[0], opts).then(function(exist) {
           if (exist === true) {
-            console.log("We have already got the update")
+            console.log('Update already exists')
           }
-
+          console.log('Extracting...')
           return extract(res[0])
         })
       }
