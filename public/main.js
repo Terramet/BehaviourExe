@@ -114,6 +114,14 @@ function modalEvents() {
       langModal.style.display = 'none'
     }
   }
+
+  var slaveModal = $('#connectSlavesModal')[0]
+  var slaveBtn = $('#connectToSlavesBtn')[0]
+
+  slaveBtn.onclick = function() {
+    slaveModal.style.display = 'block'
+    populateSlavesModal()
+  }
 }
 
 function xhrGetStatus(url, callback) {
