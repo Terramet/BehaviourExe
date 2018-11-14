@@ -12,9 +12,11 @@ var app = express();
 if (!process.argv.includes("-nu") && !process.argv.includes("--no-update")) {
   auto.compareVersions().then((remote) => {
     console.log('Current local version: ' + pjson.version + '\nCurrent release version: ' + remote[1]);
-    auto.downloadUpdate().then((result) => {
-      console.log(result == null ? 'Updated':'')
-    })
+    if (remote === 1) {
+      auto.downloadUpdate().then((result) => {
+        console.log(result == null ? 'Updated':'')
+      })
+    }
   })
 }
 
