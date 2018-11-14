@@ -228,7 +228,6 @@ router.post('/videos', function(req, res) {
 })
 
 router.get('/get_slaves', function(req, res, next) {
-
   res.send(Array.from(connectedUserMapSlave.keys()))
 })
 

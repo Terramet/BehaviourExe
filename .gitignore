@@ -12,4 +12,7 @@ public/videos/*
 public/raw_audio/*
 !public/raw_audio/.gitkeep
 
+public/uploads/*
+!public/uploads/.gitkeep
+
 fake_folder/
