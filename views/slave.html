@@ -13,12 +13,11 @@
 </head>
 
 <body class="unselectable wrapper">
-  <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQFE2bLkpP5wMiXne4s4efyiSBc2K187eq5qtG8BcUQbZzFo4Tl3TgtGub_VR7ljsw9o-X1Jyy45pKc/embed?start=false&loop=true&delayms=3000" frameborder="0" width="100%" height="100%" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
-
   <form id="socketID" style="position: fixed; text-align: center; margin-left: auto; margin-right: auto; left: 0; right: 0; margin-top: -5px;"></form>
   <div id="content"></div>
   <script src="http://localhost:3000/socket.io/socket.io.js"></script>
   <script>
+  var presentation = []
   var robot = null
   var socket = io.connect('http://localhost:3000');
   socket.on('connect', function() {
@@ -35,18 +34,6 @@
     socket.on('message', function(m) {
       console.log(m)
 
-      $.ajax({
-        crossOrigin: true,
-        type: 'POST',
-        url: window.location.href + '/page',
-        data: m.file,
-        contentType: 'text/plain',
-        success: function(d) {
-          $('#content').html(d)
-        }
-      })
-
-
       if (robot === null) {
         robot = new Robot()
         sessionP = robot.startSession(m.message, function() {
@@ -54,7 +41,8 @@
           socket.emit('sendToMaster', {
             socket: m.masterSocket,
             mySocket: socket.id,
-            message: 'Connection Established'
+            message: 'Connection Established',
+            requestPresentation: true
           }), function() {
             $('#socketID')[0].style.display = 'block'
             socket.emit('sendToMaster', {
@@ -66,7 +54,32 @@
         })
       }
     });
+
+    socket.on('presentation', function(m) {
+      console.log(m)
+      let data = { pres: m.message }
+      $.ajax({
+        crossOrigin: true,
+        type: 'POST',
+        url: window.location.href + '/getPresentation',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        success: function(d) {
+          console.log(d)
+          d = JSON.parse(d)
+          d.img.forEach((img) => {
+            console.log(img)
+            $("body").append( "<img src='"+ d.dir + '/' + img +"'>" );
+          })
+        }
+      })
+    })
   })
+
+  socket.on('disconnect', function() {
+    window.location.reload();
+  })
+
   </script>
   <!-- qimessaging & jquery stuff-->
   <script src="/libs/qimessaging/1.0/qimessaging.js"></script>

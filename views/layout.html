@@ -83,6 +83,19 @@
       </div>
     </div>
   </div>
+  <div class="modal" id="slavePresentationModal">
+    <div class="modal-content autoModal" style="display: table;"><span class="close" id="slavePresentationClose">×</span>
+      <div>
+        <form id="slavePresentation" method="post" style="display: block;" onsubmit="return false;" autocomplete="on">
+          <h4 id="slavePresentTitle" style="text-align:center; padding-top: 15px;">Please choose what to display on the salve</h4>
+          <div class="container" id="slavePresContainer" style="text-align: center; margin-top: 20px;"></div>
+        </form>
+      </div>
+      <div style="text-align:center;">
+        <button id="slaveSave" style="display: block; margin: auto;">Save</button>
+      </div>
+    </div>
+  </div>
   <div class="modal" id="createModal">
     <div class="modal-content" style="min-width: 680px;"><span class="close" id="createClose">×</span>
       <h4 class="center" id="createPlaylistTitle">Create Playlist</h4>
@@ -166,6 +179,12 @@
       </form>
     </div>
   </div>
+
+  <form action="/post_pptx" enctype="multipart/form-data" method="post" style="display: block;">
+    <input type="file" name="pptx">
+    <input type="submit" value="Upload .pptx">
+  </form>
+
   <form id="executionForm" style="position: absolute; margin-left: auto; margin-right: auto; left: 0; right: 0; margin-top: 10px;" method="post" onsubmit="return false;" autocomplete="on">
     <div>
       <h4 id="executionFormTitle" style="text-align:center; padding-top: 15px;">Behaviour Execution</h4>
@@ -236,6 +255,17 @@
 
       socket.on('message', function(data) {
         console.log(data.message)
+        if (data.requestPresentation) {
+          getPresentations();
+          $('#connectSlavesModal')[0].style.display = 'none'
+          getSlavePresentationAsync(function(pres) {
+            socket.emit('sendPresentationToSlave', {
+              socket: data.mySocket,
+              masterSocket: socket.id,
+              message: pres
+            });
+          })
+        }
       })
     })
   </script>

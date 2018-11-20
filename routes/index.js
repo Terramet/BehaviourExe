@@ -4,6 +4,8 @@ var router = express.Router()
 var scp2 = require('scp2')
 var Client = require('ssh2-sftp-client')
 var exec = require('child_process').exec
+var pptComposer = require('pptx-compose');
+var toPdf = require("office-to-pdf")
 
 var baseDir = __dirname.split('/routes')[0]
 var io = require('socket.io').listen(3000);
@@ -34,6 +36,10 @@ socket.on('connect', function(socket){
 
   socket.on('sendToSlave', function(data){
     socket.broadcast.to(data.socket).emit('message', data)
+  });
+
+  socket.on('sendPresentationToSlave', function(data){
+    socket.broadcast.to(data.socket).emit('presentation', data)
   });
 
   socket.on('sendToMaster', function(data){
@@ -142,7 +148,6 @@ router.post('/ssh/convert_recordings_video', function(req, res) {
       res.send('Successfully converted ' + req.body.endDirVideo + req.body.file + '.avi' + ' to ' + req.body.endDir + req.body.file + '.mp4')
     }
   })
-
 })
 
 /* POST send SCP command to copy audio off the robot */
@@ -174,14 +179,14 @@ router.post('/ssh/delete_nao_recording_audio', function(req, res) {
     username: req.body.robotName,
     privateKey: fs.readFileSync(ssh),
   }).then(() => {
-      sftp.delete('/' + req.body.filenameAudio)
+    sftp.delete('/' + req.body.filenameAudio)
   }).then((data) => {
-      res.write('File ' + req.body.filenameAudio + ' removed from Nao.')
-      res.end()
+    res.write('File ' + req.body.filenameAudio + ' removed from Nao.')
+    res.end()
   }).catch((err) => {
-      console.log(err, 'catch error')
-      res.status(333)
-      res.send('Failed to delete ' + req.body.filename)
+    console.log(err, 'catch error')
+    res.status(333)
+    res.send('Failed to delete ' + req.body.filename)
   })
 })
 
@@ -195,14 +200,14 @@ router.post('/ssh/delete_nao_recording_video', function(req, res) {
     username: req.body.robotName,
     privateKey: fs.readFileSync(ssh),
   }).then(() => {
-      sftp.delete('/' + req.body.filenameVideo)
+    sftp.delete('/' + req.body.filenameVideo)
   }).then((data) => {
-      res.write('File ' + req.body.filenameVideo + ' removed from Nao.')
-      res.end()
+    res.write('File ' + req.body.filenameVideo + ' removed from Nao.')
+    res.end()
   }).catch((err) => {
-      console.log(err, 'catch error')
-      res.status(333)
-      res.send('Failed to delete ' + req.body.filename)
+    console.log(err, 'catch error')
+    res.status(333)
+    res.send('Failed to delete ' + req.body.filename)
   })
 })
 
@@ -227,8 +232,72 @@ router.post('/videos', function(req, res) {
   res.send(fs.readdirSync(dir))
 })
 
+/* GET presentations */
+router.post('/presentations', function(req, res) {
+  let dir = './public/uploads'
+  res.send(fs.readdirSync(dir))
+})
+
+router.post('/slave/getPresentation', function(req, res) {
+  console.log(req)
+  let dir = './public/uploads/' + req.body.pres + '/images'
+  let data = { dir: dir,
+              img: fs.readdirSync(dir) }
+  res.send(JSON.stringify(data))
+})
+
 router.get('/get_slaves', function(req, res, next) {
   res.send(Array.from(connectedUserMapSlave.keys()))
 })
+
+router.post('/post_pptx', function(req, res, next) {
+  if(fs.existsSync(req.file.path)) {
+    console.log(req.file)
+
+    var wordBuffer = fs.readFileSync(req.file.path)
+
+    toPdf(wordBuffer).then(
+      (pdfBuffer) => {
+        fs.writeFileSync(req.file.path.split('.')[0] + '.pdf', pdfBuffer)
+        let composer = new pptComposer(); //instantiate
+        composer.parse(req.file.path, function (err, json) {
+          let titles = json['docProps/app.xml'].Properties.TitlesOfParts['0']['vt:vector']['0']['vt:lpstr']
+          titles.shift();
+
+          var pdf2img = require('pdf2img');
+
+          var input   = req.file.path.split('.')[0] + '.pdf';
+
+          pdf2img.setOptions({
+            type: 'png',                                // png or jpg, default jpg
+            size: 1024,                                 // default 1024
+            density: 600,                               // default 600
+            outputdir: req.file.destination + 'images', // output folder, default null (if null given, then it will create folder name same as file name)
+            outputname: 'tmp',
+            page: null                                  // convert selected page, default null (if null given, then it will convert all pages)
+          });
+
+          pdf2img.convert(input, function(err, info) {
+            if (err) console.log(err)
+            else {
+              console.log(info)
+
+              for(i = 0; i < info.message.length; i++) {
+                fs.rename(info.message[i].path, info.message[i].path.split('tmp')[0] + titles[i] + '.png', function(err) {
+                  if (err !== null) console.log(err);
+                })
+              }
+              res.send('Successfully uploaded ' + req.file.filename)
+            }
+          });
+        });
+      }, (err) => {
+        console.log(err)
+      })
+  } else {
+    res.send('Upload failed! Redirecting...')
+  }
+})
+
 
 module.exports = router

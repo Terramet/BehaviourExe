@@ -1,7 +1,7 @@
 var ses = null, robot, assigned
 var connected = false
 var language = null
-var loadedPlaylists = []
+var loadedPlaylists = [], connectedSlaves = []
 var loadedLanguageJSON = {}
 var recording = true
 var time = null
@@ -333,6 +333,14 @@ function getChildNameAsync(callback) {
   $('#childSave').click(function() {
     $('#childModal')[0].style.display = 'none'
     callback($('#cName')[0].value)
+  })
+}
+
+function getSlavePresentationAsync(callback) {
+  $('#slavePresentationModal')[0].style.display = 'block'
+  $('#slaveSave').click(function() {
+    $('#slavePresentationModal')[0].style.display = 'none'
+    callback($('input[name=radio]:checked', '#slavePresentation').parent().find('label')[0].innerHTML)
   })
 }
 

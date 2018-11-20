@@ -29,11 +29,11 @@ function connectToSlaves(slaves) {
   let ip = timeoutPromise(5000, robot.getIP())
   ip.then(response => {
     slaves.forEach((slave) => {
+      connectedSlaves.push(slave)
       socket.emit('sendToSlave', {
         socket: slave,
         masterSocket: socket.id,
-        message: response,
-        file: "/home/josh/Desktop/BehaviourExe/views/test.html"
+        message: response
       });
     })
   })

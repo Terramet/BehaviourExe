@@ -11,43 +11,6 @@ var multer = require('multer');
 
 var app = express();
 
-// const pptComposer = require('pptx-compose');
-// let composer = new pptComposer(); //instantiate
-
-// composer.parse('/home/josh/Desktop/BehaviourExe/public/uploads/Blood test.ppt', function (err, json) {
-//   fs.writeFileSync('/home/josh/Desktop/BehaviourExe/public/uploads/Blood_test.json', JSON.stringify(json, null, 2));
-// });
-
-// var toPdf = require("office-to-pdf")
-// var fs = require("fs")
-// var wordBuffer = fs.readFileSync("/home/josh/Desktop/BehaviourExe/public/uploads/Blood test.ppt")
-//
-// toPdf(wordBuffer).then(
-//   (pdfBuffer) => {
-//     fs.writeFileSync("tmp/test.pdf", pdfBuffer)
-//   }, (err) => {
-//     console.log(err)
-//   }
-// )
-
-// var pdf2img = require('pdf2img');
-//
-// var input   = 'tmp/test.pdf';
-//
-// pdf2img.setOptions({
-//   type: 'png',                                // png or jpg, default jpg
-//   size: 1024,                                 // default 1024
-//   density: 600,                               // default 600
-//   outputdir: __dirname + path.sep + 'tmp/output', // output folder, default null (if null given, then it will create folder name same as file name)
-//   outputname: 'test',                         // output file name, dafault null (if null given, then it will create image name same as input name)
-//   page: null                                  // convert selected page, default null (if null given, then it will convert all pages)
-// });
-//
-// pdf2img.convert(input, function(err, info) {
-//   if (err) console.log(err)
-//   else console.log(info);
-// });
-
 if (!process.argv.includes("-nu") && !process.argv.includes("--no-update")) {
   auto.compareVersions().then((remote) => {
     console.log('Current local version: ' + pjson.version + '\nCurrent release version: ' + remote[1]);
@@ -82,7 +45,24 @@ app.set('view engine', 'html');
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-app.use(multer({dest:'/public/uploads/'}).single('pptx'))
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    let path = './public/uploads/' + file.originalname.replace(' ', '_').split('.')[0] + '/'
+
+    if(!fs.existsSync(path)) {
+      fs.mkdirSync(path)
+    }
+
+    cb(null, path)
+  },
+  filename: function (req, file, cb) {
+    console.log()
+    cb(null, file.originalname.replace(' ', '_'))
+  }
+})
+
+app.use(multer({storage: storage}).single('pptx'))
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
