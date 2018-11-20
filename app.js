@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var auto = require('auto_updater')
 var pjson = require('./package.json');
+var run = require('child_process').exec
 var app = express();
 
 if (!process.argv.includes("-nu") && !process.argv.includes("--no-update")) {
@@ -15,6 +16,7 @@ if (!process.argv.includes("-nu") && !process.argv.includes("--no-update")) {
     if (remote === 1) {
       auto.downloadUpdate().then((result) => {
         console.log(result == null ? 'Updated':'')
+        run('npm install')
       })
     }
   })
