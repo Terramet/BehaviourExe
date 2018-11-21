@@ -241,9 +241,14 @@ router.post('/presentations', function(req, res) {
 router.post('/slave/getPresentation', function(req, res) {
   console.log(req)
   let dir = './public/uploads/' + req.body.pres + '/images'
-  let data = { dir: dir,
+  let data = { dir: req.body.pres,
               img: fs.readdirSync(dir) }
   res.send(JSON.stringify(data))
+})
+
+router.get('/slave/get/:dir/:img', function(req, res, next) {
+  console.log(baseDir + '/public/uploads/' + req.params.dir + '/images/' + req.params.img)
+  res.send(fs.readFileSync(baseDir + '/public/uploads/' + req.params.dir + '/images/' + req.params.img))
 })
 
 router.get('/get_slaves', function(req, res, next) {

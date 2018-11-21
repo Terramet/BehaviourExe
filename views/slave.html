@@ -69,8 +69,26 @@
           d = JSON.parse(d)
           d.img.forEach((img) => {
             console.log(img)
-            $("body").append( "<img src='"+ d.dir + '/' + img +"'>" );
+            $("body").append( "<img style='display: none' id='" + img.split('.')[0] + "' src='/slave/get/"+ d.dir + '/' + img +"'>" );
           })
+          sessionP.service("ALMemory").then(function(ALMemory) {
+            ALMemory.subscriber("ALTextToSpeech/CurrentSentence").then(function(sub) {
+              sub.signal.connect(function(value) {
+                console.log(value)
+                console.log(d.img)
+                for(i = 0; i < d.img.length; i++) {
+                  console.log(d.img[i].split('.')[0])
+                  if(value.includes(d.img[i].split('.')[0])) {
+                    x = document.getElementsByTagName('img')
+                    for(j = 0; j < x.length; j++) {
+                      x[j].style.display = 'none'
+                    }
+                    document.getElementById(d.img[i].split('.')[0]).style.display = 'block';
+                  }
+                }
+              });
+            });
+          });
         }
       })
     })

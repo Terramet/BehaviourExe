@@ -247,7 +247,6 @@
   <script>
     var socket = io.connect('http://localhost:3000');
     socket.on('connect', function() {
-
       socket.emit('recieveUserNameMaster', {
         //normally this would be dynamically added based on user input, but for examples sake
         name: 'master-'
