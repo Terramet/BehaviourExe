@@ -40,6 +40,7 @@
       </div>
     </div>
   </div>
+
   <!-- The Modal-->
   <div class="modal" id="connectModal">
     <!-- Modal content-->
@@ -55,6 +56,7 @@
       </div>
     </div>
   </div>
+
   <div class="modal" id="childModal">
     <div class="modal-content autoModal" style="display: table;"><span class="close" id="childClose">×</span>
       <div>
@@ -68,6 +70,7 @@
       </div>
     </div>
   </div>
+
   <div class="modal" id="restoreModal">
     <div class="modal-content autoModal" style="display: table;"><span class="close" id="restoreClose">×</span>
       <div>
@@ -81,6 +84,7 @@
       </div>
     </div>
   </div>
+
   <div class="modal" id="createModal">
     <div class="modal-content" style="min-width: 680px;"><span class="close" id="createClose">×</span>
       <h4 class="center" id="createPlaylistTitle">Create Playlist</h4>
@@ -97,25 +101,26 @@
       </form>
     </div>
   </div>
+
   <div class="modal" id="assignModal">
     <div class="modal-content autoModal"><span class="close" id="assignClose">×</span>
       <h4 class="center" id="assignPlaylistTitle">Assign Playlist</h4>
       <form id="assignForm" style="margin: auto; margin-top: 20px; display: block; text-align:center;" onsubmit="return false;" method="post" autocomplete="on">
         <div style="margin: auto; display: block;">
           <div>
-            <button id="mainBehave">Interaction</button>&nbsp;
+            <button id="mainBehave" style="float: left; width: 150px">Interaction</button>&nbsp;
             &nbsp;
-            <select id="mainBehaviour"></select>
+            <select id="mainBehaviour" style="margin-top: 7px"></select>
           </div>
           <div>
-            <button id="positiveBehave">Positive</button>&nbsp;
+            <button id="positiveBehave" style="float: left; width: 150px">Positive</button>&nbsp;
             &nbsp;
-            <select id="positiveBehaviour"></select>
+            <select id="positiveBehaviour" style="margin-top: 7px"></select>
           </div>
           <div>
-            <button id="negativeBehave">Negative</button>&nbsp;
+            <button id="negativeBehave" style="float: left; width: 150px">Negative</button>&nbsp;
             &nbsp;
-            <select id="negativeBehaviour"></select>
+            <select id="negativeBehaviour" style="margin-top: 7px"></select>
           </div>
           <div>
             <button id="saveAssignments" onclick="saveAssigned()">Save</button>
@@ -124,6 +129,7 @@
       </form>
     </div>
   </div>
+
   <div class="modal" id="editModal">
     <div class="modal-content"><span class="close" id="editClose">x</span>
       <h4 class="center" id="editPlaylistsTitle">Edit Playlists</h4>
@@ -134,17 +140,20 @@
       </form>
     </div>
   </div>
+
   <div class="modal" id="viewModal">
     <div class="modal-content"><span class="close" id="viewClose">x</span>
       <h4 class="center" id="viewVideosTitle">View Videos</h4>
       <form id="viewForm" style="margin-top: 10px; display: block; text-align: center;" method="post" onsubmit="return false;" autocomplete="on"></form>
     </div>
   </div>
+
   <div class="modal" id="videoModal">
     <div class="modal-content"><span class="close" id="videoClose">x</span>
       <form id="videoForm" style="margin-top: 10px; display: block; text-align: center;" method="post" onsubmit="return false;" autocomplete="on"></form>
     </div>
   </div>
+
   <div class="modal" id="langModal">
     <div class="modal-content"><span class="close" id="langClose">x</span>
       <h4 class="center" id="changeLangTitle" style="margin: auto;">Change Language</h4>
@@ -153,6 +162,7 @@
       </form>
     </div>
   </div>
+
   <form id="executionForm" style="position: absolute; margin-left: auto; margin-right: auto; left: 0; right: 0; margin-top: 10px;" method="post" onsubmit="return false;" autocomplete="on">
     <div>
       <h4 id="executionFormTitle" style="text-align:center; padding-top: 15px;">Behaviour Execution</h4>
@@ -169,10 +179,11 @@
       <button id="posB" style="float: left; width: 49%;" onclick="playNext(&quot;pos&quot;, this)">Positive</button>
       <button id="negB" style="float: right; width: 49%;" onclick="playNext(&quot;neg&quot;, this)">Negative</button>
     </div>
-    <divconnectedUserMapSlave>
+    <div>
       <button class="red" id="stopB" style="float: centre; width: 100%;" onclick="stopBehaviour()">STOP</button>
-    </divconnectedUserMapSlave>
+    </div>
   </form>
+
   <div class="footer" id="debugDiv" style="margin-top: 10px; background-color: black; color: green; overflow-y: scroll;"></div>
   <script>
     $(function() {

@@ -321,7 +321,7 @@ img {
 .drop-pop button {
   width: 100%;
   background: transparent;
-  color: #ffffff;
+  color: #000;
   border-width: 0px;
   padding: 8px 24px;
   box-shadow: none;
