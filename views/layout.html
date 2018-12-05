@@ -1,234 +1,178 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <!-- application css-->
-  <link rel="stylesheet" href="/stylesheets/style.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1, height=device-height">
+
   <meta charset="utf-8">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <script src="main.js" type="text/javascript"></script>
-  <script src="/split_code/ajax_requests.js" type="text/javascript"></script>
-  <script src="/split_code/assign_modal.js" type="text/javascript"></script>
-  <script src="/split_code/create_modal.js" type="text/javascript"></script>
-  <script src="/split_code/edit_modal.js" type="text/javascript"></script>
-  <script src="/split_code/lang_modal.js" type="text/javascript"></script>
-  <script src="/split_code/video_modal.js" type="text/javascript"></script>
-  <script src="/split_code/view_modal.js" type="text/javascript"></script>
-  <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Behaviour Executer</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+
+  <style>
+    .modal-header {
+         min-height: 16.42857143px;
+         padding: 15px;
+         border-bottom: 0px solid #e5e5e5;
+      }
+
+      .modal-footer {
+         padding: 15px;
+         text-align: right;
+         border-top: 0px solid #e5e5e5;
+      }
+
+      body, html {
+        background-color: rgba(98, 189, 201, 0.801);
+        font-family: 'Nunito', sans-serif;
+      }
+    </style>
 </head>
 
-<body class="unselectable wrapper">
-  <!-- Trigger/Open The Modal-->
-  <div style="width: 100%; height: 3.5em;">
-    <div style="float: right; padding: 10px 10px 10px 10px;">
-      <button id="connectBtn" onclick="$('#connectModal')[0].style.display = &quot;block&quot;">Connect</button>
+<body>
+
+  <div id="wrapper">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+      <ul class="sidebar-nav">
+        <li class="sidebar-brand text-black">
+          <a id="connectBtn" href="#" data-toggle="modal" data-target="#connectModal">
+            Connect
+          </a>
+        </li>
+        <li>
+          <a href="#" data-toggle="modal" data-target="#createModal" id="createPlaylistBtn">Create Playlist</a>
+        </li>
+        <li>
+          <a href="#" data-toggle="modal" data-target="#editModal" id="editPlaylistsBtn">Edit Playlists</a>
+        </li>
+        <li>
+          <a href="#" data-toggle="modal" data-target="#assignModal" id="assignPlaylistsBtn">Assign Playlist</a>
+        </li>
+        <li>
+          <a href="#" data-toggle="modal" data-target="#langModal" id="changeLangBtn">Language</a>
+        </li>
+        <li>
+          <a href="#" data-toggle="modal" data-target="#viewModal" id="viewVideosBtn">View Videos</a>
+        </li>
+      </ul>
     </div>
-    <div style="float: right; padding: 10px 10px 10px 10px; width: 200px;">
-      <div class="drop-button-wrap">
-        <input id="settings" type="checkbox">
-        <label class="drop-button" id="settingsLabel" for="settings">Settings</label>
-        <div class="drop-pop" style="z-index: 1;">
-          <div class="show-large">
-            <button id="createPlaylistBtn" type="reset">Create Playlist</button>
-            <button id="editPlaylistsBtn" type="reset">Edit Playlists</button>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div style="height: 100%" id="page-content-wrapper">
+
+      <div class="container-fluid">
+        <a href="#menu-toggle" class="btn-lg btn-secondary font-weight-bold" id="menu-toggle">&#8801;</a>
+        <span id="message-holder"></span>
+      </div>
+
+      <form class="offset-3.5 col-lg-4 col-4 col-md-6 col-xs-12 h-50" style="display: none;" id="executionForm" method="post" onsubmit="return false;" autocomplete="on">
+        <div class="m-2">
+          <div class="container-fluid text-center">
+            <h4 class="m-2" id="executionFormTitle">Behaviour Execution</h4>
           </div>
-          <button id="assignPlaylistsBtn" type="reset">Assign Playlist</button>
-          <button id="changeLangBtn" type="reset">Language</button>
-          <button id="viewVideosBtn" type="reset">View Videos</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- The Modal-->
-  <div class="modal" id="connectModal">
-    <!-- Modal content-->
-    <div class="modal-content autoModal" style="display: table;"><span class="close" id="connectClose">×</span>
-      <div>
-        <form id="IPentry" method="post" style="display: block;" onsubmit="return false;" autocomplete="on">
-          <h4 id="enterIPTitle" style="text-align:center; padding-top: 15px;">Please enter the IP Address of the robot below</h4>
-          <input id="IP" style="display: inline-block; width: 100%;" type="text" placeholder="IP Address" tabindex="1" required="" autofocus="">
-        </form>
-      </div>
-      <div style="text-align:center;">
-        <button id="connectSave" style="display: block; margin: auto;" onclick="createSession()">Save</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal" id="childModal">
-    <div class="modal-content autoModal" style="display: table;"><span class="close" id="childClose">×</span>
-      <div>
-        <form id="childsName" method="post" style="display: block;" onsubmit="return false;" autocomplete="on">
-          <h4 id="enterNameTitle" style="text-align:center; padding-top: 15px;">Please enter the name of the child</h4>
-          <input id="cName" style="display: inline-block; width: 100%;" type="text" placeholder="Childs name" tabindex="1" required="" autofocus="">
-        </form>
-      </div>
-      <div style="text-align:center;">
-        <button id="childSave" style="display: block; margin: auto;">Save</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal" id="restoreModal">
-    <div class="modal-content autoModal" style="display: table;"><span class="close" id="restoreClose">×</span>
-      <div>
-        <form id="restoreForm" method="post" style="display: block;" onsubmit="return false;" autocomplete="on">
-          <h4 id="restoreTitle" style="text-align:center; padding-top: 15px;">You have a previous session stored for a child named: %child%. Would you like to restore it?</h4>
-        </form>
-      </div>
-      <div style="text-align:center;">
-        <button id="restoreYes" style="display: block; margin: auto; float: left; width: 49%;">Yes</button>
-        <button id="restoreNo" style="display: block; margin: auto; float: right; width: 49%;">No</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal" id="createModal">
-    <div class="modal-content" style="min-width: 680px;"><span class="close" id="createClose">×</span>
-      <h4 class="center" id="createPlaylistTitle">Create Playlist</h4>
-      <form id="playlistForm" style="margin: auto; margin-top: 20px; display: inline-block; text-align:center;" onsubmit="return false;" method="post" autocomplete="on">
-        <div style="margin: auto; margin-left: -40px; display: block; min-width: 680px;">
-          <input id="playlistName" style="margin: auto; text-align: center; min-width: 250px;" type="text" placeholder="Enter a name for your playlist" tabindex="3" autofocus="">&nbsp;
-          &nbsp;
-          <input id="savePlaylistBtn" style="margin: auto; margin-bottom: 10px;" type="submit" value="Save" onclick="savePlaylist()">
-        </div>
-        <div style="margin: auto; display: inline-block; min-width: 680px;">
-          <ul class="sortable connectedSortable" id="behaveListAvailable"></ul>
-          <ul class="sortable connectedSortable" id="behaveListPlaylist"></ul>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal" id="assignModal">
-    <div class="modal-content autoModal"><span class="close" id="assignClose">×</span>
-      <h4 class="center" id="assignPlaylistTitle">Assign Playlist</h4>
-      <form id="assignForm" style="margin: auto; margin-top: 20px; display: block; text-align:center;" onsubmit="return false;" method="post" autocomplete="on">
-        <div style="margin: auto; display: block;">
-          <div>
-            <button id="mainBehave" style="float: left; width: 150px">Interaction</button>&nbsp;
-            &nbsp;
-            <select id="mainBehaviour" style="margin-top: 7px"></select>
+          <div class="row h-40">
+            <button class="col container-fluid m-2" id="replayB" style="height: 66px;" onclick="playCurrent(&quot;main&quot;, this)">Repeat </button>
+            <button class="col container-fluid m-2" id="nextB" onclick="playNext(&quot;main&quot;, this)">Next</button>
           </div>
-          <div>
-            <button id="positiveBehave" style="float: left; width: 150px">Positive</button>&nbsp;
-            &nbsp;
-            <select id="positiveBehaviour" style="margin-top: 7px"></select>
+          <div class="row">
+            <input class="col soft-input m-2" id="sayText" type="text" placeholder="Enter text to say" tabindex="3" autofocus="">
+            <button class="col container-fluid m-2" id="sayBtn" type="submit" tabindex="1" onclick="say()">Submit</button>
           </div>
-          <div>
-            <button id="negativeBehave" style="float: left; width: 150px">Negative</button>&nbsp;
-            &nbsp;
-            <select id="negativeBehaviour" style="margin-top: 7px"></select>
+          <div class="row">
+            <button class="col container-fluid m-2" id="posB" onclick="playNext(&quot;pos&quot;, this)">Positive</button>
+            <button class="col container-fluid m-2" id="negB" onclick="playNext(&quot;neg&quot;, this)">Negative</button>
           </div>
-          <div>
-            <button id="saveAssignments" onclick="saveAssigned()">Save</button>
+          <div class="row">
+            <button class="col container-fluid m-2 red" id="stopB" onclick="stopBehaviour()">STOP</button>
           </div>
         </div>
       </form>
     </div>
-  </div>
 
-  <div class="modal" id="editModal">
-    <div class="modal-content"><span class="close" id="editClose">x</span>
-      <h4 class="center" id="editPlaylistsTitle">Edit Playlists</h4>
-      <form id="playlistForm" style="margin: auto; margin-top: 20px; display: inline-block; text-align:center;" onsubmit="return false;" method="post" autocomplete="on">
-        <div style="margin: auto; display: block;">
-          <button id="deleteAll" style="float: center;" onclick="clearPlaylists()">Delete All Playlists</button>
+    <!-- /#page-content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <template id="modal-template">
+
+    <div class="modal" id="myModal">
+      <div class="modal-content"><span class="close" data-dismiss="modal">x</span>
+        <h4 class="modal-title m-2">Modal title</h4>
+
+        <div class="modal-body">
         </div>
-      </form>
-    </div>
-  </div>
 
-  <div class="modal" id="viewModal">
-    <div class="modal-content"><span class="close" id="viewClose">x</span>
-      <h4 class="center" id="viewVideosTitle">View Videos</h4>
-      <form id="viewForm" style="margin-top: 10px; display: block; text-align: center;" method="post" onsubmit="return false;" autocomplete="on"></form>
+        <div class="foot container">
+          <button type="button" class="offset-4 col-4 btn btn-success" data-dismiss="modal">Close</button>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <div class="modal" id="videoModal">
-    <div class="modal-content"><span class="close" id="videoClose">x</span>
-      <form id="videoForm" style="margin-top: 10px; display: block; text-align: center;" method="post" onsubmit="return false;" autocomplete="on"></form>
-    </div>
-  </div>
+  </template>
 
-  <div class="modal" id="langModal">
-    <div class="modal-content"><span class="close" id="langClose">x</span>
-      <h4 class="center" id="changeLangTitle" style="margin: auto;">Change Language</h4>
-      <form id="langForm" style="margin-top: 10px; display: block; text-align: center;" method="post" onsubmit="return false;" autocomplete="on">
-        <div class="container" id="langRadioContainer" style="text-align: center; margin-top: 20px;"></div>
-      </form>
-    </div>
-  </div>
+  <template id="error-template">
+    <span id="message-value-error" class="error-msg">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </template>
 
-  <form id="executionForm" style="position: absolute; margin-left: auto; margin-right: auto; left: 0; right: 0; margin-top: 10px;" method="post" onsubmit="return false;" autocomplete="on">
-    <div>
-      <h4 id="executionFormTitle" style="text-align:center; padding-top: 15px;">Behaviour Execution</h4>
-    </div>
-    <div>
-      <button id="replayB" style="float: left; width: 49%; height: 66px;" onclick="playCurrent(&quot;main&quot;, this)">Repeat </button>
-      <button id="nextB" style="float: right; width: 49%; height: 66px;" onclick="playNext(&quot;main&quot;, this)">Next</button>
-    </div>
-    <div>
-      <input id="sayText" style="margin-bottom: 10px; margin-top: 5px; max-width: 49%;" type="text" placeholder="Enter text to say" tabindex="3" autofocus="">
-      <button id="sayBtn" style="float: right; width: 49%; margin-top: 7px;" type="submit" tabindex="1" onclick="say()">Submit</button>
-    </div>
-    <div>
-      <button id="posB" style="float: left; width: 49%;" onclick="playNext(&quot;pos&quot;, this)">Positive</button>
-      <button id="negB" style="float: right; width: 49%;" onclick="playNext(&quot;neg&quot;, this)">Negative</button>
-    </div>
-    <div>
-      <button class="red" id="stopB" style="float: centre; width: 100%;" onclick="stopBehaviour()">STOP</button>
-    </div>
-  </form>
+  <template id="info-template">
+    <span id="message-value-info" class="info-msg">
+      <i class="fa fa-info-circle"></i>
+    </span>
+  </template>
 
-  <div class="footer" id="debugDiv" style="margin-top: 10px; background-color: black; color: green; overflow-y: scroll;"></div>
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="main.js" type="text/javascript"></script>
+  <script src="js/createModals.js" type="text/javascript"></script>
+  <script src="js/ajax_requests.js" type="text/javascript"></script>
+  <script src="js/assign_modal.js" type="text/javascript"></script>
+  <script src="js/create_modal.js" type="text/javascript"></script>
+  <script src="js/edit_modal.js" type="text/javascript"></script>
+  <script src="js/lang_modal.js" type="text/javascript"></script>
+  <script src="js/video_modal.js" type="text/javascript"></script>
+  <script src="js/view_modal.js" type="text/javascript"></script>
+  <script src="scripts/Assigned.js" type="text/javascript"></script>
+  <script src="scripts/Playlist.js" type="text/javascript"></script>
+  <script src="scripts/Robot.js" type="text/javascript"></script>
+  <script src="scripts/Session.js" type="text/javascript"></script>
+  <script src="/libs/qimessaging/1.0/qimessaging.js"></script>
+  <script src="/libs/qimessaging/1.0/socket.io.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+  <!-- Menu Toggle Script -->
   <script>
-    $(function() {
-      $(".sortable").sortable({
-        connectWith: ".connectedSortable"
-      }).disableSelection();
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
     });
-
-    $(".close").click(function() {
-      closeModal(this.parentElement.parentElement.id);
-    })
 
     $(document).ready(function() {
       modalEvents();
+      createDisplayModals();
+
+      $(function() {
+        $(".sortable").sortable({
+          connectWith: ".connectedSortable"
+        }).disableSelection();
+      });
+
       $.when(loadLanguage(), loadPlaylists()).then(function() {
         attemptAutoConnect();
       });
     });
-
-    if (typeof console != "undefined")
-      if (typeof console.log != 'undefined')
-        console.olog = console.log;
-      else
-        console.olog = function() {};
-
-    console.log = function(message) {
-      console.olog(message);
-      if (message !== undefined) {
-        $('#debugDiv').append('<p> > ' + getTime() + " " + message + '</p>');
-        document.getElementById('debugDiv').scrollTop = document.getElementById('debugDiv').scrollHeight;
-      }
-    };
-    console.error = console.debug = console.info = console.log
-
-    window.onbeforeunload = function() {
-      stopBehaviour();
-    };
   </script>
-  <!-- qimessaging & jquery stuff-->
-  <script src="/libs/qimessaging/1.0/qimessaging.js"></script>
-  <script src="/libs/qimessaging/1.0/socket.io.min.js"></script>
-  <script src="/scripts/Session.js"></script>
-  <script src="/scripts/Robot.js"></script>
-  <script src="/scripts/Playlist.js"></script>
-  <script src="/scripts/Assigned.js"></script>
+
 </body>
 
 </html>

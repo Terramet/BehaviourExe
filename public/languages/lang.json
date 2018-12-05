@@ -152,8 +152,12 @@
         "id": "connectionLostAlert"
       },
       {
-        "text": "Connect failed reason: ",
+        "text": "Connecting to the robot failed: ",
         "id": "connectIPCatch"
+      },
+      {
+        "text": "You may need to connect manually. Click the Connect button in the menu to get started.",
+        "id": "helpManualConnect"
       },
       {
         "text": "No playlist assigned to buttons. \nPlease go to Settings > Assign Playlist.",
@@ -300,7 +304,7 @@
         "id": "connectionLostAlert"
       },
       {
-        "text": "La connexion a échoué: ",
+        "text": "La connexion au robot a échoué: ",
         "id": "connectIPCatch"
       },
       {
