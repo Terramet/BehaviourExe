@@ -160,7 +160,7 @@
         "id": "helpManualConnect"
       },
       {
-        "text": "No playlist assigned to buttons. \nPlease go to Settings > Assign Playlist.",
+        "text": "No playlist assigned to buttons. \nPlease go to Menu > Assign Playlist.",
         "id": "noPlaylists"
       }
     ],
@@ -315,10 +315,10 @@
     "Italiano": [
       {
         "text": [
-          "Connect",
-          "Attempting to connect...",
-          "Connected",
-          "Disconnected"
+          "Collegare",
+          "Tentativo di connessione...",
+          "Collegato",
+          "Scollegato"
         ],
         "id": "connectBtn"
       },
@@ -327,23 +327,23 @@
         "id": "settingsLabel"
       },
       {
-        "text": "Create Playlist",
+        "text": "Crea una Playlist",
         "id": "createPlaylistBtn"
       },
       {
-        "text": "Edit Playlists",
+        "text": "Modifca la Playlist",
         "id": "editPlaylistsBtn"
       },
       {
-        "text": "Assign Playlist",
+        "text": "Assegna la Playlist",
         "id": "assignPlaylistsBtn"
       },
       {
-        "text": "Language",
+        "text": "Linguaggio",
         "id": "changeLangBtn"
       },
       {
-        "text": "View Videos",
+        "text": "Guarda i Video",
         "id": "viewVideosBtn"
       },
       {
@@ -351,24 +351,24 @@
         "id": "connectToSlavesBtn"
       },
       {
-        "text": "Please enter the IP Address of the robot below",
+        "text": "Per favore inserisci qui sotto l'indirizzo IP del robot",
         "id": "enterIPTitle"
       },
       {
-        "text": "Please enter the name of the child",
+        "text": "Per favore inserisci il nome del Bambino",
         "id": "enterNameTitle"
       },
       {
-        "text": "Save",
+        "text": "Salva",
         "id": "connectSave"
       },
       {
-        "text": "Childs Name",
+        "text": "Nome del Bambino",
         "id": "cName"
       },
       {
         "NOTE": "DO NOT REMOVE %child% WHEN TRANSLATING THIS FILE",
-        "text": "You have a previous session stored for a child named: %child%. Would you like to restore it?",
+        "text": "Hai una sessione precedente memorizzata per un bambino di nome: %child%. Vorresti ripristinarlo?",
         "id": "restoreTitle"
       },
       {
@@ -380,79 +380,79 @@
         "id": "restoreNo"
       },
       {
-        "text": "Create Playlist",
+        "text": "Crea la Playlist",
         "id": "createPlaylistTitle"
       },
       {
-        "text": "Enter a name for your playlist",
+        "text": "Inserisci un nome per la tua playlist",
         "id": "playlistName"
       },
       {
-        "text": "Assign Playlist",
+        "text": "Assegna la Playlist",
         "id": "assignPlaylistTitle"
       },
       {
-        "text": "Interaction",
+        "text": "Interazione",
         "id": "mainBehave"
       },
       {
-        "text": "Positive",
+        "text": "Positiva",
         "id": "positiveBehave"
       },
       {
-        "text": "Negative",
+        "text": "Negativa",
         "id": "negativeBehave"
       },
       {
-        "text": "Save",
+        "text": "Salva",
         "id": "saveAssignments"
       },
       {
-        "text": "Edit Playlists",
+        "text": "Modifica la Playlist",
         "id": "editPlaylistsTitle"
       },
       {
-        "text": "Delete All Playlists",
+        "text": "Cancella tutte le Playlist",
         "id": "deleteAll"
       },
       {
-        "text": "View Videos",
+        "text": "Guarda i video",
         "id": "viewVideosTitle"
       },
       {
-        "text": "Change Language",
+        "text": "Cambia lingua",
         "id": "changeLangTitle"
       },
       {
-        "text": "Connect To Slaves",
+        "text": "Connetti agli schiavi",
         "id": "connectSlavesTitle"
       },
       {
-        "text": "Connect",
+        "text": "Collegare",
         "id": "connectToListOfSlaves"
       },
       {
-        "text": "Behaviour Execution",
+        "text": "Esecuzione del comportamento",
         "id": "executionFormTitle"
       },
       {
-        "text": "Repeat",
+        "text": "Ripetere",
         "id": "replayB"
       },
       {
-        "text": "Next",
+        "text": "Avanti",
         "id": "nextB"
       },
       {
-        "text": "Say",
+        "text": "Leggi",
         "id": "sayBtn"
       },
       {
-        "text": "Positive",
+        "text": "Positivo",
         "id": "posB"
       },
       {
-        "text": "Negative",
+        "text": "Negativo",
         "id": "negB"
       },
       {
@@ -460,15 +460,19 @@
         "id": "stopB"
       },
       {
-        "text": "Connection to the robot has been lost. The page will now refresh.",
+        "text": "La connessione al robot è stata persa. La pagina verrà aggiornata.",
         "id": "connectionLostAlert"
       },
       {
-        "text": "Connect failed reason: ",
+        "text": "Connessione al robot fallita:",
         "id": "connectIPCatch"
       },
       {
-        "text": "No playlist assigned to buttons. \nPlease go to Settings > Assign Playlist.",
+        "text": "Potrebbe essere necessario connettersi manualmente. Fai clic sul pulsante Connetti nel menu per iniziare.",
+        "id": "helpManualConnect"
+      },
+      {
+        "text": "Nessuna playlist assegnata ai pulsanti. \nVai a Menu > Assegna playlist.",
         "id": "noPlaylists"
       }
     ]
