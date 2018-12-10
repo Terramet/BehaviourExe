@@ -162,6 +162,26 @@
       {
         "text": "No playlist assigned to buttons. \nPlease go to Menu > Assign Playlist.",
         "id": "noPlaylists"
+      },
+      {
+        "text": "To get the IP Address of your Nao robot: Fully press down the button on his chest, then release and he will read it aloud.",
+        "id": "connectHelp"
+      },
+      {
+        "text": "The list on the left is a list of all the behaviours your robot has installed. Simply drag the a behaviour from the left box, to the right box, give your playlist a name and click save.",
+        "id": "createHelp"
+      },
+      {
+        "text": "Select one language from the ones available, it will automatically change to that language as soon as you select it",
+        "id": "langHelp"
+      },
+      {
+        "text": "Clicking one of the button names will open a new small window that will play the correlated video.",
+        "id": "viewHelp"
+      },
+      {
+        "text": "Currently the only thing you are able to do with edit is to delete all playlist, this is irreversable!",
+        "id": "editHelp"
       }
     ],
     "Français": [
@@ -310,6 +330,26 @@
       {
         "text": "Aucune playlist assignée aux boutons. \nVeuillez accéder à Paramètres > Attribuer une liste de lecture.",
         "id": "noPlaylists"
+      },
+      {
+        "text": "Pour obtenir l'adresse IP de votre robot Nao: Appuyez à fond sur le bouton situé sur sa poitrine, puis relâchez-le et il la lira à voix haute.",
+        "id": "connectHelp"
+      },
+      {
+        "text": "La liste à gauche est une liste de tous les comportements installés par votre robot. Faites simplement glisser le comportement a de la case de gauche vers la case de droite, donnez un nom à votre liste de lecture et cliquez sur Enregistrer.",
+        "id": "createHelp"
+      },
+      {
+        "text": "Sélectionnez une langue parmi celles disponibles, elle passera automatiquement à cette langue dès que vous la sélectionnez.",
+        "id": "langHelp"
+      },
+      {
+        "text": "En cliquant sur l'un des noms de bouton, une nouvelle petite fenêtre s'ouvre pour lire la vidéo corrélée.",
+        "id": "viewHelp"
+      },
+      {
+        "text": "Actuellement, la seule chose que vous puissiez faire avec l'édition est de supprimer toute la liste de lecture, c'est irréversible",
+        "id": "editHelp"
       }
     ],
     "Italiano": [
@@ -353,6 +393,10 @@
       {
         "text": "Per favore inserisci qui sotto l'indirizzo IP del robot",
         "id": "enterIPTitle"
+      },
+      {
+        "text": "Per ottenere l'indirizzo IP del tuo robot Nao: premi completamente il pulsante sul petto e lui lo leggerà ad alta voce.",
+        "id": "connectHelp"
       },
       {
         "text": "Per favore inserisci il nome del Bambino",
@@ -472,8 +516,28 @@
         "id": "helpManualConnect"
       },
       {
-        "text": "Nessuna playlist assegnata ai pulsanti. \nVai a Menu > Assegna playlist.",
+        "text": "Nessuna playlist assegnata ai pulsanti. \nVai a Menu > Assegna Playlist.",
         "id": "noPlaylists"
+      },
+      {
+        "text": "Per ottenere l'indirizzo IP del tuo robot Nao: premi completamente il pulsante sul petto, quindi rilascialo e lui lo leggerà ad alta voce.",
+        "id": "connectHelp"
+      },
+      {
+        "text": "L'elenco a sinistra è un elenco di tutti i comportamenti che il tuo robot ha installato. Basta trascinare un comportamento dalla casella di sinistra, alla casella di destra, dare un nome alla playlist e fare clic su Salva.",
+        "id": "createHelp"
+      },
+      {
+        "text": "Seleziona una lingua tra quelle disponibili, cambierà automaticamente in quella lingua non appena la selezioni",
+        "id": "langHelp"
+      },
+      {
+        "text": "Facendo clic su uno dei nomi dei pulsanti si aprirà una nuova piccola finestra che riprodurrà il video correlato.",
+        "id": "viewHelp"
+      },
+      {
+        "text": "Attualmente l'unica cosa che puoi fare con edit è cancellare tutte le playlist, questo è irreversibile!",
+        "id": "editHelp"
       }
     ]
   }
