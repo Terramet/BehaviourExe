@@ -23,14 +23,14 @@ function populateLanguageModal() {
       container.appendChild(radioDiv);
     });
 
-  $('input[type=radio]', '#langModal .modal-body')
+  $('input[type=radio]', '#langModal .modal-content')
     .change(function () {
       setCookie('language', $('input[name=radio]:checked',
-          '#langModal .modal-body')
+          '#langModal .modal-content')
         .parent()
         .find('label')[0].innerHTML, 7);
       applyLanguage($('input[name=radio]:checked',
-          '#langModal .modal-body')
+          '#langModal .modal-content')
         .parent()
         .find('label')[0].innerHTML);
     });
@@ -49,9 +49,8 @@ function applyLanguageCookie(lang) {
   });
 }
 
-function applyLanguage(lang) {
-  language = lang;
-  loadedLanguageJSON.Languages[lang].forEach(function (lang) {
+function applyLanguage(language) {
+  loadedLanguageJSON.Languages[language].forEach(function (lang) {
     if (lang.id === 'connectBtn') {
       $('#' + lang.id)[0].innerHTML = lang.text[0];
     } else if ($('#' + lang.id)[0] != null) {
