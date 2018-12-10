@@ -39,15 +39,15 @@ class Robot {
 
   startBehaviourManager(callbackStart = null, callbackStop = null) {
     this.session.service('ALBehaviorManager')
-      .done((bm) => {
-        bm.behaviorStarted.connect((data) => {
+      .done(function (bm) {
+        bm.behaviorStarted.connect(function (data) {
           console.log(data);
           if (callbackStart !== null) {
             callbackStart(data);
           }
         });
 
-        bm.behaviorStopped.connect((data) => {
+        bm.behaviorStopped.connect(function (data) {
           if (callbackStop !== null) {
             callbackStop(data);
           }
@@ -57,20 +57,20 @@ class Robot {
 
   getBehaviours() {
     return this.session.service('ALBehaviorManager')
-      .then((bm) => {
-        bm.getInstalledBehaviors()
-          .then((data) => {
-            data;
+      .then(function (bm) {
+        return bm.getInstalledBehaviors()
+          .then(function (data) {
+            return data;
           });
       });
   }
 
   isBehaviorInstalled(behaviour) {
     return this.session.service('ALBehaviorManager')
-      .then((bm) => {
-        bm.isBehaviorInstalled(behaviour)
-          .then((a) => {
-            a;
+      .then(function (bm) {
+        return bm.isBehaviorInstalled(behaviour)
+          .then(function (a) {
+            return a;
           });
       });
   }
@@ -87,59 +87,59 @@ class Robot {
 
   stopBehaviour() {
     this.session.service('ALBehaviorManager')
-      .then((bm) => {
+      .then(function (bm) {
         bm.stopAllBehaviors();
       });
   }
 
   say(data) {
     this.session.service('ALAnimatedSpeech')
-      .then((as) => {
+      .then(function (as) {
         as.say(data);
       });
   }
 
   getRobotName() {
     return this.session.service('ALSystem')
-      .then((s) => {
-        s.robotName();
+      .then(function (s) {
+        return s.robotName();
       });
   }
 
   getIP() {
     return this.session.service('ALConnectionManager')
-      .then((cm) => {
-        cm.services()
-          .then((data) => {
-            data[0][9][1][1][1];
+      .then(function (cm) {
+        return cm.services()
+          .then(function (data) {
+            return data[0][9][1][1][1];
           });
       });
   }
 
   setALMemoryValue(key, val) {
     this.session.service('ALMemory')
-      .then((mem) => {
+      .then(function (mem) {
         mem.insertData(key, val);
       });
   }
 
   disconnect() {
     this.session.service('ALBehaviorManager')
-      .then((bm) => {
+      .then(function (bm) {
         bm.behaviorStarted.disconnect();
       });
   }
 
   startRecording(childName) {
     this.session.service('ALAudioRecorder')
-      .then((ar) => {
+      .then(function (ar) {
         ar.startMicrophonesRecording('/home/nao/recordings/microphones/' + childName + '_' +
           time + '.wav', 'wav', 16000, [0, 0, 1, 0]);
         console.log('Recording audio.');
       });
 
     this.session.service('ALVideoRecorder')
-      .then((vr) => {
+      .then(function (vr) {
         vr.setResolution(1);
         vr.setFrameRate(10);
         vr.setVideoFormat('MJPG');
@@ -150,13 +150,13 @@ class Robot {
 
   stopRecording() {
     this.session.service('ALAudioRecorder')
-      .then((ar) => {
+      .then(function (ar) {
         ar.stopMicrophonesRecording();
         console.log('Recording audio finished.');
       });
 
     this.session.service('ALVideoRecorder')
-      .then((vr) => {
+      .then(function (vr) {
         vr.stopRecording();
         console.log('Recording video finished.');
       });
