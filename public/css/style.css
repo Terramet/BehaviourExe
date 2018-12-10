@@ -1,143 +1,34 @@
-@import url('//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css');
-
-body {
-  overflow-x: hidden;
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-#wrapper {
-  padding-left: 0;
-  -webkit-transition: all 0.5s ease;
-  -moz-transition: all 0.5s ease;
-  -o-transition: all 0.5s ease;
-  transition: all 0.5s ease;
-}
-
-#wrapper.toggled {
-  padding-left: 250px;
-}
-
-#sidebar-wrapper {
-  z-index: 1000;
-  position: fixed;
-  left: 250px;
-  width: 0;
+html, body {
+  font-family: 'Nunito', sans-serif;
+  color: #384047;
+  background: rgba(98, 189, 201, 0.801);
   height: 100%;
-  margin-left: -250px;
-  overflow-y: auto;
-  background: #ffb347;
-  -webkit-transition: all 0.5s ease;
-  -moz-transition: all 0.5s ease;
-  -o-transition: all 0.5s ease;
-  transition: all 0.5s ease;
 }
 
-#wrapper.toggled #sidebar-wrapper {
-  width: 250px;
+.wrapper {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -142px;
+  /* the bottom margin is the negative value of the footer's height */
 }
 
-#page-content-wrapper {
+.footer, .push {
+  position: fixed;
+  bottom: 0%;
   width: 100%;
-  position: absolute;
-  padding: 15px;
+  height: 142px;
+  /* .push must be the same height as .footer */
 }
 
-#wrapper.toggled #page-content-wrapper {
-  position: absolute;
-  margin-right: -250px;
-}
-
-/* Sidebar Styles */
-
-.sidebar-nav {
-  position: absolute;
-  top: 0;
-  width: 250px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.sidebar-nav li {
-  text-indent: 20px;
-  line-height: 40px;
-}
-
-.sidebar-nav li a {
-  display: block;
-  text-decoration: none;
-  color: #000;
-}
-
-.sidebar-nav li a:hover {
-  text-decoration: none;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.sidebar-nav li a:active, .sidebar-nav li a:focus {
-  text-decoration: none;
-}
-
-.sidebar-nav>.sidebar-brand {
-  height: 65px;
-  font-size: 18px;
-  line-height: 60px;
-}
-
-.sidebar-nav>.sidebar-brand a {
-  color: #000;
-}
-
-.sidebar-nav>.sidebar-brand a:hover {
-  color: #fff;
-  background: none;
-}
-
-@media(min-width:768px) {
-  #wrapper {
-    padding-left: 0;
-  }
-  #wrapper.toggled {
-    padding-left: 250px;
-  }
-  #sidebar-wrapper {
-    width: 0;
-  }
-  #wrapper.toggled #sidebar-wrapper {
-    width: 250px;
-  }
-  #page-content-wrapper {
-    padding: 20px;
-    position: relative;
-  }
-  #wrapper.toggled #page-content-wrapper {
-    position: relative;
-    margin-right: 0;
-  }
-}
-
-.sortable {
-  background-color: rgba(98, 189, 201, 0.801);
-  border: 1px solid #ffffff;
-  border-radius: 8px;
-  width: auto;
-  min-height: 20px;
-  min-width: 20px;
-  list-style-type: none;
-  margin: 0;
-  padding: 5px;
-  float: left;
-  text-align: center;
-}
-.sortable > li {
-  background-color: #ffb347;
-  border: 1px solid #ffb347;
-  text-align: center;
-  border-radius: 8px;
-  margin: 5px 5px 5px 5px;
-  padding: 5px;
-  font-size: 1.2em;
-  width: auto;
+p {
+  margin-left: 10px;
 }
 
 form {
@@ -146,10 +37,64 @@ form {
   padding: 10px 20px;
   background: #fefefe;
   border-radius: 8px;
-  /* display: none; */
+  display: none;
 }
 
-modal.input[type="submit"],
+small {
+  font-size: 0.75em;
+}
+
+.center {
+  text-align: center
+}
+
+.padded {
+  padding: 5px;
+}
+
+h4 {
+  margin: 0 0 30px 0;
+  text-align: center;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="date"],
+input[type="datetime"],
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="time"],
+input[type="url"],
+textarea,
+select {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  font-size: 16px;
+  height: auto;
+  margin: 0;
+  outline: 0;
+  padding: 15px;
+  width: auto;
+  background-color: #e8eeef;
+  color: #8a97a0;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
+  margin-bottom: 30px;
+  display: inline-block;
+}
+
+input[type="checkbox"] {
+  margin: 0 4px 8px 0;
+}
+
+select {
+  padding: 6px;
+  height: 32px;
+  border-radius: 2px;
+}
+
+input[type="submit"],
 button,
 .drop-button {
   padding: 10px 30px 10px 30px;
@@ -163,7 +108,7 @@ button,
   min-height: 46px;
   border: 1px solid #ffb347;
   border-width: 1px 1px 3px;
-  box-shadow: 0 -1px 0 rgba(255,255,255,0.1) inset;
+  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.1) inset;
   margin-bottom: 10px;
 }
 
@@ -175,7 +120,7 @@ button:hover,
 }
 
 button:disabled,
-button[disabled]{
+button[disabled] {
   border: 1px solid #999999;
   background-color: #cccccc;
   color: #666666;
@@ -191,33 +136,133 @@ button[disabled]{
   border: 1px solid #09ff00;
 }
 
-.soft-input {
-  background: rgba(255,255,255,0.1);
-  border: none;
-  font-size: 16px;
-  height: auto;
-  margin: 0;
-  outline: 0;
-  padding: 15px;
-  width: auto;
-  background-color: #e8eeef;
-  color: #8a97a0;
-  box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+fieldset {
   margin-bottom: 30px;
-  display: inline-block;
+  border: none;
 }
 
+legend {
+  font-size: 1.4em;
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+label.light {
+  font-weight: bold;
+  display: inline;
+}
+
+.number {
+  background-color: #5fcf80;
+  color: #fff;
+  height: 30px;
+  width: 30px;
+  display: inline-block;
+  font-size: 0.8em;
+  margin-right: 4px;
+  line-height: 30px;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-radius: 100%;
+}
+
+@media screen and (min-width: 480px) {
+  form {
+    max-width: 480px;
+  }
+}
+
+img {
+  max-width: 100%;
+  max-height: 100vh;
+  height: auto;
+}
+
+.header h1 {
+  text-transform: uppercase;
+  font-size: 5em;
+  padding: 2em 0;
+  color: #e67e22;
+  text-align: center;
+  text-shadow: 0px 2px 1px #d35400;
+}
+
+.center {
+  margin: auto;
+  width: 50%;
+}
+
+.sortable {
+  background-color: rgba(98, 189, 201, 0.801);
+  border: 1px solid #ffffff;
+  border-radius: 8px;
+  width: auto;
+  min-width: 300px;
+  min-height: 20px;
+  list-style-type: none;
+  margin: 0;
+  padding: 5px;
+  float: left;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.sortable>li {
+  background-color: #ffb347;
+  border: 1px solid #ffb347;
+  text-align: center;
+  border-radius: 8px;
+  margin: 5px 5px 5px 5px;
+  padding: 5px;
+  font-size: 1.2em;
+  width: auto;
+}
+
+/* //////////////////////////////////////////////////////// */
+/* The Modal (background) */
+.modal {
+  display: none;
+  /* Hidden by default */
+  z-index: 8000;
+  /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  min-width: 30%;
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0);
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Black w/ opacity */
+}
+
+.autoModal.modal .modal-body {
+  max-height: 100%;
+}
+
+/* Modal Content/Box */
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
+  margin: 15% auto;
+  /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
   max-width: 80%;
   min-width: 20%;
-  width: auto; /* Could be more or less, depending on screen size */
+  width: auto;
+  /* Could be more or less, depending on screen size */
   display: table;
 }
 
+/* The Close Button */
 .close {
   color: #aaa;
   float: right;
@@ -225,29 +270,123 @@ button[disabled]{
   font-weight: bold;
 }
 
-.info-msg,
-.success-msg,
-.warning-msg,
-.error-msg {
-  margin: 10px 0;
-  padding: 10px;
-  border-radius: 3px 3px 3px 3px;
-  opacity: 0;
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-.info-msg {
-  color: #059;
-  background-color: #BEF;
+.show-large {
+  display: none;
 }
-.success-msg {
-  color: #270;
-  background-color: #DFF2BF;
+
+@media only screen and (min-width: 767px) {
+  .show-large {
+    display: block;
+  }
+
+  .show-mobile {
+    display: none;
+  }
 }
-.warning-msg {
-  color: #9F6000;
-  background-color: #FEEFB3;
+
+.centerFlex {
+  align-items: center;
+  display: flex;
+  justify-content: center;
 }
-.error-msg {
-  color: #D8000C;
-  background-color: #FFBABA;
+
+/* Caret icon in drop button */
+.drop-button::after {
+  font-family: FontAwesome;
+  content: "↴";
+  padding-left: 5px;
+}
+
+/* Space between button groups (if needed) */
+.button-group {
+  margin-right: 10px;
+  font-size: 0;
+}
+
+/* Base styles for all immediate button group children */
+.button-group>* {
+  display: inline-block;
+  position: relative;
+  font-size: 16px;
+}
+
+/* Dropdown container styles*/
+.drop-pop {
+  width: 180px;
+  position: relative;
+  background: #ffb347;
+  border: 1px solid rgba(0, 0, 0, .4);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Buttons within dropdown container */
+.drop-pop button {
+  width: 100%;
+  background: transparent;
+  color: #000;
+  border-width: 0px;
+  padding: 8px 24px;
+  box-shadow: none;
+}
+
+/* Hide Checkbox */
+.drop-button-wrap input[type="checkbox"] {
+  width: 0px;
+  height: 0px;
+  margin: 0px;
+  display: block;
+  -webkit-appearance: none;
+}
+
+/* "Focus" on label adjacent to focused checkbox, creating ilusion of the label being the button */
+.drop-button-wrap input[type="checkbox"]:focus+label {
+  outline: 0;
+  transition: all 250ms;
+}
+
+/* Dropdown container when hidden */
+.drop-button-wrap input[type="checkbox"]~.drop-pop {
+  display: none;
+  opacity: 0;
+  top: 0%;
+  transition: all 200ms;
+}
+
+/* Dropdown container when visible */
+.drop-button-wrap input[type="checkbox"]:checked~.drop-pop {
+  display: block;
+  opacity: 1;
+  top: 100%;
+}
+
+.donut-spinner {
+  display: inline-block;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #7983ff;
+  border-radius: 50%;
+  width: 1.03em;
+  height: 1.03em;
+  animation: donut-spin 1.2s linear infinite;
+}
+
+@keyframes donut-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+input[type="radio"] {
+  margin: 10px;
+  margin-left: 0px;
 }
