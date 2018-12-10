@@ -258,12 +258,7 @@
 
   <!-- Menu Toggle Script -->
   <script>
-    $('#menu-toggle').click(function (e) {
-      e.preventDefault();
-      $('#wrapper').toggleClass('toggled');
-    });
-
-    $('.side-bar-toggler').click(function (e) {
+    $('#menu-toggle, .side-bar-toggler').click(function (e) {
       e.preventDefault();
       $('#wrapper').toggleClass('toggled');
     });
