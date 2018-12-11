@@ -23,6 +23,7 @@ if (!process.argv.includes('-nu') && !process.argv.includes('--no-update')) {
               npm.commands.install([''], function (er, data) {
                 if (er)
                   console.log(er);
+                console.log('Server restarting...');
               });
 
               npm.on('log', function (message) {
