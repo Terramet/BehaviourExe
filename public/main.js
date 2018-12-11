@@ -15,16 +15,19 @@ function closeModal(id) {
 function alertMessage(value, cb) {
   let tmpl = document.getElementById('error-template');
   $('#message-holder')[0].appendChild(tmpl.content.cloneNode(true));
-  $('#message-value-error')[0].append(value);
-  $('#message-value-error').css('opacity', '1').hide()
-  .fadeIn(4000)
-  .delay(4000)
-  .fadeOut(4000, () => {
-    $('message-value-error').remove();
-    if (cb) {
-      cb();
-    }
-  });
+  $('#message-value-error')[0].innerHTML = '<i class="fa fa-times-circle"></i> ' + value;
+  $('#message-value-error')
+    .css('opacity', '1')
+    .hide()
+    .fadeIn(4000)
+    .delay(4000)
+    .fadeOut(4000, () => {
+      $('message-value-error')
+        .remove();
+      if (cb) {
+        cb();
+      }
+    });
 
   return false;
 }
@@ -32,16 +35,19 @@ function alertMessage(value, cb) {
 function infoMessage(value, cb) {
   let tmpl = document.getElementById('info-template');
   $('#message-holder')[0].appendChild(tmpl.content.cloneNode(true));
-  $('#message-value-info')[0].append(value);
-  $('#message-value-info').css('opacity', '1').hide()
-  .fadeIn(4000)
-  .delay(4000)
-  .fadeOut(4000, () => {
-    $('#message-value-info').remove();
-    if (cb) {
-      cb();
-    }
-  });
+  $('#message-value-info')[0].innerHTML = '<i class="fa fa-info-circle"></i> ' + value;
+  $('#message-value-info')
+    .css('opacity', '1')
+    .hide()
+    .fadeIn(4000)
+    .delay(4000)
+    .fadeOut(4000, () => {
+      $('#message-value-info')
+        .remove();
+      if (cb) {
+        cb();
+      }
+    });
 
   return false;
 }
@@ -130,46 +136,52 @@ function createSession() {
   robot = new Robot();
 
   robot.startSession($('#IP')[0].value, function () {
-    $('#executionForm')[0].style.display = 'block';
-    $('#connectBtn').parent()[0].classList.remove('red');
-    $('#connectBtn').parent()[0].classList.add('green');
-    getLanguageValue('connectBtn', 2).then(function (value) {
-      connectBtn.innerText = value;
+      $('#executionForm')[0].style.display = 'block';
+      $('#connectBtn')
+        .parent()[0].classList.remove('red');
+      $('#connectBtn')
+        .parent()[0].classList.add('green');
+      getLanguageValue('connectBtn', 2)
+        .then(function (value) {
+          connectBtn.innerText = value;
+        });
+
+      robot.setConnected(true);
+
+      let modal = $('#connectModal')[0];
+      modal.style.display = 'none';
+
+    },
+
+    function () {
+      $('#executionForm')[0].style.display = 'none';
+
+      $('#connectBtn')
+        .parent()[0].classList.remove('green');
+      $('#connectBtn')
+        .parent()[0].classList.add('red');
+      getLanguageValue('connectBtn', 3)
+        .then(function (value) {
+          connectBtn.innerText = value;
+        });
+
+      robot.setConnected(false);
+
+      if (!alertMessage(getLanguageValue('connectionLostalertMessage'))) {
+        window.location.reload();
+      }
     });
-
-    robot.setConnected(true);
-
-    let modal = $('#connectModal')[0];
-    modal.style.display = 'none';
-
-  },
-
-  function () {
-    $('#executionForm')[0].style.display = 'none';
-
-    $('#connectBtn').parent()[0].classList.remove('green');
-    $('#connectBtn').parent()[0].classList.add('red');
-    getLanguageValue('connectBtn', 3).then(function (value) {
-      connectBtn.innerText = value;
-    });
-
-    robot.setConnected(false);
-
-    if (!alertMessage(getLanguageValue('connectionLostalertMessage'))) {
-      window.location.reload();
-    }
-  });
 
   let ip = timeoutPromise(10000, robot.getIP());
 
   ip.then(response => {
     robot.startBehaviourManager(function (data) {
-      startRec(data);
-    },
+        startRec(data);
+      },
 
-    function (data) {
-      stopRec(data);
-    });
+      function (data) {
+        stopRec(data);
+      });
 
     checkSSHKey();
 
@@ -194,83 +206,93 @@ function createSession() {
   });
 
   ip.catch(error => {
-    getLanguageValue('connectIPCatch').then(value => {
-      alertMessage(value + error);
-    });
+    getLanguageValue('connectIPCatch')
+      .then(value => {
+        alertMessage(value + error);
+      });
 
-    getLanguageValue('connectBtn', 0).then(value => {
-      connectBtn.innerHTML = value;
-    });
+    getLanguageValue('connectBtn', 0)
+      .then(value => {
+        connectBtn.innerHTML = value;
+      });
   });
 
 }
 
 function attemptAutoConnect() {
   let connectBtn = $('#connectBtn')[0];
-  getLanguageValue('connectBtn', 1).then(value => {
-    connectBtn.innerHTML = value;
-  });
+  getLanguageValue('connectBtn', 1)
+    .then(value => {
+      connectBtn.innerHTML = value;
+    });
 
   robot = new Robot();
 
-  robot.startSession('nao.llocal', function () {
-    $('#executionForm')[0].style.display = 'block';
-    $('#connectBtn').parent()[0].classList.remove('red');
-    $('#connectBtn').parent()[0].classList.add('green');
-    getLanguageValue('connectBtn', 2).then(value => {
-      connectBtn.innerText = value;
-    });
+  robot.startSession('nao.local', function () {
+      $('#executionForm')[0].style.display = 'block';
+      $('#connectBtn')
+        .parent()[0].classList.remove('red');
+      $('#connectBtn')
+        .parent()[0].classList.add('green');
+      getLanguageValue('connectBtn', 2)
+        .then(value => {
+          connectBtn.innerText = value;
+        });
 
-    robot.setConnected(true);
+      robot.setConnected(true);
 
-    let modal = $('#connectModal')[0];
-    modal.style.display = 'none';
+      let modal = $('#connectModal')[0];
+      modal.style.display = 'none';
 
-    robot.startBehaviourManager(function (data) {
-      startRec(data);
+      robot.startBehaviourManager(function (data) {
+          startRec(data);
+        },
+
+        function (data) {
+          stopRec(data);
+        });
+
+      getChildNameAsync(function (child) {
+        if (checkCookieData(child) != null) {
+          restoreSessionAsync(child, function (ans) {
+            if (ans) {
+              ses = new Session(JSON.parse(checkCookieData(child)), loadedPlaylists);
+            } else {
+              ses = new Session(child, loadedPlaylists);
+            }
+          });
+        } else {
+          ses = new Session(child, loadedPlaylists);
+        }
+
+        changeMemValue('child_name', child);
+
+        updateCookie();
+        updateView();
+      });
     },
 
-    function (data) {
-      stopRec(data);
-    });
+    function () {
+      $('#executionForm')[0].style.display = 'none';
 
-    getChildNameAsync(function (child) {
-      if (checkCookieData(child) != null) {
-        restoreSessionAsync(child, function (ans) {
-          if (ans) {
-            ses = new Session(JSON.parse(checkCookieData(child)), loadedPlaylists);
-          } else {
-            ses = new Session(child, loadedPlaylists);
+      $('#connectBtn')
+        .parent()[0].classList.remove('green');
+      $('#connectBtn')
+        .parent()[0].classList.add('red');
+      getLanguageValue('connectBtn', 3)
+        .then(function (value) {
+          connectBtn.innerText = value;
+        });
+
+      robot.setConnected(false);
+
+      getLanguageValue('connectionLostalertMessage')
+        .then((value) => {
+          if (!alertMessage(value)) {
+            window.location.reload();
           }
         });
-      } else {
-        ses = new Session(child, loadedPlaylists);
-      }
-
-      changeMemValue('child_name', child);
-
-      updateCookie();
-      updateView();
     });
-  },
-
-  function () {
-    $('#executionForm')[0].style.display = 'none';
-
-    $('#connectBtn').parent()[0].classList.remove('green');
-    $('#connectBtn').parent()[0].classList.add('red');
-    getLanguageValue('connectBtn', 3).then(function (value) {
-      connectBtn.innerText = value;
-    });
-
-    robot.setConnected(false);
-
-    getLanguageValue('connectionLostalertMessage').then((value) => {
-      if (!alertMessage(value)) {
-        window.location.reload();
-      }
-    });
-  });
 
   let ip = timeoutPromise(10000, robot.getIP());
 
@@ -279,17 +301,20 @@ function attemptAutoConnect() {
   });
 
   ip.catch(error => {
-    getLanguageValue('connectIPCatch').then(value => {
-      alertMessage(value + error, () => {
-        getLanguageValue('helpManualConnect').then(value2 => {
-          infoMessage(value2);
+    getLanguageValue('connectIPCatch')
+      .then(value => {
+        alertMessage(value + error, () => {
+          getLanguageValue('helpManualConnect')
+            .then(value2 => {
+              infoMessage(value2);
+            });
         });
       });
-    });
 
-    getLanguageValue('connectBtn', 0).then(function (value) {
-      connectBtn.innerHTML = value;
-    });
+    getLanguageValue('connectBtn', 0)
+      .then(function (value) {
+        connectBtn.innerHTML = value;
+      });
   });
 }
 
@@ -297,24 +322,27 @@ function restoreSessionAsync(child, callback) {
   $('#restoreTitle')[0].innerHTML = $('#restoreTitle')[0].innerHTML.replace(/%child%/g, child);
   $('#restoreModal')[0].style.display = 'block';
 
-  $('#restoreYes').click(function () {
-    $('#restoreModal')[0].style.display = 'none';
-    callback(true);
-  });
+  $('#restoreYes')
+    .click(function () {
+      $('#restoreModal')[0].style.display = 'none';
+      callback(true);
+    });
 
-  $('#restoreNo').click(function () {
-    $('#restoreModal')[0].style.display = 'none';
-    callback(false);
-  });
+  $('#restoreNo')
+    .click(function () {
+      $('#restoreModal')[0].style.display = 'none';
+      callback(false);
+    });
 }
 
 function getChildNameAsync(callback) {
   $('#childModal')[0].style.display = 'block';
 
-  $('#childSave').click(function () {
-    $('#childModal')[0].style.display = 'none';
-    callback($('#cName')[0].value);
-  });
+  $('#childSave')
+    .click(function () {
+      $('#childModal')[0].style.display = 'none';
+      callback($('#cName')[0].value);
+    });
 }
 
 function say() {
@@ -326,29 +354,38 @@ function say() {
 
 function updateView() {
   setInterval(function () {
-    if (ses.getAssigned() !== null
-    && document.getElementsByClassName('donut-spinner').length === 0) {
-      getLanguageValue('replayB').then(function (value) {
-        $('#replayB')[0].innerHTML = value
-        + '<br/><small>('
-        + ses.getAssigned().getPlaylist('main').returnLast()
-        + ')</small>';
-      });
+    if (ses.getAssigned() !== null &&
+      document.getElementsByClassName('donut-spinner')
+      .length === 0) {
+      getLanguageValue('replayB')
+        .then(function (value) {
+          $('#replayB')[0].innerHTML = value +
+            '<br/><small>(' +
+            ses.getAssigned()
+            .getPlaylist('main')
+            .returnLast() +
+            ')</small>';
+        });
 
-      getLanguageValue('nextB').then(function (value) {
-        $('#nextB')[0].innerHTML = value
-        + '<br/><small>('
-        + ses.getAssigned().getPlaylist('main').getNext()
-        + ')</small>';
-      });
+      getLanguageValue('nextB')
+        .then(function (value) {
+          $('#nextB')[0].innerHTML = value +
+            '<br/><small>(' +
+            ses.getAssigned()
+            .getPlaylist('main')
+            .getNext() +
+            ')</small>';
+        });
 
-      getLanguageValue('posB').then(function (value) {
-        $('#posB')[0].innerHTML = value;
-      });
+      getLanguageValue('posB')
+        .then(function (value) {
+          $('#posB')[0].innerHTML = value;
+        });
 
-      getLanguageValue('negB').then(function (value) {
-        $('#negB')[0].innerHTML = value;
-      });
+      getLanguageValue('negB')
+        .then(function (value) {
+          $('#negB')[0].innerHTML = value;
+        });
     }
   }, 1000);
 
@@ -390,25 +427,35 @@ function updateCookie() {
 
 function playCurrent(type, btn) {
   if (ses.getAssigned() === null) {
-    getLanguageValue('noPlaylists').then(value => {
-      alertMessage(value);
-    });
+    getLanguageValue('noPlaylists')
+      .then(value => {
+        alertMessage(value);
+      });
 
     console.error('No playlist assigned to ' + btn.innerHTML + ' button.');
-  } else if (ses.getAssigned().getPlaylist(type).returnLast() !== 'Nothing') {
-    robot.startBehaviour(ses.getAssigned().getPlaylist(type).returnLast(), btn);
+  } else if (ses.getAssigned()
+    .getPlaylist(type)
+    .returnLast() !== 'Nothing') {
+    robot.startBehaviour(ses.getAssigned()
+      .getPlaylist(type)
+      .returnLast(), btn);
   }
 }
 
 function playNext(type, btn) {
   if (ses.getAssigned() === null) {
-    getLanguageValue('noPlaylists').then(value => {
-      alertMessage(value);
-    });
+    getLanguageValue('noPlaylists')
+      .then(value => {
+        alertMessage(value);
+      });
 
     console.error('No playlist assigned to ' + btn.innerHTML + ' button.');
-  } else if (ses.getAssigned().getPlaylist(type).getNext() !== 'Nothing') {
-    robot.startBehaviour(ses.getAssigned().getPlaylist(type).next(), btn);
+  } else if (ses.getAssigned()
+    .getPlaylist(type)
+    .getNext() !== 'Nothing') {
+    robot.startBehaviour(ses.getAssigned()
+      .getPlaylist(type)
+      .next(), btn);
   }
 }
 
@@ -448,9 +495,12 @@ function getTime() {
   let time = new Date();
 
   return time.getDate() + '-' + time.getMonth() + '-' + time.getFullYear() + '@' +
-    ('0' + time.getHours()).slice(-2) + '_' +
-    ('0' + time.getMinutes()).slice(-2) + '_' +
-    ('0' + time.getSeconds()).slice(-2);
+    ('0' + time.getHours())
+    .slice(-2) + '_' +
+    ('0' + time.getMinutes())
+    .slice(-2) + '_' +
+    ('0' + time.getSeconds())
+    .slice(-2);
 }
 
 function downloadInnerHtml(filename, elId, mimeType) {
