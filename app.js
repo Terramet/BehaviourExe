@@ -7,8 +7,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var auto = require('auto_updater');
 var pjson = require('./package.json');
-var run = require('child_process')
-  .exec;
+var npm = require('npm');
 var app = express();
 
 if (!process.argv.includes('-nu') && !process.argv.includes('--no-update')) {
@@ -16,11 +15,20 @@ if (!process.argv.includes('-nu') && !process.argv.includes('--no-update')) {
     .then((remote) => {
       console.log('Current local version: ' + pjson.version + '\nCurrent release version: ' +
         remote[1]);
-      if (remote === 1) {
+      if (remote[0] === 1) {
         auto.downloadUpdate()
           .then((result) => {
             console.log(result == null ? 'Updated' : '');
-            run('npm install');
+            npm.load(function (err) {
+              npm.commands.install([''], function (er, data) {
+                if (er)
+                  console.log(er);
+              });
+
+              npm.on('log', function (message) {
+                console.log(message);
+              });
+            });
           });
       }
     });
