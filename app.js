@@ -21,9 +21,12 @@ if (!process.argv.includes('-nu') && !process.argv.includes('--no-update')) {
             console.log(result == null ? 'Updated' : '');
             npm.load(function (err) {
               npm.commands.install([''], function (er, data) {
-                if (er)
+                if (er) {
                   console.log(er);
+                }
+
                 console.log('Server restarting...');
+                process.exit(1);
               });
 
               npm.on('log', function (message) {
