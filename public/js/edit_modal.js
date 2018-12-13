@@ -8,9 +8,9 @@ function clearPlaylists() {
       type: 'POST',
       data: JSON.stringify(data),
       contentType: 'application/json',
-      url: window.location.href + 'playlists/clear',
+      url: removeHASH() + 'playlists/clear',
       success: function (data) {
-        console.log('Playlists deleted.');
+        infoMessage('Playlists deleted.');
       },
     });
   }

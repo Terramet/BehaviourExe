@@ -126,29 +126,26 @@
       <div class='modal animated fadeIn' id='assignModal'>
         <div class="help-tip"><p id="assignHelp">Say</p></div>
         <div class='modal-content autoModal'><span class='close' data-dismiss='modal'>×</span>
-          <h4 class='center' id='assignPlaylistTitle'>Assign Playlist</h4>
-          <form id='assignForm' style='margin: auto; margin-top: 20px; display: block; text-align:center;' onsubmit='return false;' method='post' autocomplete='on'>
-            <div style='margin: auto; display: block;'>
-              <div>
-                <button id='mainBehave'>Interaction</button>&nbsp;
-                &nbsp;
-                <select id='mainBehaviour'></select>
+          <h4 class='center p-2' id='assignPlaylistTitle'>Assign Playlist</h4>
+          <!-- <form id='assignForm' style='margin: auto; margin-top: 20px; display: block; text-align:center;' onsubmit='return false;' method='post' autocomplete='on'> -->
+            <div class='container-fluid'>
+              <div class='row'>
+                <button class='col m-2' id='mainBehave'>Interaction</button>
+                <select class='col m-2' id='mainBehaviour'></select>
               </div>
-              <div>
-                <button id='positiveBehave'>Positive</button>&nbsp;
-                &nbsp;
-                <select id='positiveBehaviour'></select>
+              <div class='row'>
+                <button class='col m-2' id='positiveBehave'>Positive</button>
+                <select class='col m-2' id='positiveBehaviour'></select>
               </div>
-              <div>
-                <button id='negativeBehave'>Negative</button>&nbsp;
-                &nbsp;
-                <select id='negativeBehaviour'></select>
+              <div class='row'>
+                <button class='col m-2' id='negativeBehave'>Negative</button>
+                <select class='col m-2' id='negativeBehaviour'></select>
               </div>
-              <div>
-                <button id='saveAssignments' data-dismiss='modal' onclick='saveAssigned()'>Save</button>
+              <div class='container-fluid text-center'>
+                <button class='center' id='saveAssignments' data-dismiss='modal' onclick='saveAssigned()'>Save</button>
               </div>
             </div>
-          </form>
+          <!-- </form> -->
         </div>
       </div>
 
@@ -208,6 +205,10 @@
           <button class='red' id='stopB' style='float: centre; width: 100%;' onclick='stopBehaviour()'>STOP</button>
         </div>
       </form>
+
+      <span class="fixed-bottom">
+        <p class="text-center" id='update-status'></p>
+      </span>
     </div>
 
     <!-- /#page-content-wrapper -->
@@ -275,6 +276,18 @@
 
     $(document).ready(function () {
       modalEvents();
+      setInterval(function () {
+        $.when(checkUpdate()).then(function () {
+          if (update[0]) {
+            $('#update-status')[0].innerHTML = 'Up to date! <br/><small class="center">v' +
+            update[1] + '</small>';
+          } else {
+            $('#update-status')[0].innerHTML = 'Update available! <br/> ' +
+             ' <button class="btn-sm" onclick="getUpdate()"> Get update! </button>';
+          }
+        });
+      }, (5 * 60) * 1000);
+
       $.when(loadLanguage(), loadPlaylists()).then(function () {
         attemptAutoConnect();
       });

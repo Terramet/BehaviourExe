@@ -7,6 +7,7 @@ var loadedPlaylists = [];
 var loadedLanguageJSON = {};
 var recording = true;
 var time = null;
+var update = null;
 
 function closeModal(id) {
   $('#' + id)[0].style.display = 'none';

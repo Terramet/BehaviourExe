@@ -154,24 +154,6 @@ form {
   /* display: none; */
 }
 
-modal.input[type="submit"],
-button,
-.drop-button {
-  padding: 10px 30px 10px 30px;
-  color: #000;
-  background-color: #ffb347;
-  font-size: 18px;
-  text-align: center;
-  font-style: normal;
-  border-radius: 5px;
-  width: auto;
-  min-height: 46px;
-  border: 1px solid #ffb347;
-  border-width: 1px 1px 3px;
-  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.1) inset;
-  margin-bottom: 10px;
-}
-
 /* Add a hover effect for buttons */
 input[type="submit"]:hover,
 button:hover,
@@ -210,19 +192,6 @@ button[disabled] {
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
   margin-bottom: 30px;
   display: inline-block;
-}
-
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto;
-  /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  max-width: 80%;
-  min-width: 20%;
-  width: auto;
-  /* Could be more or less, depending on screen size */
-  display: table;
 }
 
 .close {

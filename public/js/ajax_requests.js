@@ -36,7 +36,7 @@ function savePlaylist() {
       contentType: 'application/json',
       url: removeHASH() + 'playlists/save',
       success: (data) => {
-        alertMessage(data + ' was saved successfully');
+        infoMessage(data + ' was saved successfully');
         createModal.style.display = 'none';
       },
 
@@ -254,8 +254,28 @@ function getSlaves() {
   return $.ajax({
     url: removeHASH() + 'get_slaves',
     type: 'get',
-    success: (data) => {
-      data;
+    success: function (data) {
+      return data;
+    },
+  });
+}
+
+function getUpdate() {
+  return $.ajax({
+    url: removeHASH() + 'get_update',
+    type: 'get',
+    success: function (data) {
+      return data;
+    },
+  });
+}
+
+function checkUpdate() {
+  return $.ajax({
+    url: removeHASH() + 'check_update',
+    type: 'get',
+    success: function (data) {
+      update = data;
     },
   });
 }
