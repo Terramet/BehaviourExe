@@ -360,22 +360,18 @@ function updateView() {
       .length === 0) {
       getLanguageValue('replayB')
         .then(function (value) {
-          $('#replayB')[0].innerHTML = value +
-            '<br/><small>(' +
+          $('#replayB')[0].innerHTML = value + ': ' +
             ses.getAssigned()
             .getPlaylist('main')
-            .returnLast() +
-            ')</small>';
+            .returnLast();
         });
 
       getLanguageValue('nextB')
         .then(function (value) {
-          $('#nextB')[0].innerHTML = value +
-            '<br/><small>(' +
+          $('#nextB')[0].innerHTML = value + ': ' +
             ses.getAssigned()
             .getPlaylist('main')
-            .getNext() +
-            ')</small>';
+            .getNext();
         });
 
       getLanguageValue('posB')
