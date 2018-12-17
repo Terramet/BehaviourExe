@@ -127,24 +127,35 @@ router.post('/ssh/file_check', function (req, res) {
 
 /* POST send SCP command to copy videos off the robot */
 router.post('/ssh/copy_recordings_video', function (req, res) {
-  let ssh = baseDir + '/public/ssh/' + req.body.sshKey;
-
   fs.watchFile(req.body.endDirVideo, function () {
     fs.unwatchFile(req.body.endDirVideo);
     res.send('Successfully completed copying ' + req.body.filenameVideo + ' to ' + req.body
       .endDirVideo);
   });
 
-  scp2.scp({
-    host: req.body.ip,
-    username: req.body.robotName,
-    privateKey: fs.readFileSync(ssh),
-    path: '/' + req.body.filenameVideo,
-  }, req.body.endDirVideo, function (err) {
-    if (err !== null) console.log('SCP request failed: ' + err);
-  });
-
-  scp2.close();
+  let sftp = new Client();
+  sftp.connect({
+      host: req.body.ip,
+      port: 22,
+      user: req.body.robotName,
+      tryKeyboard: true,
+    })
+    .then(() => {
+      return sftp.fastGet('/' + req.body.filenameVideo, req.body.endDirVideo + req.body.file +
+        '.avi');
+    })
+    .then((data) => {
+      console.log(data, 'the data info');
+      sftp.end();
+    })
+    .catch((err) => {
+      console.log(err, 'catch error');
+    });
+  sftp
+    .on('keyboard-interactive', function (name, instructions, lang, prompts, finish) {
+      console.log('Connection :: keyboard');
+      finish(['nao']);
+    });
 });
 
 /* POST ffmpeg command to combine video recordings and audio recordings */
@@ -176,27 +187,40 @@ router.post('/ssh/copy_recordings_audio', function (req, res) {
       .endDirAudio);
   });
 
-  scp2.scp({
-    host: req.body.ip,
-    username: req.body.robotName,
-    privateKey: fs.readFileSync(ssh),
-    path: '/' + req.body.filenameAudio,
-  }, req.body.endDirAudio, function (err) {
-    if (err !== null) console.log('SCP request failed: ' + err);
-  });
-
-  scp2.close();
+  let sftp = new Client();
+  sftp.connect({
+      host: req.body.ip,
+      port: 22,
+      user: req.body.robotName,
+      tryKeyboard: true,
+    })
+    .then(() => {
+      return sftp.fastGet('/' + req.body.filenameAudio, req.body.endDirAudio + req.body.file +
+        '.wav');
+    })
+    .then((data) => {
+      console.log(data, 'the data info');
+      sftp.end();
+    })
+    .catch((err) => {
+      console.log(err, 'catch error');
+    });
+  sftp
+    .on('keyboard-interactive', function (name, instructions, lang, prompts, finish) {
+      console.log('Connection :: keyboard');
+      finish(['nao']);
+    });
 });
 
 /* POST send ftp command to delete the stored audio on the robot */
 router.post('/ssh/delete_nao_recording_audio', function (req, res) {
   let sftp = new Client();
-  let ssh = baseDir + '/public/ssh/' + req.body.sshKey;
 
   sftp.connect({
       host: req.body.ip,
+      port: 22,
       username: req.body.robotName,
-      privateKey: fs.readFileSync(ssh),
+      tryKeyboard: true,
     })
     .then(() => {
       sftp.delete('/' + req.body.filenameAudio);
@@ -210,17 +234,22 @@ router.post('/ssh/delete_nao_recording_audio', function (req, res) {
       res.status(333);
       res.send('Failed to delete ' + req.body.filename);
     });
+  sftp
+    .on('keyboard-interactive', function (name, instructions, lang, prompts, finish) {
+      console.log('Connection :: keyboard');
+      finish(['nao']);
+    });
 });
 
 /* POST send ftp command to delete the stored video on the robot */
 router.post('/ssh/delete_nao_recording_video', function (req, res) {
   let sftp = new Client();
-  let ssh = baseDir + '/public/ssh/' + req.body.sshKey;
 
   sftp.connect({
       host: req.body.ip,
+      port: 22,
       username: req.body.robotName,
-      privateKey: fs.readFileSync(ssh),
+      tryKeyboard: true,
     })
     .then(() => {
       sftp.delete('/' + req.body.filenameVideo);
@@ -234,22 +263,11 @@ router.post('/ssh/delete_nao_recording_video', function (req, res) {
       res.status(333);
       res.send('Failed to delete ' + req.body.filename);
     });
-});
-
-/* POST create SSH key from interfacing with the robots file system */
-router.post('/ssh/gen_key', function (req, res) {
-  exec(baseDir + '/SSH-Keygen.sh \'' + baseDir + '/public/ssh/' + req.body.fileName + '\' ' +
-    req.body.robotName + '@' + req.body.ip,
-    function (error, stdout, stderr) {
-      console.log('stdout: ' + stdout);
-      console.log('stderr: ' + stderr);
-      if (error !== null) {
-        console.log('exec error: ' + error);
-      } else {
-        res.send('Successfully created key pair with: ' + req.body.robotName);
-      }
+  sftp
+    .on('keyboard-interactive', function (name, instructions, lang, prompts, finish) {
+      console.log('Connection :: keyboard');
+      finish(['nao']);
     });
-
 });
 
 /* GET videos */
