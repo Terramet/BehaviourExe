@@ -184,8 +184,6 @@ function createSession() {
         stopRec(data);
       });
 
-    checkSSHKey();
-
     getChildNameAsync(function (child) {
       if (checkCookieData(child) != null) {
         restoreSessionAsync(child, function (ans) {
@@ -297,10 +295,6 @@ function attemptAutoConnect() {
 
   let ip = timeoutPromise(10000, robot.getIP());
 
-  ip.then(response => {
-    checkSSHKey();
-  });
-
   ip.catch(error => {
     getLanguageValue('connectIPCatch')
       .then(value => {
@@ -360,7 +354,7 @@ function updateView() {
       .length === 0) {
       getLanguageValue('replayB')
         .then(function (value) {
-          $('#replayB')[0].innerHTML = value + ': ' +
+          $('#replayB')[0].innerHTML = value + ': <br/>' +
             ses.getAssigned()
             .getPlaylist('main')
             .returnLast();
@@ -368,7 +362,7 @@ function updateView() {
 
       getLanguageValue('nextB')
         .then(function (value) {
-          $('#nextB')[0].innerHTML = value + ': ' +
+          $('#nextB')[0].innerHTML = value + ': <br/>' +
             ses.getAssigned()
             .getPlaylist('main')
             .getNext();
