@@ -126,11 +126,7 @@ router.post('/ssh/file_check', function (req, res, next) {
 });
 
 /* POST send SCP command to copy videos off the robot */
-<<<<<<< HEAD
 router.post('/ssh/copy_recordings_video', function (req, res, next) {
-=======
-router.post('/ssh/copy_recordings_video', function (req, res) {
->>>>>>> b90d38fdbdc692eedbe823a29727b2046aba5d9b
   fs.watchFile(req.body.endDirVideo, function () {
     fs.unwatchFile(req.body.endDirVideo);
     res.send('Successfully completed copying ' + req.body.filenameVideo + ' to ' + req.body
@@ -158,7 +154,6 @@ router.post('/ssh/copy_recordings_video', function (req, res) {
   sftp
     .on('keyboard-interactive', function (name, instructions, lang, prompts, finish) {
       console.log('Connection :: keyboard');
-<<<<<<< HEAD
       finish([req.body.robotPass]);
     });
 
@@ -166,9 +161,6 @@ router.post('/ssh/copy_recordings_video', function (req, res) {
     .on('error', function (e) {
       res.status(111);
       res.send(e);
-=======
-      finish(['nao']);
->>>>>>> b90d38fdbdc692eedbe823a29727b2046aba5d9b
     });
 });
 
@@ -222,7 +214,6 @@ router.post('/ssh/copy_recordings_audio', function (req, res, next) {
   sftp
     .on('keyboard-interactive', function (name, instructions, lang, prompts, finish) {
       console.log('Connection :: keyboard');
-<<<<<<< HEAD
       finish([req.body.robotPass]);
     });
 
@@ -230,9 +221,6 @@ router.post('/ssh/copy_recordings_audio', function (req, res, next) {
     .on('error', function (e) {
       res.status(111);
       res.send(e);
-=======
-      finish(['nao']);
->>>>>>> b90d38fdbdc692eedbe823a29727b2046aba5d9b
     });
 });
 
@@ -261,7 +249,6 @@ router.post('/ssh/delete_nao_recording_audio', function (req, res, next) {
   sftp
     .on('keyboard-interactive', function (name, instructions, lang, prompts, finish) {
       console.log('Connection :: keyboard');
-<<<<<<< HEAD
       finish([req.body.robotPass]);
     });
 
@@ -269,9 +256,6 @@ router.post('/ssh/delete_nao_recording_audio', function (req, res, next) {
     .on('error', function (e) {
       res.status(111);
       res.send(e);
-=======
-      finish(['nao']);
->>>>>>> b90d38fdbdc692eedbe823a29727b2046aba5d9b
     });
 });
 
@@ -300,7 +284,6 @@ router.post('/ssh/delete_nao_recording_video', function (req, res, next) {
   sftp
     .on('keyboard-interactive', function (name, instructions, lang, prompts, finish) {
       console.log('Connection :: keyboard');
-<<<<<<< HEAD
       finish([req.body.robotPass]);
     });
 
@@ -309,10 +292,6 @@ router.post('/ssh/delete_nao_recording_video', function (req, res, next) {
       res.status(111);
       res.send(e);
     });
-=======
-      finish(['nao']);
-    });
->>>>>>> b90d38fdbdc692eedbe823a29727b2046aba5d9b
 });
 
 /* GET videos */

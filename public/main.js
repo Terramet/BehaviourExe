@@ -383,11 +383,7 @@ function updateView() {
       .length === 0) {
       getLanguageValue('replayB')
         .then(function (value) {
-<<<<<<< HEAD
           $('#replayB')[0].innerHTML = value + ': <br/><small>' +
-=======
-          $('#replayB')[0].innerHTML = value + ': <br/>' +
->>>>>>> b90d38fdbdc692eedbe823a29727b2046aba5d9b
             ses.getAssigned()
             .getPlaylist('main')
             .returnLast() + '</small>';
@@ -395,11 +391,7 @@ function updateView() {
 
       getLanguageValue('nextB')
         .then(function (value) {
-<<<<<<< HEAD
           $('#nextB')[0].innerHTML = value + ': <br/><small>' +
-=======
-          $('#nextB')[0].innerHTML = value + ': <br/>' +
->>>>>>> b90d38fdbdc692eedbe823a29727b2046aba5d9b
             ses.getAssigned()
             .getPlaylist('main')
             .getNext() + '</small>';
