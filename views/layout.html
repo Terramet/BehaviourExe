@@ -46,6 +46,12 @@
         <li>
           <a class="side-bar-toggler" href='#' data-toggle='modal' data-target='#viewModal' id='viewVideosBtn'>View Videos</a>
         </li>
+        <li>
+          <a class="side-bar-toggler" href='#' data-toggle='modal' data-target='#settingsModal' id='advSettingsBtn'>Settings</a>
+        </li>
+        <li>
+          <label>Advanced Mode<input id="advCheck" type="checkbox" class="ios-switch"><div class="switch"></div></label>
+        </li>
       </ul>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -153,7 +159,7 @@
         <div class="help-tip"><p id="editHelp">Say</p></div>
         <div class='modal-content'><span class='close' data-dismiss='modal'>x</span>
           <h4 class='center' id='editPlaylistsTitle'>Edit Playlists</h4>
-          <form id='playlistForm' style='margin: auto; margin-top: 20px; display: inline-block; text-align:center;' onsubmit='return false;' method='post' autocomplete='on'>
+          <form id='editForm' style='margin: auto; margin-top: 20px; display: inline-block; text-align:center;' onsubmit='return false;' method='post' autocomplete='on'>
             <div style='margin: auto; display: block;'>
               <button id='deleteAll' style='float: center;' onclick='clearPlaylists()'>Delete All Playlists</button>
             </div>
@@ -181,6 +187,22 @@
           <h4 class='center' id='changeLangTitle' style='margin: auto;'>Change Language</h4>
           <form id='langForm' style='margin-top: 10px; display: block; text-align: center;' method='post' onsubmit='return false;' autocomplete='on'>
             <div class='container' id='langRadioContainer' style='text-align: center; margin-top: 20px;'></div>
+          </form>
+        </div>
+      </div>
+
+      <div class='modal animated fadeIn' id='settingsModal'>
+        <div class="help-tip"><p id="settingsHelp">Say</p></div>
+        <div class='modal-content'><span class='close' data-dismiss='modal'>x</span>
+          <h4 class='center' id='settingsTitle' style='margin: auto;'>Settings</h4>
+          <form id='settingsForm' style='margin-top: 10px; display: block; text-align: center;' method='post' onsubmit='return false;' autocomplete='on'>
+            <div class='row'>
+              <p class='col m-2' id='robotPass'>Robot Password </p>
+            </div>
+            <div class='row'>
+              <input type="password" class='col m-2' id='robotPassIn' placeholder="Please enter your robots password"></input>
+            </div>
+            <button id='settingsSave' data-dismiss='modal' style='display: block; margin: auto;'>Save</button>
           </form>
         </div>
       </div>
@@ -216,20 +238,6 @@
   </div>
   <!-- /#wrapper -->
 
-  <template id='modal-template'>
-
-    <div class='modal animated fadeIn' id='myModal'>
-      <div class='modal-content'> <span class='close' data-dismiss='modal'>x</span>
-        <h4 class='modal-title m-2'>Modal title</h4>
-        <div class='modal-body'></div>
-        <div class='foot container'>
-          <button type='button' class='offset-4 col-4 btn btn-success' data-dismiss='modal'>Close</button>
-        </div>
-      </div>
-    </div>
-
-  </template>
-
   <template id='error-template'>
     <span id='message-value-error' class='error-msg'></span>
   </template>
@@ -249,10 +257,10 @@
   <script src='js/lang_modal.js' type='text/javascript'></script>
   <script src='js/video_modal.js' type='text/javascript'></script>
   <script src='js/view_modal.js' type='text/javascript'></script>
-  <script src='scripts/Assigned.js' type='text/javascript'></script>
-  <script src='scripts/Playlist.js' type='text/javascript'></script>
-  <script src='scripts/Robot.js' type='text/javascript'></script>
-  <script src='scripts/Session.js' type='text/javascript'></script>
+  <script src='classes/Assigned.js' type='text/javascript'></script>
+  <script src='classes/Playlist.js' type='text/javascript'></script>
+  <script src='classes/Robot.js' type='text/javascript'></script>
+  <script src='classes/Session.js' type='text/javascript'></script>
   <script src='/libs/qimessaging/1.0/qimessaging.js'></script>
   <script src='/libs/qimessaging/1.0/socket.io.min.js'></script>
   <script src='http://code.jquery.com/ui/1.11.4/jquery-ui.js'></script>
@@ -274,6 +282,19 @@
       closeModal(this.parentElement.parentElement.id);
     });
 
+    $('#advCheck').change(function () {
+      advancedFeatures(this.checked);
+      setCookie('advMode', this.checked, 7);
+    });
+
+    $('#settingsSave').click(function () {
+      setCookie('robotPass', $('#robotPassIn')[0].value, 7);
+      getLanguageValue('passSave')
+        .then(value1 => {
+          infoMessage(value1);
+        });
+    });
+
     $(document).ready(function () {
       modalEvents();
       setInterval(function () {
@@ -289,6 +310,7 @@
       }, (5 * 60) * 1000);
 
       $.when(loadLanguage(), loadPlaylists()).then(function () {
+        advancedFeatures(checkCookieData('advMode'));
         attemptAutoConnect();
       });
     });

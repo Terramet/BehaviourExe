@@ -74,14 +74,14 @@ router.get('/slave', function (req, res, next) {
 });
 
 /* POST to get the slave page to run */
-router.post('/slave/page', function (req, res) {
+router.post('/slave/page', function (req, res, next) {
   fs.readFile(req.text, (err, data) => {
     res.send(data);
   });
 });
 
 /* POST to save the list of playlists */
-router.post('/playlists/save', function (req, res) {
+router.post('/playlists/save', function (req, res, next) {
   let fileName = baseDir + '/public/playlists/file.json';
   let data = fs.readFileSync(fileName);
 
@@ -94,7 +94,7 @@ router.post('/playlists/save', function (req, res) {
 });
 
 /* GET the list of playlists */
-router.get('/playlists/load', function (req, res) {
+router.get('/playlists/load', function (req, res, next) {
   let fileName = baseDir + '/public/playlists/file.json';
   fs.readFile(fileName, (err, data) => {
     let json = JSON.parse(data);
@@ -103,7 +103,7 @@ router.get('/playlists/load', function (req, res) {
 });
 
 /* GET the language file */
-router.get('/language/load', function (req, res) {
+router.get('/language/load', function (req, res, next) {
   let fileName = baseDir + '/public/languages/lang.json';
   fs.readFile(fileName, (err, data) => {
     let json = JSON.parse(data);
@@ -112,43 +112,60 @@ router.get('/language/load', function (req, res) {
 });
 
 /* POST clear all playlists */
-router.post('/playlists/clear', function (req, res) {
+router.post('/playlists/clear', function (req, res, next) {
   let fileName = baseDir + '/public/playlists/file.json';
   fs.writeFileSync(fileName, JSON.stringify(req.body));
   res.send(req.body);
 });
 
 /* POST check for robot ssh key*/
-router.post('/ssh/file_check', function (req, res) {
+router.post('/ssh/file_check', function (req, res, next) {
   let fileName = baseDir + '/public/ssh/' + req.text;
 
   res.send(fs.existsSync(fileName));
 });
 
 /* POST send SCP command to copy videos off the robot */
-router.post('/ssh/copy_recordings_video', function (req, res) {
-  let ssh = baseDir + '/public/ssh/' + req.body.sshKey;
-
+router.post('/ssh/copy_recordings_video', function (req, res, next) {
   fs.watchFile(req.body.endDirVideo, function () {
     fs.unwatchFile(req.body.endDirVideo);
     res.send('Successfully completed copying ' + req.body.filenameVideo + ' to ' + req.body
       .endDirVideo);
   });
 
-  scp2.scp({
-    host: req.body.ip,
-    username: req.body.robotName,
-    privateKey: fs.readFileSync(ssh),
-    path: '/' + req.body.filenameVideo,
-  }, req.body.endDirVideo, function (err) {
-    if (err !== null) console.log('SCP request failed: ' + err);
-  });
+  let sftp = new Client();
+  sftp.connect({
+      host: req.body.ip,
+      port: 22,
+      user: req.body.robotName,
+      tryKeyboard: true,
+    })
+    .then(() => {
+      return sftp.fastGet('/' + req.body.filenameVideo, req.body.endDirVideo + req.body.file +
+        '.avi');
+    })
+    .then((data) => {
+      console.log(data, 'the data info');
+      sftp.end();
+    })
+    .catch((err) => {
+      console.log(err, 'catch error');
+    });
+  sftp
+    .on('keyboard-interactive', function (name, instructions, lang, prompts, finish) {
+      console.log('Connection :: keyboard');
+      finish([req.body.robotPass]);
+    });
 
-  scp2.close();
+  sftp
+    .on('error', function (e) {
+      res.status(111);
+      res.send(e);
+    });
 });
 
 /* POST ffmpeg command to combine video recordings and audio recordings */
-router.post('/ssh/convert_recordings_video', function (req, res) {
+router.post('/ssh/convert_recordings_video', function (req, res, next) {
   exec('ffmpeg -i \'' + req.body.endDirVideo + req.body.file + '.avi\' -i \'' +
     req.body.endDirAudio + req.body.file + '.wav\' -strict -2  \'' +
     req.body.endDir + req.body.file + '.mp4\'',
@@ -167,7 +184,7 @@ router.post('/ssh/convert_recordings_video', function (req, res) {
 });
 
 /* POST send SCP command to copy audio off the robot */
-router.post('/ssh/copy_recordings_audio', function (req, res) {
+router.post('/ssh/copy_recordings_audio', function (req, res, next) {
   let ssh = baseDir + '/public/ssh/' + req.body.sshKey;
 
   fs.watchFile(req.body.endDirAudio, function () {
@@ -176,27 +193,46 @@ router.post('/ssh/copy_recordings_audio', function (req, res) {
       .endDirAudio);
   });
 
-  scp2.scp({
-    host: req.body.ip,
-    username: req.body.robotName,
-    privateKey: fs.readFileSync(ssh),
-    path: '/' + req.body.filenameAudio,
-  }, req.body.endDirAudio, function (err) {
-    if (err !== null) console.log('SCP request failed: ' + err);
-  });
+  let sftp = new Client();
+  sftp.connect({
+      host: req.body.ip,
+      port: 22,
+      user: req.body.robotName,
+      tryKeyboard: true,
+    })
+    .then(() => {
+      return sftp.fastGet('/' + req.body.filenameAudio, req.body.endDirAudio + req.body.file +
+        '.wav');
+    })
+    .then((data) => {
+      console.log(data, 'the data info');
+      sftp.end();
+    })
+    .catch((err) => {
+      console.log(err, 'catch error');
+    });
+  sftp
+    .on('keyboard-interactive', function (name, instructions, lang, prompts, finish) {
+      console.log('Connection :: keyboard');
+      finish([req.body.robotPass]);
+    });
 
-  scp2.close();
+  sftp
+    .on('error', function (e) {
+      res.status(111);
+      res.send(e);
+    });
 });
 
 /* POST send ftp command to delete the stored audio on the robot */
-router.post('/ssh/delete_nao_recording_audio', function (req, res) {
+router.post('/ssh/delete_nao_recording_audio', function (req, res, next) {
   let sftp = new Client();
-  let ssh = baseDir + '/public/ssh/' + req.body.sshKey;
 
   sftp.connect({
       host: req.body.ip,
+      port: 22,
       username: req.body.robotName,
-      privateKey: fs.readFileSync(ssh),
+      tryKeyboard: true,
     })
     .then(() => {
       sftp.delete('/' + req.body.filenameAudio);
@@ -210,17 +246,28 @@ router.post('/ssh/delete_nao_recording_audio', function (req, res) {
       res.status(333);
       res.send('Failed to delete ' + req.body.filename);
     });
+  sftp
+    .on('keyboard-interactive', function (name, instructions, lang, prompts, finish) {
+      console.log('Connection :: keyboard');
+      finish([req.body.robotPass]);
+    });
+
+  sftp
+    .on('error', function (e) {
+      res.status(111);
+      res.send(e);
+    });
 });
 
 /* POST send ftp command to delete the stored video on the robot */
-router.post('/ssh/delete_nao_recording_video', function (req, res) {
+router.post('/ssh/delete_nao_recording_video', function (req, res, next) {
   let sftp = new Client();
-  let ssh = baseDir + '/public/ssh/' + req.body.sshKey;
 
   sftp.connect({
       host: req.body.ip,
+      port: 22,
       username: req.body.robotName,
-      privateKey: fs.readFileSync(ssh),
+      tryKeyboard: true,
     })
     .then(() => {
       sftp.delete('/' + req.body.filenameVideo);
@@ -234,26 +281,21 @@ router.post('/ssh/delete_nao_recording_video', function (req, res) {
       res.status(333);
       res.send('Failed to delete ' + req.body.filename);
     });
-});
-
-/* POST create SSH key from interfacing with the robots file system */
-router.post('/ssh/gen_key', function (req, res) {
-  exec(baseDir + '/SSH-Keygen.sh \'' + baseDir + '/public/ssh/' + req.body.fileName + '\' ' +
-    req.body.robotName + '@' + req.body.ip,
-    function (error, stdout, stderr) {
-      console.log('stdout: ' + stdout);
-      console.log('stderr: ' + stderr);
-      if (error !== null) {
-        console.log('exec error: ' + error);
-      } else {
-        res.send('Successfully created key pair with: ' + req.body.robotName);
-      }
+  sftp
+    .on('keyboard-interactive', function (name, instructions, lang, prompts, finish) {
+      console.log('Connection :: keyboard');
+      finish([req.body.robotPass]);
     });
 
+  sftp
+    .on('error', function (e) {
+      res.status(111);
+      res.send(e);
+    });
 });
 
 /* GET videos */
-router.post('/videos', function (req, res) {
+router.post('/videos', function (req, res, next) {
   let dir = './public/videos';
   res.send(fs.readdirSync(dir));
 });

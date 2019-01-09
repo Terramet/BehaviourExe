@@ -182,6 +182,26 @@
       {
         "text": "Currently the only thing you are able to do with edit is to delete all playlist, this is irreversable!",
         "id": "editHelp"
+      },
+      {
+        "text": "Advanced Mode is: ON",
+        "id": "advModeON"
+      },
+      {
+        "text": "Advanced Mode is: OFF",
+        "id": "advModeOFF"
+      },
+      {
+        "text": "Robot password saved!",
+        "id": "passSave"
+      },
+      {
+        "text": "Could not connect to robot. Make sure your robots password was entered correctly!",
+        "id": "robotAuthenticationFailed"
+      },
+      {
+        "text": "You can change your robots password by going to Menu > Settings!",
+        "id": "robotAuthenticationFailedHelp"
       }
     ],
     "Français": [
@@ -350,6 +370,26 @@
       {
         "text": "Actuellement, la seule chose que vous puissiez faire avec l'édition est de supprimer toute la liste de lecture, c'est irréversible",
         "id": "editHelp"
+      },
+      {
+        "text": "Le mode avancé est: SUR",
+        "id": "advModeON"
+      },
+      {
+        "text": "Le mode avancé est: DÉSACTIVÉ",
+        "id": "advModeOFF"
+      },
+      {
+        "text": "Robot mot de passe enregistré!",
+        "id": "passSave"
+      },
+      {
+        "text": "Impossible de se connecter au robot. Assurez-vous que le mot de passe de votre robot a été entré correctement!",
+        "id": "robotAuthenticationFailed"
+      },
+      {
+        "text": "Vous pouvez changer le mot de passe de votre robot en allant dans Menu > Paramètres!",
+        "id": "robotAuthenticationFailedHelp"
       }
     ],
     "Italiano": [
@@ -538,6 +578,26 @@
       {
         "text": "Attualmente l'unica cosa che puoi fare con edit è cancellare tutte le playlist, questo è irreversibile!",
         "id": "editHelp"
+      },
+      {
+        "text": "La modalità avanzata è: ATTIVA",
+        "id": "advModeON"
+      },
+      {
+        "text": "La modalità avanzata è: DISATTIVATA",
+        "id": "advModeOFF"
+      },
+      {
+        "text": "Password del robot salvata!",
+        "id": "passSave"
+      },
+      {
+        "text": "Impossibile connettersi al robot. Assicurati che la password del tuo robot sia stata inserita correttamente!",
+        "id": "robotAuthenticationFailed"
+      },
+      {
+        "text": "Puoi cambiare la password del tuo robot andando su Menu > Impostazioni!",
+        "id": "robotAuthenticationFailedHelp"
       }
     ]
   }

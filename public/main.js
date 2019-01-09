@@ -8,6 +8,35 @@ var loadedLanguageJSON = {};
 var recording = true;
 var time = null;
 var update = null;
+var advFeatureIDs = ['createPlaylistBtn', 'editPlaylistsBtn', 'advSettingsBtn'];
+
+function advancedFeatures(value) {
+  if (value === true || value === 'true') {
+    $('#advCheck')
+      .prop('checked', true);
+    getLanguageValue('advModeON')
+      .then(value1 => {
+        infoMessage(value1);
+      });
+  } else {
+    $('#advCheck')
+      .prop('checked', false);
+    getLanguageValue('advModeOFF')
+      .then(value1 => {
+        infoMessage(value1);
+      });
+  }
+
+  advFeatureIDs.forEach(element => {
+    if (value === true || value === 'true') {
+      $('#' + element)[0]
+        .style.display = 'block';
+    } else {
+      $('#' + element)[0]
+        .style.display = 'none';
+    }
+  });
+}
 
 function closeModal(id) {
   $('#' + id)[0].style.display = 'none';
@@ -184,8 +213,6 @@ function createSession() {
         stopRec(data);
       });
 
-    checkSSHKey();
-
     getChildNameAsync(function (child) {
       if (checkCookieData(child) != null) {
         restoreSessionAsync(child, function (ans) {
@@ -297,10 +324,6 @@ function attemptAutoConnect() {
 
   let ip = timeoutPromise(10000, robot.getIP());
 
-  ip.then(response => {
-    checkSSHKey();
-  });
-
   ip.catch(error => {
     getLanguageValue('connectIPCatch')
       .then(value => {
@@ -360,18 +383,18 @@ function updateView() {
       .length === 0) {
       getLanguageValue('replayB')
         .then(function (value) {
-          $('#replayB')[0].innerHTML = value + ': ' +
+          $('#replayB')[0].innerHTML = value + ': <br/><small>' +
             ses.getAssigned()
             .getPlaylist('main')
-            .returnLast();
+            .returnLast() + '</small>';
         });
 
       getLanguageValue('nextB')
         .then(function (value) {
-          $('#nextB')[0].innerHTML = value + ': ' +
+          $('#nextB')[0].innerHTML = value + ': <br/><small>' +
             ses.getAssigned()
             .getPlaylist('main')
-            .getNext();
+            .getNext() + '</small>';
         });
 
       getLanguageValue('posB')
