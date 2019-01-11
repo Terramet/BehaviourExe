@@ -137,15 +137,15 @@
             <div class='container-fluid'>
               <div class='row'>
                 <button class='col m-2' id='mainBehave'>Interaction</button>
-                <select class='col m-2' id='mainBehaviour'></select>
+                <select class='col m-2 behave' style='height: 57px;' id='mainBehaviour'></select>
               </div>
               <div class='row'>
                 <button class='col m-2' id='positiveBehave'>Positive</button>
-                <select class='col m-2' id='positiveBehaviour'></select>
+                <select class='col m-2 behave' style='height: 57px;' id='positiveBehaviour'></select>
               </div>
               <div class='row'>
                 <button class='col m-2' id='negativeBehave'>Negative</button>
-                <select class='col m-2' id='negativeBehaviour'></select>
+                <select class='col m-2 behave' style='height: 57px;' id='negativeBehaviour'></select>
               </div>
               <div class='container-fluid text-center'>
                 <button class='center' id='saveAssignments' data-dismiss='modal' onclick='saveAssigned()'>Save</button>
@@ -280,6 +280,23 @@
 
     $('.close').click(function () {
       closeModal(this.parentElement.parentElement.id);
+    });
+
+    $('.behave').on('change', function (e) {
+      loadedPlaylists.forEach(p => {
+        if (this.value === p.name) {
+          checkBehaveList(p).then((result) => {
+            console.log(result);
+            if (!result) {
+              this.parentElement.getElementsByTagName('button')[0].classList.remove('green');
+              this.parentElement.getElementsByTagName('button')[0].classList.add('red');
+            } else {
+              this.parentElement.getElementsByTagName('button')[0].classList.remove('red');
+              this.parentElement.getElementsByTagName('button')[0].classList.add('green');
+            }
+          });
+        }
+      });
     });
 
     $('#advCheck').change(function () {

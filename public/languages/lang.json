@@ -176,12 +176,16 @@
         "id": "langHelp"
       },
       {
-        "text": "Clicking one of the button names will open a new small window that will play the correlated video.",
+        "text": "Clicking one of the button names will open a new small window that will play the corresponding video.",
         "id": "viewHelp"
       },
       {
         "text": "Currently the only thing you are able to do with edit is to delete all playlist, this is irreversable!",
         "id": "editHelp"
+      },
+      {
+        "text": "Each button here has a list box. Selecting one of the items from the list will assign that playlist to the corresponding button. </br></br> The button will turn red if the playlist selected has behaviours that are not currently installed on the robot. </br></br> The button will turn green if it is a valid playlist.",
+        "id": "assignHelp"
       },
       {
         "text": "Advanced Mode is: ON",
@@ -370,6 +374,10 @@
       {
         "text": "Actuellement, la seule chose que vous puissiez faire avec l'édition est de supprimer toute la liste de lecture, c'est irréversible",
         "id": "editHelp"
+      },
+      {
+        "text": "Chaque bouton ici a une liste. La sélection de l'un des éléments de la liste attribue cette playlist au bouton correspondant. </br> </br> Le bouton devient rouge si la playlist sélectionnée a des comportements qui ne sont pas actuellement installés sur le robot. </br> </br> Le bouton devient vert s'il s'agit d'une liste de lecture valide. ",
+        "id": "assignHelp"
       },
       {
         "text": "Le mode avancé est: SUR",
@@ -578,6 +586,10 @@
       {
         "text": "Attualmente l'unica cosa che puoi fare con edit è cancellare tutte le playlist, questo è irreversibile!",
         "id": "editHelp"
+      },
+      {
+        "text": "Ogni pulsante qui ha una casella di riepilogo. Selezionando una delle voci dall'elenco assegnerai quella playlist al pulsante corrispondente. </br> </br> Il pulsante diventerà rosso se la playlist selezionata presenta comportamenti che non sono attualmente installati sul robot. </br> </br> Il pulsante diventerà verde se è una playlist valida.",
+        "id": "assignHelp"
       },
       {
         "text": "La modalità avanzata è: ATTIVA",

@@ -66,13 +66,17 @@ class Robot {
   }
 
   isBehaviorInstalled(behaviour) {
-    return this.session.service('ALBehaviorManager')
-      .then(function (bm) {
-        return bm.isBehaviorInstalled(behaviour)
-          .then(function (a) {
-            return a;
-          });
-      });
+    let prom = new Promise((resolve, reject) => {
+      this.session.service('ALBehaviorManager')
+        .then(function (bm) {
+          bm.isBehaviorInstalled(behaviour)
+            .then(function (a) {
+              resolve(a);
+            });
+        });
+    });
+
+    return prom;
   }
 
   startBehaviour(behaviour, btn) {
