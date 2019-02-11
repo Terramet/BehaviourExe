@@ -316,7 +316,13 @@ router.get('/check_update', function (req, res, next) {
 });
 
 router.get('/get_update', function (req, res, next) {
-  process.exit(1);
+  console.log(process.argv.includes('-nu'));
+  console.log(process.argv.includes('--no-update'));
+  if (process.argv.includes('-nu') || process.argv.includes('--no-update')) {
+    res.send('Application will not update as you are running the server with either "-nu" or "--no-update".')
+  } else {
+    process.exit(1);
+  }
 });
 
 module.exports = router;

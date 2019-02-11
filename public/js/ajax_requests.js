@@ -234,7 +234,7 @@ function getUpdate() {
     url: removeHASH() + 'get_update',
     type: 'get',
     success: function (data) {
-      return data;
+      alertMessage(data);
     },
   });
 }
