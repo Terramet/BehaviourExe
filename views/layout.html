@@ -3,7 +3,7 @@
 
 <head>
 
-  <meta charset='utf-8'>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
   <meta name='description' content=''>
   <meta name='author' content=''>
@@ -207,7 +207,7 @@
         </div>
       </div>
 
-      <form id='executionForm' style='display: none; position: absolute; margin-left: auto; margin-right: auto; left: 0; right: 0; margin-top: 10%;' method='post' onsubmit='return false;' autocomplete='on'>
+      <form id='executionForm' style='display: none; margin-left: auto; margin-right: auto; left: 0; right: 0; margin-top: 5%;' method='post' onsubmit='return false;' autocomplete='on'>
         <div>
           <h4 id='executionFormTitle' style='text-align:center; padding-top: 15px;'>Behaviour Execution</h4>
         </div>
@@ -225,6 +225,23 @@
         </div>
         <div>
           <button class='red' id='stopB' style='float: centre; width: 100%;' onclick='stopBehaviour()'>STOP</button>
+        </div>
+      </form>
+
+      <form id='robotControlForm' style='display: none; margin-top: 5%;' method='post' onsubmit='return false;' autocomplete='on'>
+        <span onclick='activateMovement()' style='font-size: 18px; float: right;'><a id="moveActive" href='#'>☐</a></span>
+        <div>
+          <h4 id='controlRobotTitle' style='text-align:center; padding-top: 15px;'>Robot Controls</h4>
+        </div>
+        <div class="row">
+          <button id='turnLeft' class="col m-2" onmousedown="setMovementValue(2, 1)" onmouseup="setMovementValue(2, 0)">⮢</button>
+          <button id='forward' class="col m-2" onmousedown="setMovementValue(0, 1)" onmouseup="setMovementValue(0, 0)">⬆</button>
+          <button id='turnRight' class="col m-2" onmousedown="setMovementValue(2, -1)" onmouseup="setMovementValue(2, 0)">⮣</button>
+        </div>
+        <div class="row">
+          <button id='left' class="col m-2" onmousedown="setMovementValue(1, 1)" onmouseup="setMovementValue(1, 0)">⬅</button>
+          <button id='backwards' class="col m-2" onmousedown="setMovementValue(0, -1)" onmouseup="setMovementValue(0, 0)">⬇</button>
+          <button id='right' class="col m-2" onmousedown="setMovementValue(1, -1)" onmouseup="setMovementValue(1, 0)">➡</button>
         </div>
       </form>
 
@@ -286,7 +303,6 @@
       loadedPlaylists.forEach(p => {
         if (this.value === p.name) {
           checkBehaveList(p).then((result) => {
-            console.log(result);
             if (!result) {
               this.parentElement.getElementsByTagName('button')[0].classList.remove('green');
               this.parentElement.getElementsByTagName('button')[0].classList.add('red');

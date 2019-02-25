@@ -1,4 +1,4 @@
-var ses = null;
+localvar ses = null;
 var robot;
 var assigned;
 var connected = false;
@@ -183,6 +183,7 @@ function createSession() {
 
   robot.startSession($('#IP')[0].value, function () {
       $('#executionForm')[0].style.display = 'block';
+      $('#robotControlForm')[0].style.display = 'block';
       $('#connectBtn')
         .parent()[0].classList.remove('red');
       $('#connectBtn')
@@ -274,6 +275,7 @@ function attemptAutoConnect() {
 
   robot.startSession('nao.local', function () {
       $('#executionForm')[0].style.display = 'block';
+      $('#robotControlForm')[0].style.display = 'block';
       $('#connectBtn')
         .parent()[0].classList.remove('red');
       $('#connectBtn')
@@ -597,4 +599,17 @@ function stopRec(data) {
     console.log('Behaviour finished.');
     setTimeout(copyRecording(time), 2000);
   }
+}
+
+function activateMovement() {
+  if(!robot.listenersActive) {
+    $('#moveActive')[0].innerHTML = "☑";
+    robot.startMovementListeners();
+  } else {
+    $('#moveActive')[0].innerHTML = "☐";
+    robot.stopMovementListeners();
+  }
+}
+function setMovementValue(dir, value) {
+  robot.movement[dir] = value;
 }
