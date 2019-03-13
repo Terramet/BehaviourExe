@@ -1,4 +1,4 @@
-localvar ses = null;
+var ses = null;
 var robot;
 var assigned;
 var connected = false;
@@ -609,7 +609,4 @@ function activateMovement() {
     $('#moveActive')[0].innerHTML = "☐";
     robot.stopMovementListeners();
   }
-}
-function setMovementValue(dir, value) {
-  robot.movement[dir] = value;
 }

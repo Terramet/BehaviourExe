@@ -9,7 +9,7 @@ class Robot {
   }
 
   startSession(ip, callbackConnect = null, callbackDisconnect = null) {
-    this.session = new QiSession(ip);
+    this.session = new QiSession(ip + ':80');
     /**
      * Create the session by connecting to the robot.
      * Upon connection execute function

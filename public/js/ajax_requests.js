@@ -21,6 +21,29 @@ function loadLanguage() {
   });
 }
 
+function moveMiro(x, y) {
+  var data = {};
+  data.velX = x;
+  data.velY = y;
+  $.ajax({
+      type: 'POST',
+      data: JSON.stringify(data),
+      contentType: 'application/json',
+      url: removeHASH() + 'moveMiro',
+      success: (data) => { console.log(data) }
+
+    })
+}
+
+function stopMiro() {
+  $.ajax({
+      type: 'POST',
+      url: removeHASH() + 'stopMiro',
+      success: (data) => { console.log(data) }
+
+    })
+}
+
 function savePlaylist() {
   let name = $('#playlistName')[0].value;
   let listElements = $('#behaveListPlaylist')[0].childNodes;

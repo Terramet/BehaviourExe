@@ -14,6 +14,9 @@ var socket = io.sockets;
 var connectedUserMapSlave = new Map();
 var connectedUserMapMaster = new Map();
 
+var miroInt = null;
+
+
 socket.on('connect', function (socket) {
   console.log('a user connected');
   let connectedUserId = socket.id;
@@ -300,10 +303,12 @@ router.post('/videos', function (req, res, next) {
   res.send(fs.readdirSync(dir));
 });
 
+/* GET a list of slaves that are */
 router.get('/get_slaves', function (req, res, next) {
   res.send(Array.from(connectedUserMapSlave.keys()));
 });
 
+/* GET details of the current update */
 router.get('/check_update', function (req, res, next) {
   fs.readFile('./package.json', (err, data) => {
     let pjson = JSON.parse(data);
@@ -315,6 +320,37 @@ router.get('/check_update', function (req, res, next) {
   });
 });
 
+/* POST execute the file in order to move Miro in the direction */
+router.post('/moveMiro', function (req, res, next) {
+  exec('python ./miromove.py robot=sim01 x=' + req.body.velX + ' y=' + req.body.velY,
+    function (error, stdout, stderr) {
+      console.log('stdout: ' + stdout);
+      console.log('stderr: ' + stderr);
+      if (error !== null) {
+        console.log('exec error: ' + error);
+      }
+    })
+
+  miroInt = setInterval(function () {
+    exec('python ./miromove.py robot=sim01 x=' + req.body.velX + ' y=' + req.body.velY,
+      function (error, stdout, stderr) {
+        console.log('stdout: ' + stdout);
+        console.log('stderr: ' + stderr);
+        if (error !== null) {
+          console.log('exec error: ' + error);
+        }
+      });
+  }, 1000);
+  res.send('Success');
+})
+
+/* Clear the interval created by the MoveMiro*/
+router.post('/stopMiro', function (req, res, next) {
+  clearInterval(miroInt);
+  res.send('Success');
+})
+
+/* Force the server to restart in order to update it. Will not update is server is started with -nu or --no-update*/
 router.get('/get_update', function (req, res, next) {
   if (process.argv.includes('-nu') || process.argv.includes('--no-update')) {
     res.send('Application will not update as you are running the server with either "-nu" or "--no-update".')

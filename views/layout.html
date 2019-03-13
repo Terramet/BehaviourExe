@@ -197,11 +197,16 @@
           <h4 class='center' id='settingsTitle' style='margin: auto;'>Settings</h4>
           <form id='settingsForm' style='margin-top: 10px; display: block; text-align: center;' method='post' onsubmit='return false;' autocomplete='on'>
             <div class='row'>
-              <p class='col m-2' id='robotPass'>Robot Password </p>
+              <p class='col m-2' id='robotPass'>Robot Password</p>
             </div>
             <div class='row'>
               <input type="password" class='col m-2' id='robotPassIn' placeholder="Please enter your robots password"></input>
             </div>
+            <hr>
+            <div class='row'>
+              <label style='margin: auto;'>Robot Controls<input id="robotControlCheck" type="checkbox" class="ios-switch"><div class="switch"></div></label>
+            </div>
+            <hr>
             <button id='settingsSave' data-dismiss='modal' style='display: block; margin: auto;'>Save</button>
           </form>
         </div>
@@ -234,14 +239,30 @@
           <h4 id='controlRobotTitle' style='text-align:center; padding-top: 15px;'>Robot Controls</h4>
         </div>
         <div class="row">
-          <button id='turnLeft' class="col m-2" onmousedown="setMovementValue(2, 1)" onmouseup="setMovementValue(2, 0)">⮢</button>
-          <button id='forward' class="col m-2" onmousedown="setMovementValue(0, 1)" onmouseup="setMovementValue(0, 0)">⬆</button>
-          <button id='turnRight' class="col m-2" onmousedown="setMovementValue(2, -1)" onmouseup="setMovementValue(2, 0)">⮣</button>
+          <button id='turnLeft' class="col m-2" onpointerdown="setMovementValue(2, 1)" onpointerup="setMovementValue(2, 0)">⮢</button>
+          <button id='forward' class="col m-2" onpointerdown="setMovementValue(0, 1)" onpointerup="setMovementValue(0, 0)">⬆</button>
+          <button id='turnRight' class="col m-2" onpointerdown="setMovementValue(2, -1)" onpointerup="setMovementValue(2, 0)">⮣</button>
         </div>
         <div class="row">
-          <button id='left' class="col m-2" onmousedown="setMovementValue(1, 1)" onmouseup="setMovementValue(1, 0)">⬅</button>
-          <button id='backwards' class="col m-2" onmousedown="setMovementValue(0, -1)" onmouseup="setMovementValue(0, 0)">⬇</button>
-          <button id='right' class="col m-2" onmousedown="setMovementValue(1, -1)" onmouseup="setMovementValue(1, 0)">➡</button>
+          <button id='left' class="col m-2" onpointerdown="setMovementValue(1, 1)" onpointerup="setMovementValue(1, 0)">⬅</button>
+          <button id='backwards' class="col m-2" onpointerdown="setMovementValue(0, -1)" onpointerup="setMovementValue(0, 0)">⬇</button>
+          <button id='right' class="col m-2" onpointerdown="setMovementValue(1, -1)" onpointerup="setMovementValue(1, 0)">➡</button>
+        </div>
+      </form>
+
+      <form id='miroControlForm' style='display: none; margin-top: 5%;' method='post' onsubmit='return false;' autocomplete='on'>
+        <div>
+          <h4 id='miroRobotTitle' style='text-align:center; padding-top: 15px;'>Miro Controls</h4>
+        </div>
+        <div class="row">
+          <button id='invisButton1' class="col m-2" style="visibility: hidden"></button>
+          <button id='miroForward' class="col m-2" onpointerdown="moveMiro(200, 0)" onpointerup="stopMiro()">⬆</button>
+          <button id='invisButton2' class="col m-2" style="visibility: hidden"></button>
+        </div>
+        <div class="row">
+          <button id='miroTurnLeft' class="col m-2" onpointerdown="moveMiro(0, 1.5708)" onpointerup="stopMiro()">⮢</button>
+          <button id='miroBackwards' class="col m-2" onpointerdown="moveMiro(-200, 0)" onpointerup="stopMiro()">⬇</button>
+          <button id='miroTurnRight' class="col m-2" onpointerdown="moveMiro(0, -1.5708)" onpointerup="stopMiro()">⮣</button>
         </div>
       </form>
 
@@ -321,7 +342,11 @@
     });
 
     $('#settingsSave').click(function () {
-      setCookie('robotPass', $('#robotPassIn')[0].value, 7);
+      if($('#robotPassIn')[0].value != "") {
+        setCookie('robotPass', $('#robotPassIn')[0].value, 7);
+      }
+      
+      setCookie('robotControls', $('#robotControlCheck')[0].checked, 7);
       getLanguageValue('passSave')
         .then(value1 => {
           infoMessage(value1);
