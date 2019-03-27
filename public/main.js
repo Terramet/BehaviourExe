@@ -183,7 +183,6 @@ function createSession() {
 
   robot.startSession($('#IP')[0].value, function () {
       $('#executionForm')[0].style.display = 'block';
-      $('#robotControlForm')[0].style.display = 'block';
       $('#connectBtn')
         .parent()[0].classList.remove('red');
       $('#connectBtn')
@@ -275,7 +274,6 @@ function attemptAutoConnect() {
 
   robot.startSession('nao.local', function () {
       $('#executionForm')[0].style.display = 'block';
-      $('#robotControlForm')[0].style.display = 'block';
       $('#connectBtn')
         .parent()[0].classList.remove('red');
       $('#connectBtn')

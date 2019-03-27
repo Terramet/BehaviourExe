@@ -47,7 +47,7 @@
           <a class="side-bar-toggler" href='#' data-toggle='modal' data-target='#viewModal' id='viewVideosBtn'>View Videos</a>
         </li>
         <li>
-          <a class="side-bar-toggler" href='#' data-toggle='modal' data-target='#settingsModal' id='advSettingsBtn'>Settings</a>
+          <a class="side-bar-toggler" href='#' data-toggle='modal' data-target='#settingsModal' onclick='updateSettings()' id='advSettingsBtn'>Settings</a>
         </li>
         <li>
           <label>Advanced Mode<input id="advCheck" type="checkbox" class="ios-switch"><div class="switch"></div></label>
@@ -67,7 +67,6 @@
       <!-- The Modal-->
       <div class='modal animated fadeIn' id='connectModal'>
       <div class="help-tip"><p id="connectHelp">Say</p></div>
-
         <!-- Modal content-->
         <div class='modal-content autoModal' style='display: table;'><span class='close' data-dismiss='modal'>×</span>
           <div>
@@ -233,38 +232,46 @@
         </div>
       </form>
 
-      <form id='robotControlForm' style='display: none; margin-top: 5%;' method='post' onsubmit='return false;' autocomplete='on'>
-        <span onclick='activateMovement()' style='font-size: 18px; float: right;'><a id="moveActive" href='#'>☐</a></span>
-        <div>
-          <h4 id='controlRobotTitle' style='text-align:center; padding-top: 15px;'>Robot Controls</h4>
+      <div id="controlsContainer" class="text-center m-2" style="display: none">
+        <a href="#naoRobotControls" class="btn btn-info" data-toggle="collapse">Nao Controls</a>
+        <a href="#miroRobotControls" class="btn btn-info" data-toggle="collapse">Miro Controls</a>
+        <div id="naoRobotControls" class="collapse">
+          <form id='robotControlForm' class="m-2" style='display: block;' method='post' onsubmit='return false;' autocomplete='on'>
+            <span onclick='activateMovement()' style='font-size: 18px; float: right;'><a id="moveActive" href='#'>☐</a></span>
+            <div>
+              <h4 id='controlRobotTitle' style='text-align:center; padding-top: 15px;'>Robot Controls</h4>
+            </div>
+            <div class="row">
+              <button id='turnLeft' class="col m-2" onpointerdown="setMovementValue(2, 1)" onpointerup="setMovementValue(2, 0)">⮢</button>
+              <button id='forward' class="col m-2" onpointerdown="setMovementValue(0, 1)" onpointerup="setMovementValue(0, 0)">⬆</button>
+              <button id='turnRight' class="col m-2" onpointerdown="setMovementValue(2, -1)" onpointerup="setMovementValue(2, 0)">⮣</button>
+            </div>
+            <div class="row">
+              <button id='left' class="col m-2" onpointerdown="setMovementValue(1, 1)" onpointerup="setMovementValue(1, 0)">⬅</button>
+              <button id='backwards' class="col m-2" onpointerdown="setMovementValue(0, -1)" onpointerup="setMovementValue(0, 0)">⬇</button>
+              <button id='right' class="col m-2" onpointerdown="setMovementValue(1, -1)" onpointerup="setMovementValue(1, 0)">➡</button>
+            </div>
+          </form>
         </div>
-        <div class="row">
-          <button id='turnLeft' class="col m-2" onpointerdown="setMovementValue(2, 1)" onpointerup="setMovementValue(2, 0)">⮢</button>
-          <button id='forward' class="col m-2" onpointerdown="setMovementValue(0, 1)" onpointerup="setMovementValue(0, 0)">⬆</button>
-          <button id='turnRight' class="col m-2" onpointerdown="setMovementValue(2, -1)" onpointerup="setMovementValue(2, 0)">⮣</button>
-        </div>
-        <div class="row">
-          <button id='left' class="col m-2" onpointerdown="setMovementValue(1, 1)" onpointerup="setMovementValue(1, 0)">⬅</button>
-          <button id='backwards' class="col m-2" onpointerdown="setMovementValue(0, -1)" onpointerup="setMovementValue(0, 0)">⬇</button>
-          <button id='right' class="col m-2" onpointerdown="setMovementValue(1, -1)" onpointerup="setMovementValue(1, 0)">➡</button>
-        </div>
-      </form>
 
-      <form id='miroControlForm' style='display: none; margin-top: 5%;' method='post' onsubmit='return false;' autocomplete='on'>
-        <div>
-          <h4 id='miroRobotTitle' style='text-align:center; padding-top: 15px;'>Miro Controls</h4>
+        <div id="miroRobotControls" class="collapse">
+          <form id='controlsContainer' class="m-2" style='display: block;' method='post' onsubmit='return false;' autocomplete='on'>
+            <div>
+              <h4 id='miroRobotTitle' style='text-align:center; padding-top: 15px;'>Miro Controls</h4>
+            </div>
+            <div class="row">
+              <button id='invisButton1' class="col m-2" style="visibility: hidden"></button>
+              <button id='miroForward' class="col m-2" onpointerdown="moveMiro(200, 0)" onpointerup="stopMiro()">⬆</button>
+              <button id='invisButton2' class="col m-2" style="visibility: hidden"></button>
+            </div>
+            <div class="row">
+              <button id='miroTurnLeft' class="col m-2" onpointerdown="moveMiro(0, 1.5708)" onpointerup="stopMiro()">⮢</button>
+              <button id='miroBackwards' class="col m-2" onpointerdown="moveMiro(-200, 0)" onpointerup="stopMiro()">⬇</button>
+              <button id='miroTurnRight' class="col m-2" onpointerdown="moveMiro(0, -1.5708)" onpointerup="stopMiro()">⮣</button>
+            </div>
+          </form>
         </div>
-        <div class="row">
-          <button id='invisButton1' class="col m-2" style="visibility: hidden"></button>
-          <button id='miroForward' class="col m-2" onpointerdown="moveMiro(200, 0)" onpointerup="stopMiro()">⬆</button>
-          <button id='invisButton2' class="col m-2" style="visibility: hidden"></button>
-        </div>
-        <div class="row">
-          <button id='miroTurnLeft' class="col m-2" onpointerdown="moveMiro(0, 1.5708)" onpointerup="stopMiro()">⮢</button>
-          <button id='miroBackwards' class="col m-2" onpointerdown="moveMiro(-200, 0)" onpointerup="stopMiro()">⬇</button>
-          <button id='miroTurnRight' class="col m-2" onpointerdown="moveMiro(0, -1.5708)" onpointerup="stopMiro()">⮣</button>
-        </div>
-      </form>
+      </div>
 
       <span class="fixed-bottom">
         <p class="text-center" id='update-status'></p>
@@ -336,17 +343,32 @@
       });
     });
 
+    function updateSettings() {
+      let value = checkCookieData('robotControls');
+      if (value === true || value === 'true') {
+        $('#robotControlCheck').prop('checked', true);
+      } else {
+        $('#robotControlCheck').prop('checked', false);
+      }
+
+    }
+
     $('#advCheck').change(function () {
       advancedFeatures(this.checked);
       setCookie('advMode', this.checked, 7);
     });
 
     $('#settingsSave').click(function () {
-      if($('#robotPassIn')[0].value != "") {
+      if ($('#robotPassIn')[0].value != "") {
         setCookie('robotPass', $('#robotPassIn')[0].value, 7);
       }
-      
+
       setCookie('robotControls', $('#robotControlCheck')[0].checked, 7);
+      if ($('#robotControlCheck')[0].checked) {
+        $('#controlsContainer')[0].style.display = 'block';
+      } else {
+        $('#controlsContainer')[0].style.display = 'none';
+      }
       getLanguageValue('passSave')
         .then(value1 => {
           infoMessage(value1);
@@ -355,6 +377,11 @@
 
     $(document).ready(function () {
       modalEvents();
+      let value = checkCookieData('robotControls');
+      if (value === true || value === 'true') {
+        $('#controlsContainer')[0].style.display = 'block';
+      }
+
       setInterval(function () {
         $.when(checkUpdate()).then(function () {
           if (update[0]) {
