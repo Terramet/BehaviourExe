@@ -599,6 +599,10 @@ function stopRec(data) {
   }
 }
 
+function setMovementValue(key, val) {
+  robot.movement[key] = val;
+}
+
 function activateMovement() {
   if(!robot.listenersActive) {
     $('#moveActive')[0].innerHTML = "☑";
