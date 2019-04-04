@@ -13,3 +13,6 @@ public/raw_audio/*
 !public/raw_audio/.gitkeep
 
 fake_folder/
+
+public/uploads/*
+!public/uploads/.gitkeep

@@ -320,6 +320,48 @@ router.get('/check_update', function (req, res, next) {
   });
 });
 
+router.post('/post_pptx', function(req, res, next) {
+  if(fs.existsSync(req.file.path)) {
+    console.log(req.file)
+
+    var wordBuffer = fs.readFileSync(req.file.path)
+
+    toPdf(wordBuffer).then(
+      (pdfBuffer) => {
+        fs.writeFileSync(req.file.path.split('.')[0] + '.pdf', pdfBuffer);
+        let composer = new pptComposer(); //instantiate
+        composer.parse(req.file.path, function (err, json) {
+          // let titles = json['docProps/app.xml'].Properties.TitlesOfParts['0']['vt:vector']['0']['vt:lpstr']
+          // titles.shift();
+
+          var input   = req.file.path.split('.')[0] + '.pdf';
+
+          pdf2img.setOptions({
+            type: 'png',                                // png or jpg, default jpg
+            size: 1024,                                 // default 1024
+            density: 600,                               // default 600
+            outputdir: req.file.destination + 'images', // output folder, default null (if null given, then it will create folder name same as file name)
+            outputname: 'slide',
+            page: null                                  // convert selected page, default null (if null given, then it will convert all pages)
+          });
+
+          pdf2img.convert(input, function(err, info) {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log(info);
+              res.send('Successfully uploaded ' + req.file.filename);
+            }
+          });
+        });
+      }, (err) => {
+        console.log(err);
+      });
+  } else {
+    res.send('Upload failed! Redirecting...');
+  }
+})
+
 /* POST execute the file in order to move Miro in the direction */
 router.post('/moveMiro', function (req, res, next) {
   exec('python ./miromove.py robot=sim01 x=' + req.body.velX + ' y=' + req.body.velY,
