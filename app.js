@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var auto = require('auto_updater');
 var pjson = require('./package.json');
+var multer = require('multer');
 var npm = require('npm');
 var app = express();
 
@@ -67,6 +68,24 @@ app.set('view engine', 'html');
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    let path = './public/uploads/' + file.originalname.replace(' ', '_').split('.')[0] + '/'
+
+    if(!fs.existsSync(path)) {
+      fs.mkdirSync(path)
+    }
+
+    cb(null, path)
+  },
+  filename: function (req, file, cb) {
+    console.log()
+    cb(null, file.originalname.replace(' ', '_'))
+  }
+})
+
+app.use(multer({storage: storage}).single('pptx'))
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
