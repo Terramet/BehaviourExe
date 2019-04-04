@@ -32,3 +32,19 @@ function saveAssigned() {
   + pp.getName() + ' as the positive behaviour list. <br/>'
   + np.getName() + ' as the negative behaviour list.');
 }
+
+function checkBehaveList(p) {
+  return new Promise(function (resolve, reject) {
+
+    p.list.forEach(b => {
+      robot.isBehaviorInstalled(b)
+        .then((a) => {
+          if (!a) {
+            return resolve(false);
+          } else if (b === p.list[p.list.length - 1]) {
+            return resolve(true);
+          }
+        });
+    });
+  });
+}

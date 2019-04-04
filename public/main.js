@@ -10,92 +10,8 @@ var time = null;
 var update = null;
 var advFeatureIDs = ['createPlaylistBtn', 'editPlaylistsBtn', 'advSettingsBtn'];
 
-function advancedFeatures(value) {
-  if (value === true || value === 'true') {
-    $('#advCheck')
-      .prop('checked', true);
-    getLanguageValue('advModeON')
-      .then(value1 => {
-        infoMessage(value1);
-      });
-  } else {
-    $('#advCheck')
-      .prop('checked', false);
-    getLanguageValue('advModeOFF')
-      .then(value1 => {
-        infoMessage(value1);
-      });
-  }
-
-  advFeatureIDs.forEach(element => {
-    if (value === true || value === 'true') {
-      $('#' + element)[0]
-        .style.display = 'block';
-    } else {
-      $('#' + element)[0]
-        .style.display = 'none';
-    }
-  });
-}
-
-function checkBehaveList(p) {
-  return new Promise(function (resolve, reject) {
-
-    p.list.forEach(b => {
-      robot.isBehaviorInstalled(b)
-        .then((a) => {
-          if (!a) {
-            return resolve(false);
-          } else if (b === p.list[p.list.length - 1]) {
-            return resolve(true);
-          }
-        });
-    });
-  });
-}
-
 function closeModal(id) {
   $('#' + id)[0].style.display = 'none';
-}
-
-function alertMessage(value, cb) {
-  let tmpl = document.getElementById('error-template');
-  $('#message-holder')[0].appendChild(tmpl.content.cloneNode(true));
-  $('#message-value-error')[0].innerHTML = '<i class="fa fa-times-circle"></i> ' + value;
-  $('#message-value-error')
-    .css('opacity', '1')
-    .hide()
-    .fadeIn(4000)
-    .delay(4000)
-    .fadeOut(4000, () => {
-      $('message-value-error')
-        .remove();
-      if (cb) {
-        cb();
-      }
-    });
-
-  return false;
-}
-
-function infoMessage(value, cb) {
-  let tmpl = document.getElementById('info-template');
-  $('#message-holder')[0].appendChild(tmpl.content.cloneNode(true));
-  $('#message-value-info')[0].innerHTML = '<i class="fa fa-info-circle"></i> ' + value;
-  $('#message-value-info')
-    .css('opacity', '1')
-    .hide()
-    .fadeIn(4000)
-    .delay(4000)
-    .fadeOut(4000, () => {
-      $('#message-value-info')
-        .remove();
-      if (cb) {
-        cb();
-      }
-    });
-
-  return false;
 }
 
 function modalEvents() {
@@ -385,121 +301,6 @@ function getChildNameAsync(callback) {
     });
 }
 
-function say() {
-  let str = $('#sayText')[0].value;
-  let textToSay = str.replace(/%c/g, ses.getName());
-  robot.say(textToSay);
-  console.log('Robot said: ' + textToSay + '.');
-}
-
-function updateView() {
-  setInterval(function () {
-    if (ses.getAssigned() !== null &&
-      document.getElementsByClassName('donut-spinner')
-      .length === 0) {
-      getLanguageValue('replayB')
-        .then(function (value) {
-          $('#replayB')[0].innerHTML = value + ': <br/><small>' +
-            ses.getAssigned()
-            .getPlaylist('main')
-            .returnLast() + '</small>';
-        });
-
-      getLanguageValue('nextB')
-        .then(function (value) {
-          $('#nextB')[0].innerHTML = value + ': <br/><small>' +
-            ses.getAssigned()
-            .getPlaylist('main')
-            .getNext() + '</small>';
-        });
-
-      getLanguageValue('posB')
-        .then(function (value) {
-          $('#posB')[0].innerHTML = value;
-        });
-
-      getLanguageValue('negB')
-        .then(function (value) {
-          $('#negB')[0].innerHTML = value;
-        });
-    }
-  }, 1000);
-
-}
-
-function checkCookieData(cname) {
-  var name = cname + '=';
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    };
-
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  };
-
-  return null;
-}
-
-function setCookie(cname, cvalue, exdays) {
-  var d = new Date();
-  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-  var expires = 'expires=' + d.toUTCString();
-  document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
-}
-
-function updateCookie() {
-  setInterval(function () {
-    if (ses.getAssigned() != null) {
-      setCookie(ses.getName(), ses.asJSON(), 7);
-    }
-  }, 1000);
-
-}
-
-function playCurrent(type, btn) {
-  if (ses.getAssigned() === null) {
-    getLanguageValue('noPlaylists')
-      .then(value => {
-        alertMessage(value);
-      });
-
-    console.error('No playlist assigned to ' + btn.innerHTML + ' button.');
-  } else if (ses.getAssigned()
-    .getPlaylist(type)
-    .returnLast() !== 'Nothing') {
-    robot.startBehaviour(ses.getAssigned()
-      .getPlaylist(type)
-      .returnLast(), btn);
-  }
-}
-
-function playNext(type, btn) {
-  if (ses.getAssigned() === null) {
-    getLanguageValue('noPlaylists')
-      .then(value => {
-        alertMessage(value);
-      });
-
-    console.error('No playlist assigned to ' + btn.innerHTML + ' button.');
-  } else if (ses.getAssigned()
-    .getPlaylist(type)
-    .getNext() !== 'Nothing') {
-    robot.startBehaviour(ses.getAssigned()
-      .getPlaylist(type)
-      .next(), btn);
-  }
-}
-
-function stopBehaviour() {
-  robot.stopBehaviour();
-  console.error('Robot behaviour forcefully stopped.');
-}
-
 function removeOptions(selectbox) {
   for (var i = selectbox.options.length - 1; i >= 0; i--) {
     selectbox.remove(i);
@@ -549,52 +350,16 @@ function downloadInnerHtml(filename, elId, mimeType) {
   link.click();
 }
 
-function changeMemValue(key, val) {
-  robot.setALMemoryValue(key, val);
+function setMovementValue(key, val) {
+  robot.movement[key] = val;
 }
 
-function startRec(data) {
-  if (data.includes('/.') && data !== 'run_dialog_dev/.') {
-    let r = $('#replayB')[0];
-    let n = $('#nextB')[0];
-    let p = $('#posB')[0];
-    let neg = $('#negB')[0];
-    r.setAttribute('disabled', '');
-    n.setAttribute('disabled', '');
-    p.setAttribute('disabled', '');
-    neg.setAttribute('disabled', '');
-    let spin = document.getElementsByClassName('donut-spinner');
-    if (spin.length !== 0) {
-      for (let i = 0; i < spin.length; i++) {
-        spin[i].remove();
-      };
-    }
-
-    time = getTime();
-
-    robot.startRecording(ses.getName());
-
-    recording = true;
-    console.log('Behaviour ' + data + ' started successfully.');
-  }
-}
-
-function stopRec(data) {
-  if (data.includes('/.') && data !== 'run_dialog_dev/.') {
-    let r = $('#replayB')[0];
-    let n = $('#nextB')[0];
-    let p = $('#posB')[0];
-    let neg = $('#negB')[0];
-    r.removeAttribute('disabled');
-    n.removeAttribute('disabled');
-    p.removeAttribute('disabled');
-    neg.removeAttribute('disabled');
-
-    robot.stopRecording();
-
-    recording = false;
-
-    console.log('Behaviour finished.');
-    setTimeout(copyRecording(time), 2000);
+function activateMovement() {
+  if(!robot.listenersActive) {
+    $('#moveActive')[0].innerHTML = "☑";
+    robot.startMovementListeners();
+  } else {
+    $('#moveActive')[0].innerHTML = "☐";
+    robot.stopMovementListeners();
   }
 }

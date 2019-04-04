@@ -3,10 +3,13 @@ class Robot {
     this.ip = null;
     this.session = null;
     this.connected = false;
+    this.movement = [0,0,0];
+    this.listenersActive = false;
+    this.moveInterval = null;
   }
 
   startSession(ip, callbackConnect = null, callbackDisconnect = null) {
-    this.session = new QiSession(ip);
+    this.session = new QiSession(ip + ':80');
     /**
      * Create the session by connecting to the robot.
      * Upon connection execute function
@@ -164,5 +167,21 @@ class Robot {
         vr.stopRecording();
         console.log('Recording video finished.');
       });
+  }
+
+  startMovementListeners() {
+    this.listenersActive = true;
+    this.session.service('ALMotion')
+      .then((m) => {
+        this.moveInterval = setInterval(() => {
+          console.log(this.movement);
+          m.move(this.movement[0], this.movement[1], this.movement[2]);
+        }, 500)
+      });
+  }
+
+  stopMovementListeners() {
+    this.listenersActive = false;
+    clearInterval(this.moveInterval);
   }
 }
