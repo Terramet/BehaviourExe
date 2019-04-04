@@ -47,6 +47,9 @@
           <a class="side-bar-toggler" href='#' data-toggle='modal' data-target='#viewModal' id='viewVideosBtn'>View Videos</a>
         </li>
         <li>
+          <a class="side-bar-toggler" href='#' data-toggle='modal' data-target='#uploadModal' id='uploadBtn'>Upload</a>
+        </li>
+        <li>
           <a class="side-bar-toggler" href='#' data-toggle='modal' data-target='#settingsModal' onclick='updateSettings()' id='advSettingsBtn'>Settings</a>
         </li>
         <li>
@@ -186,6 +189,17 @@
           <h4 class='center' id='changeLangTitle' style='margin: auto;'>Change Language</h4>
           <form id='langForm' style='margin-top: 10px; display: block; text-align: center;' method='post' onsubmit='return false;' autocomplete='on'>
             <div class='container' id='langRadioContainer' style='text-align: center; margin-top: 20px;'></div>
+          </form>
+        </div>
+      </div>
+
+      <div class='modal animated fadeIn' id='uploadModal'>
+        <div class='modal-content'><span class='close' id='uploadClose'>x</span>
+          <form onsubmit="loadSpinner($('#uploader')[0], 'Uploading please wait...')" action="/post_pptx" enctype="multipart/form-data" method="post" style="display: block; text-align: center; margin-top: 20px">
+            <input type="file" name="pptx">
+            <div id='uploader' class='row m-4'>
+              <input type="submit" value="Upload .pptx" style="margin: auto;">
+            </div>
           </form>
         </div>
       </div>
