@@ -42,6 +42,12 @@ function modalEvents() {
   changeLangBtn.onclick = function () {
     populateLanguageModal();
   };
+
+  var slaveModalBtn = $('#slaveModalBtn')[0];
+
+  slaveModalBtn.onclick = function () {
+    populateSlaveModal();
+  };
 }
 
 function xhrGetStatus(url, callback) {

@@ -6,6 +6,9 @@ var Client = require('ssh2-sftp-client');
 var exec = require('child_process')
   .exec;
 var auto = require('auto_updater');
+var toPdf = require("office-to-pdf");
+var pdf2img = require('pdf2img');
+var pptComposer = require('pptx-compose');
 var baseDir = __dirname.split('/routes')[0];
 var io = require('socket.io')
   .listen(3000);
