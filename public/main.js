@@ -356,10 +356,8 @@ function setMovementValue(key, val) {
 
 function activateMovement() {
   if(!robot.listenersActive) {
-    $('#moveActive')[0].innerHTML = "☑";
     robot.startMovementListeners();
   } else {
-    $('#moveActive')[0].innerHTML = "☐";
     robot.stopMovementListeners();
   }
 }

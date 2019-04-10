@@ -233,11 +233,10 @@
       </form>
 
       <div id="controlsContainer" class="text-center m-2" style="display: none">
-        <a href="#naoRobotControls" class="btn btn-info" data-toggle="collapse">Nao Controls</a>
+        <a href="#naoRobotControls" class="btn btn-info" data-toggle="collapse" onclick="activateMovement()">Nao Controls</a>
         <a href="#miroRobotControls" class="btn btn-info" data-toggle="collapse">Miro Controls</a>
         <div id="naoRobotControls" class="collapse" style="margin-top: 1%;">
           <form id='robotControlForm' style='display: block;' method='post' onsubmit='return false;' autocomplete='on'>
-            <span onclick='activateMovement()' style='font-size: 18px; float: right;'><a id="moveActive" href='#'>☐</a></span>
             <div>
               <h4 id='controlRobotTitle' style='text-align:center; padding-top: 15px;'>Robot Controls</h4>
             </div>
