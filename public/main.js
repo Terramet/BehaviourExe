@@ -42,12 +42,6 @@ function modalEvents() {
   changeLangBtn.onclick = function () {
     populateLanguageModal();
   };
-
-  var slaveModalBtn = $('#slaveModalBtn')[0];
-
-  slaveModalBtn.onclick = function () {
-    populateSlaveModal();
-  };
 }
 
 function xhrGetStatus(url, callback) {
@@ -143,17 +137,10 @@ function createSession() {
   let ip = timeoutPromise(10000, robot.getIP());
 
   ip.then(response => {
-    robot.startBehaviourManager(function (data) {
-        startRec(data);
-      },
 
-      function (data) {
-        stopRec(data);
-      });
-
-    getChildNameAsync(function (child) {
-      if (checkCookieData(child) != null) {
-        restoreSessionAsync(child, function (ans) {
+    getChildNameAsync(function (aData) {
+      if (checkCookieData(aData.cName) != null) {
+        restoreSessionAsync(aData.cName, function (ans) {
           if (ans) {
             ses = new Session(JSON.parse(checkCookieData(child)), loadedPlaylists);
           } else {
@@ -161,10 +148,55 @@ function createSession() {
           }
         });
       } else {
-        ses = new Session(child, loadedPlaylists);
+        ses = new Session(aData.cName, loadedPlaylists);
       }
 
-      changeMemValue('child_name', child);
+      robot.startBehaviourManager(function (data) {
+        if (data.includes('/.') && data !== 'run_dialog_dev/.') {
+          let r = $('#replayB')[0];
+          let n = $('#nextB')[0];
+          let p = $('#posB')[0];
+          let neg = $('#negB')[0];
+          r.setAttribute('disabled', '');
+          n.setAttribute('disabled', '');
+          p.setAttribute('disabled', '');
+          neg.setAttribute('disabled', '');
+          let spin = document.getElementsByClassName('donut-spinner');
+          if (spin.length !== 0) {
+            for (let i = 0; i < spin.length; i++) {
+              spin[i].remove();
+            };
+          }
+
+          if (aData.record == true) {
+            startRec(data);
+          }
+
+          time = getTime();
+          console.log('Behaviour ' + data + ' started successfully.');
+        }
+      },
+
+        function (data) {
+          if (data.includes('/.') && data !== 'run_dialog_dev/.') {
+            let r = $('#replayB')[0];
+            let n = $('#nextB')[0];
+            let p = $('#posB')[0];
+            let neg = $('#negB')[0];
+            r.removeAttribute('disabled');
+            n.removeAttribute('disabled');
+            p.removeAttribute('disabled');
+            neg.removeAttribute('disabled');
+
+            if (aData.record == true) {
+              stopRec(data);
+            }
+
+            console.log('Behaviour finished.');
+          }
+        });
+
+      changeMemValue('child_name', aData.cName);
 
       updateCookie();
       updateView();
@@ -210,28 +242,65 @@ function attemptAutoConnect() {
       let modal = $('#connectModal')[0];
       modal.style.display = 'none';
 
-      robot.startBehaviourManager(function (data) {
-          startRec(data);
-        },
-
-        function (data) {
-          stopRec(data);
-        });
-
-      getChildNameAsync(function (child) {
-        if (checkCookieData(child) != null) {
-          restoreSessionAsync(child, function (ans) {
+      getChildNameAsync(function (aData) {
+        if (checkCookieData(aData.cName) != null) {
+          restoreSessionAsync(aData.cName, function (ans) {
             if (ans) {
-              ses = new Session(JSON.parse(checkCookieData(child)), loadedPlaylists);
+              ses = new Session(JSON.parse(checkCookieData(aData.cName)), loadedPlaylists);
             } else {
-              ses = new Session(child, loadedPlaylists);
+              ses = new Session(aData.cName, loadedPlaylists);
             }
           });
         } else {
-          ses = new Session(child, loadedPlaylists);
+          ses = new Session(aData.cName, loadedPlaylists);
         }
 
-        changeMemValue('child_name', child);
+          robot.startBehaviourManager(function (data) {
+            if (data.includes('/.') && data !== 'run_dialog_dev/.') {
+              let r = $('#replayB')[0];
+              let n = $('#nextB')[0];
+              let p = $('#posB')[0];
+              let neg = $('#negB')[0];
+              r.setAttribute('disabled', '');
+              n.setAttribute('disabled', '');
+              p.setAttribute('disabled', '');
+              neg.setAttribute('disabled', '');
+              let spin = document.getElementsByClassName('donut-spinner');
+              if (spin.length !== 0) {
+                for (let i = 0; i < spin.length; i++) {
+                  spin[i].remove();
+                };
+              }
+
+              if (aData.record == true) {
+                startRec(data);
+              }
+
+              time = getTime();
+              console.log('Behaviour ' + data + ' started successfully.');
+            }
+          },
+
+            function (data) {
+              if (data.includes('/.') && data !== 'run_dialog_dev/.') {
+                let r = $('#replayB')[0];
+                let n = $('#nextB')[0];
+                let p = $('#posB')[0];
+                let neg = $('#negB')[0];
+                r.removeAttribute('disabled');
+                n.removeAttribute('disabled');
+                p.removeAttribute('disabled');
+                neg.removeAttribute('disabled');
+
+                if (aData.record == true) {
+                  stopRec(data);
+                }
+
+                console.log('Behaviour finished.');
+              }
+            });
+
+        changeMemValue('child_name', aData.cName);
 
         updateCookie();
         updateView();
@@ -303,7 +372,9 @@ function getChildNameAsync(callback) {
   $('#childSave')
     .click(function () {
       $('#childModal')[0].style.display = 'none';
-      callback($('#cName')[0].value);
+      callback({
+        'cName': $('#cName')[0].value,
+        'record': $('#robotRecordCheck')[0].checked});
     });
 }
 

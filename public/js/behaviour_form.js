@@ -42,49 +42,16 @@ function changeMemValue(key, val) {
 }
 
 function startRec(data) {
-  if (data.includes('/.') && data !== 'run_dialog_dev/.') {
-    let r = $('#replayB')[0];
-    let n = $('#nextB')[0];
-    let p = $('#posB')[0];
-    let neg = $('#negB')[0];
-    r.setAttribute('disabled', '');
-    n.setAttribute('disabled', '');
-    p.setAttribute('disabled', '');
-    neg.setAttribute('disabled', '');
-    let spin = document.getElementsByClassName('donut-spinner');
-    if (spin.length !== 0) {
-      for (let i = 0; i < spin.length; i++) {
-        spin[i].remove();
-      };
-    }
+  robot.startRecording(ses.getName());
 
-    time = getTime();
-
-    robot.startRecording(ses.getName());
-
-    recording = true;
-    console.log('Behaviour ' + data + ' started successfully.');
-  }
+  recording = true;
 }
 
 function stopRec(data) {
-  if (data.includes('/.') && data !== 'run_dialog_dev/.') {
-    let r = $('#replayB')[0];
-    let n = $('#nextB')[0];
-    let p = $('#posB')[0];
-    let neg = $('#negB')[0];
-    r.removeAttribute('disabled');
-    n.removeAttribute('disabled');
-    p.removeAttribute('disabled');
-    neg.removeAttribute('disabled');
+  robot.stopRecording();
 
-    robot.stopRecording();
-
-    recording = false;
-
-    console.log('Behaviour finished.');
-    setTimeout(copyRecording(time), 2000);
-  }
+  recording = false;
+  setTimeout(copyRecording(time), 2000);
 }
 
 function say() {
