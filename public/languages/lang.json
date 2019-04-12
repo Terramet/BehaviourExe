@@ -206,6 +206,14 @@
       {
         "text": "You can change your robots password by going to Menu > Settings!",
         "id": "robotAuthenticationFailedHelp"
+      },
+      {
+        "text": "Settings",
+        "id": "advSettingsBtn"
+      },
+      {
+        "text": "Advanced Mode",
+        "id": "advLable"
       }
     ],
     "Français": [
@@ -398,6 +406,10 @@
       {
         "text": "Vous pouvez changer le mot de passe de votre robot en allant dans Menu > Paramètres!",
         "id": "robotAuthenticationFailedHelp"
+      },
+      {
+        "text": "Settings",
+        "id": "advSettingsBtn"
       }
     ],
     "Italiano": [
@@ -610,6 +622,14 @@
       {
         "text": "Puoi cambiare la password del tuo robot andando su Menu > Impostazioni!",
         "id": "robotAuthenticationFailedHelp"
+      },
+      {
+        "text": "Impostazioni",
+        "id": "advSettingsBtn"
+      },
+      {
+        "text": "Modalità avanzata",
+        "id": "advLable"
       }
     ]
   }
