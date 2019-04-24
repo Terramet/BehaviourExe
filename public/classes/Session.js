@@ -2,26 +2,21 @@ class Session {
   constructor(input, loadedPlaylists) {
     if (whatIsIt(input) === 'Object') {
       this.name = input.name;
+      console.log();
 
-      let mp = null;
-      let pp = null;
-      let np = null;
+      let p = null;
+
 
       for (let i = 0; i < loadedPlaylists.length; i++) {
-        if (loadedPlaylists[i].getName() === input.assigned.main.name) {
-          mp = loadedPlaylists[i];
-        } else if (loadedPlaylists[i].getName() === input.assigned.negative.name) {
-          pp = loadedPlaylists[i];
-        } else if (loadedPlaylists[i].getName() === input.assigned.positive.name) {
-          np = loadedPlaylists[i];
+        if (loadedPlaylists[i].getName() === input.assigned.playlist.name) {
+          p = loadedPlaylists[i];
         }
       }
 
-      mp.setCurrent(input.assigned.main.current);
-      pp.setCurrent(input.assigned.negative.current);
-      np.setCurrent(input.assigned.positive.current);
+      p.setCurrentMain(input.assigned.playlist.mainList.current);
 
-      this.assigned = new Assigned(mp, pp, np);
+
+      this.assigned = new Assigned(p);
     } else {
       this.name = input;
       this.assigned = null;

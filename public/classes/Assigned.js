@@ -1,17 +1,15 @@
 class Assigned {
-  constructor(interaction, positive, negative) {
-    this.main = interaction;
-    this.positive = positive;
-    this.negative = negative;
+  constructor(playlist) {
+    this.playlist = playlist;
   }
 
   getPlaylist(list) {
     if (list === 'main') {
-      return this.main;
+      return this.playlist.getMain();
     } else if (list === 'pos') {
-      return this.positive;
+      return this.playlist.getPos();
     } else if (list === 'neg') {
-      return this.negative;
+      return this.playlist.getNeg();
     } else {
       return null;
     }

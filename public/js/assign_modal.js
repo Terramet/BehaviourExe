@@ -1,48 +1,51 @@
 function saveAssigned() {
   let m = $('#mainBehaviour')[0];
-  let p = $('#positiveBehaviour')[0];
-  let n = $('#negativeBehaviour')[0];
 
-  let mp = null;
-  let pp = null;
-  let np = null;
+  let p = null;
 
   for (let i = 0; i < loadedPlaylists.length; i++) {
     if (loadedPlaylists[i].getName() === m.options[m.selectedIndex].innerHTML) {
-      mp = loadedPlaylists[i];
-    } else if (loadedPlaylists[i].getName() === n.options[n.selectedIndex].innerHTML) {
-      pp = loadedPlaylists[i];
-    } else if (loadedPlaylists[i].getName() === p.options[p.selectedIndex].innerHTML) {
-      np = loadedPlaylists[i];
+      p = loadedPlaylists[i];
     }
   }
 
-  if (mp === pp || mp === np || np === pp) {
-    alertMessage('Is it highly suggested that you choose a different playlist for each button.'
-     + ' Failing to do so will cause un-expected behaviour.');
-  }
-
-  assigned = new Assigned(mp, pp, np);
+  assigned = new Assigned(p);
   ses.setAssigned(assigned);
 
   // $('#assignModal')[0].style.display = 'none'
 
   console.log('Successfully assigned: <br/>'
-  + mp.getName() + ' as the main behaviour list. <br/>'
-  + pp.getName() + ' as the positive behaviour list. <br/>'
-  + np.getName() + ' as the negative behaviour list.');
+  + p.getName() + ' as the main behaviour list. <br/>')
 }
 
+//Don't look at it, your eyes will bleed
 function checkBehaveList(p) {
   return new Promise(function (resolve, reject) {
-
-    p.list.forEach(b => {
+    p.getMain().list.forEach(b => {
       robot.isBehaviorInstalled(b)
         .then((a) => {
           if (!a) {
             return resolve(false);
-          } else if (b === p.list[p.list.length - 1]) {
-            return resolve(true);
+          } else if (b === p.getMain().list[p.getMain().list.length - 1]) {
+            p.getPos().list.forEach(b => {
+              robot.isBehaviorInstalled(b)
+                .then((a) => {
+                  if (!a) {
+                    return resolve(false);
+                  } else if (b === p.getPos().list[p.getPos().list.length - 1]) {
+                    p.getNeg().list.forEach(b => {
+                      robot.isBehaviorInstalled(b)
+                        .then((a) => {
+                          if (!a) {
+                            return resolve(false);
+                          } else if (b === p.getNeg().list[p.getNeg().list.length - 1]) {
+                            return resolve(true);
+                          }
+                        });
+                    });
+                  }
+                });
+            });
           }
         });
     });

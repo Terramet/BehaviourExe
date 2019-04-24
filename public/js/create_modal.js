@@ -10,9 +10,11 @@ function listBehaviours() {
       let list = $('#behaveListAvailable')[0];
       list.innerHTML = '';
       for (let i = 0; i < array.length; i++) {
-        if (!array[i].includes('/')) {
+        if (!array[i].includes('/') && !array[i].includes('.')) {
           // Create the list item:
           let item = document.createElement('li');
+
+          item.classList.add("drag-item");
 
           // Set its contents:
           item.appendChild(document.createTextNode(array[i]));

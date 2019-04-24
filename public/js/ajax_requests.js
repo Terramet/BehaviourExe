@@ -46,10 +46,18 @@ function stopMiro() {
 
 function savePlaylist() {
   let name = $('#playlistName')[0].value;
-  let listElements = $('#behaveListPlaylist')[0].childNodes;
-  listElements = Array.prototype.slice.call(listElements);
+  let mainListElements = $('#behaveListMain')[0].childNodes;
+  mainListElements = Array.prototype.slice.call(mainListElements);
+  let posListElements = $('#behaveListPositive')[0].childNodes;
+  posListElements = Array.prototype.slice.call(posListElements);
+  let negListElements = $('#behaveListNegative')[0].childNodes;
+  negListElements = Array.prototype.slice.call(negListElements);
 
-  playlist = new Playlist(listElements, name);
+  mainPlaylist = new Playlist(mainListElements, 'main' + name);
+  posPlaylist = new Playlist(posListElements, 'pos' + name);
+  negPlaylist = new Playlist(negListElements, 'neg' + name);
+
+  playlist = new TriPlaylist(name, mainPlaylist, posPlaylist, negPlaylist);
 
   var createModal = $('#createModal')[0];
 
@@ -82,7 +90,7 @@ function loadPlaylists() {
       console.log('Playlists loaded successfully.');
       loadedPlaylists = [];
       data.playlists.forEach((playlist) => {
-        loadedPlaylists.push(new Playlist(playlist));
+        loadedPlaylists.push(new TriPlaylist(playlist));
       });
 
       return 'complete';
