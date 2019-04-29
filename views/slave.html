@@ -24,16 +24,37 @@
   <link href='css/style.css' rel='stylesheet'>
   <link href='css/animate.css' rel='stylesheet'>
 
+  <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .imgbox {
+            display: grid;
+            height: 100%;
+        }
+        .center-fit {
+            max-width: 100%;
+            max-height: 100vh;
+            margin: auto;
+        }
+    </style>
+
 </head>
 
   <body>
-    <form id="socketID" style="position: fixed; text-align: center; margin-left: auto; margin-right: auto; left: 0; right: 0; margin-top: -5px;"></form>
-    <div id="content"></div>
-    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <div class='justify-content-center'>
+      <form id="socketID" style='text-align: center;'></form>
+    </div>
+    <div id='imageBox' class="imgbox">
+
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script>
+
     <script>
-    var presentation = []
-    var robot = null
-    var socket = io.connect('http://localhost:3000');
+
+    var presentation = null
+    var socket = io.connect(window.location.href.split(':8')[0] + ':3000');
 
     socket.on('connect', function() {
       $('#socketID')[0].innerHTML = socket.id
@@ -42,6 +63,67 @@
         name: 'slave-'
       });
     });
+
+    socket.on('message', function(m) {
+      console.log(m)
+      socket.emit('sendToMaster', {
+        socket: m.masterSocket,
+        slaveSocket: socket.id,
+        message: 'Connected',
+        requestPresentation: true
+      })
+    });
+
+    socket.on('presentation', function(m) {
+      console.log(m)
+      let data = { pres: m.message }
+      $.ajax({
+        crossOrigin: true,
+        type: 'POST',
+        url: window.location.href + '/getPresentation',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        success: function(d) {
+          console.log(d)
+          d = JSON.parse(d)
+          d.img.forEach((img) => {
+            console.log(img)
+            $('#socketID')[0].style.display = 'none';
+
+            let image = document.createElement('img');
+            let id = img.split('.')[0];
+            image.setAttribute('id', id);
+            image.setAttribute('src', '/slave/get/' + d.dir + '/' + img);
+            image.classList.add('center-fit');
+            image.style.display = 'none';
+
+            $("#imageBox")[0].appendChild(image);
+          })
+
+          $('#slide_1')[0].style.display = 'block';
+          return d;
+        }
+      }).then(pres => {
+        presentation = JSON.parse(pres);
+      })
+    });
+
+    socket.on('nextSlide', function(m) {
+      $('#slide_' + presentation.slide)[0].style.display = 'none';
+      if(presentation.slide < presentation.img.length) {
+        presentation.slide++;
+      }
+      $('#slide_' + presentation.slide)[0].style.display = 'block';
+    })
+
+    socket.on('prevSlide', function(m) {
+      $('#slide_' + presentation.slide)[0].style.display = 'none';
+      if(presentation.slide > 1) {
+        presentation.slide--;
+      }
+      $('#slide_' + presentation.slide)[0].style.display = 'block';
+    })
+
   </script>
 
   </body>

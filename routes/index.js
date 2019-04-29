@@ -13,6 +13,7 @@ var baseDir = __dirname.split('/routes')[0];
 var io = require('socket.io')
   .listen(3000);
 var socket = io.sockets;
+io.origins('*:*')
 
 var connectedUserMapSlave = new Map();
 var connectedUserMapMaster = new Map();
@@ -51,6 +52,20 @@ socket.on('connect', function (socket) {
       .emit('message', data);
   });
 
+  socket.on('nextSlide', function (data) {
+    socket.broadcast.to(data.socket)
+      .emit('nextSlide', data);
+  });
+
+  socket.on('prevSlide', function (data) {
+    socket.broadcast.to(data.socket)
+      .emit('prevSlide', data);
+  });
+
+  socket.on('sendPresentationToSlave', function(data){
+    socket.broadcast.to(data.socket).emit('presentation', data)
+  });
+
   socket.on('sendToMaster', function (data) {
     socket.broadcast.to(data.socket)
       .emit('message', data);
@@ -85,6 +100,11 @@ router.post('/slave/page', function (req, res, next) {
     res.send(data);
   });
 });
+
+router.get('/slave/get/:dir/:img', function(req, res, next) {
+  console.log(baseDir + '/public/uploads/' + req.params.dir + '/images/' + req.params.img)
+  res.send(fs.readFileSync(baseDir + '/public/uploads/' + req.params.dir + '/images/' + req.params.img))
+})
 
 /* POST to save the list of playlists */
 router.post('/playlists/save', function (req, res, next) {
@@ -363,6 +383,20 @@ router.post('/post_pptx', function(req, res, next) {
   } else {
     res.send('Upload failed! Redirecting...');
   }
+})
+
+router.post('/presentations', function(req, res) {
+  let dir = './public/uploads'
+  res.send(fs.readdirSync(dir))
+})
+
+router.post('/slave/getPresentation', function(req, res) {
+  console.log(req)
+  let dir = './public/uploads/' + req.body.pres + '/images'
+  let data = { dir: req.body.pres,
+              img: fs.readdirSync(dir),
+              slide: 1 }
+  res.send(JSON.stringify(data))
 })
 
 /* POST execute the file in order to move Miro in the direction */

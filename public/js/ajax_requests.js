@@ -237,7 +237,9 @@ function viewVideos() {
       data.forEach(datum => {
         if (datum.includes('.mp4')) {
           let d = document.createElement('DIV');
+          d.classList.add('ml-2', 'mt-2', 'mr-2', 'row');
           let e = document.createElement('BUTTON');
+          d.classList.add('col');
           e.innerHTML = datum;
           e.addEventListener('click', () => {
             playVideo(datum);
@@ -248,6 +250,16 @@ function viewVideos() {
       });
     },
   });
+}
+
+function getPresentations() {
+  return $.ajax({
+    url: window.location.href + 'presentations',
+    type:'POST',
+    success: (data) => {
+      return data;
+    }
+  })
 }
 
 function getSlaves() {

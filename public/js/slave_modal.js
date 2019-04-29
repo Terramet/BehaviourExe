@@ -1,5 +1,5 @@
 function populateSlaveModal() {
-  let container = $('#slaveRadioContainer')[0];
+  let container = $('#slaveCheckContainer')[0];
   let x = 0;
   while (container.firstChild) {
     container.removeChild(container.firstChild);
@@ -8,8 +8,8 @@ function populateSlaveModal() {
   getSlaves().then(a => {
     console.log(a);
     a.forEach(slave => {
-      let radioDiv = document.createElement('div');
-      let id = 'radio-' + x++;
+      let checkDiv = document.createElement('div');
+      let id = 'check-' + x++;
       let item = document.createElement('input');
       item.setAttribute('name', 'radio');
       item.setAttribute('id', id);
@@ -19,9 +19,29 @@ function populateSlaveModal() {
       text.innerHTML = slave;
       text.setAttribute('for', id);
       text.classList.add('light');
-      radioDiv.appendChild(item);
-      radioDiv.appendChild(text);
-      container.appendChild(radioDiv);
+      checkDiv.appendChild(item);
+      checkDiv.appendChild(text);
+      container.appendChild(checkDiv);
     })
   })
+}
+
+function connectToSlaves(slaves) {
+  slaves.forEach((slave) => {
+    connectedSlaves.push(slave)
+    socket.emit('sendToSlave', {
+      socket: slave,
+      masterSocket: socket.id,
+      message: 'Connect'
+    })
+  })
+}
+
+function getRadioSlaves() {
+  let elements = $('input[name=radio]:checked', '#slaveModal').toArray();
+  let names = []
+  for(let i = 0; i < elements.length; i++) {
+    names.push($('label[for='+ elements[i].id +']').text())
+  }
+  return names
 }

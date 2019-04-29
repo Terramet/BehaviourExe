@@ -4,6 +4,7 @@ var assigned;
 var connected = false;
 var language = null;
 var loadedPlaylists = [];
+var connectedSlaves = [];
 var loadedLanguageJSON = {};
 var recording = true;
 var time = null;
@@ -376,6 +377,42 @@ function getChildNameAsync(callback) {
         'cName': $('#cName')[0].value,
         'record': $('#robotRecordCheck')[0].checked});
     });
+}
+
+function getSlavePresentationAsync(presentations, callback) {
+  console.log(presentations);
+
+  let container = $('#slavePresContainer')[0]
+
+  while (container.firstChild) {
+    container.removeChild(container.firstChild)
+  }
+
+  presentations.forEach(pres => {
+    if(pres !== '.gitkeep') {
+      let radioDiv = document.createElement('div')
+      let id = 'radio-' + pres
+      let item = document.createElement('input')
+      item.setAttribute('name', 'radio')
+      item.setAttribute('id', id)
+      item.setAttribute('type', 'radio')
+
+      let text = document.createElement('label')
+      text.innerHTML = pres
+      text.setAttribute('for', id)
+      text.classList.add('light')
+      radioDiv.appendChild(item)
+      radioDiv.appendChild(text)
+      container.appendChild(radioDiv)
+    }
+  })
+
+  $('#slavePresentationModal')[0].style.display = 'block'
+  $('#slaveSave').click(function() {
+    $('#slavePresentationModal')[0].style.display = 'none'
+    console.log($('input[name=radio]:checked', '#slavePresentationModal').parent().find('label')[0].innerHTML)
+    callback($('input[name=radio]:checked', '#slavePresentationModal').parent().find('label')[0].innerHTML)
+  })
 }
 
 function removeOptions(selectbox) {

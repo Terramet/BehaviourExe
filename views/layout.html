@@ -48,6 +48,12 @@
           <a class="side-bar-toggler" href='#' data-toggle='modal' data-target='#viewModal' id='viewVideosBtn'>View Videos</a>
         </li>
         <li>
+          <a class="side-bar-toggler" href='#' data-toggle='modal' data-target='#slaveModal' onclick='populateSlaveModal()' id='slaveBtn'>Slaves</a>
+        </li>
+        <li>
+          <a class="side-bar-toggler" href='#' data-toggle='modal' data-target='#uploadModal' id='slaveBtn'>Upload</a>
+        </li>
+        <li>
           <a class="side-bar-toggler" href='#' data-toggle='modal' data-target='#settingsModal' onclick='updateSettings()' id='advSettingsBtn'>Settings</a>
         </li>
         <li>
@@ -70,13 +76,13 @@
       <div class="help-tip"><p id="connectHelp">Say</p></div>
         <!-- Modal content-->
         <div class='modal-content autoModal'><span class='close' data-dismiss='modal'>×</span>
-          <div class='row justify-content-md-center ml-2 mt-4'>
+          <div class='row justify-content-center ml-2 mt-4'>
             <h4 id='enterIPTitle'>Please enter the IP Address of the robot below</h4>
           </div>
-          <div class='row justify-content-md-center'>
+          <div class='row justify-content-center'>
             <input id='IP' class='w-75 ml-4 mr-4 mb-4' type='text' placeholder='IP Address' tabindex='1' required='' autofocus=''>
           </div>
-          <div class='row justify-content-md-center'>
+          <div class='row justify-content-center'>
             <button id='connectSave' data-dismiss='modal' onclick='createSession()'>Save</button>
             <!-- <button class="col m-2" data-dismiss='modal'>Close</button> -->
           </div>
@@ -85,16 +91,16 @@
 
       <div class='modal animated fadeIn' id='childModal'>
         <div class='modal-content autoModal'>
-          <div class='row justify-content-md-center ml-2 mt-4 mr-2'>
+          <div class='row justify-content-center ml-2 mt-4 mr-2'>
             <h4 id='enterNameTitle'>Please enter the name of the child</h4>
           </div>
-          <div class='row justify-content-md-center'>
+          <div class='row justify-content-center'>
             <input id='cName'type='text' class='w-75 ml-4 mr-4 mb-4' placeholder='Childs name' tabindex='1' required='' autofocus=''>
           </div>
-          <div class='row justify-content-md-center ml-4 mr-4 mb-4'>
+          <div class='row justify-content-center ml-4 mr-4 mb-4'>
             <label>Allow robot to record<input id="robotRecordCheck" type="checkbox" class="ios-switch"><div class="switch"></div></label>
           </div>
-          <div class='row justify-content-md-center'>
+          <div class='row justify-content-center'>
             <button id='childSave' data-dismiss='modal' style='display: block; margin: auto;'>Save</button>
           </div>
         </div>
@@ -102,10 +108,10 @@
 
       <div class='modal animated fadeIn' id='restoreModal'>
         <div class='modal-content autoModal' style='display: table;'><span class='close' data-dismiss='modal'>×</span>
-          <div class='row justify-content-md-center ml-2 mt-4 mr-2'>
+          <div class='row justify-content-center ml-2 mt-4 mr-2'>
             <h4 id='restoreTitle'>You have a previous session stored for a child named: %child%. Would you like to restore it?</h4>
           </div>
-          <div class='row justify-content-md-center'>
+          <div class='row justify-content-center'>
             <button id='restoreYes' class='col m-2'>Yes</button>
             <button id='restoreNo' class='col m-2'>No</button>
           </div>
@@ -116,7 +122,7 @@
         <div class="help-tip"><p id="createHelp">Say</p></div>
         <div class='modal-content'><span class='close' data-dismiss='modal'>×</span>
           <h4 class='center' id='createPlaylistTitle'>Create Playlist</h4>
-          <div class='row justify-content-md-center p-3'>
+          <div class='row justify-content-center p-3'>
             <input id='playlistName' class='col-6' type='text'  placeholder='Enter a name for your playlist' tabindex='3' autofocus=''>
             <input id='savePlaylistBtn' class='col-2' data-dismiss='modal' type='submit' value='Save' onclick='savePlaylist()'>
           </div>
@@ -172,10 +178,10 @@
       <div class='modal animated fadeIn' id='editModal'>
         <div class="help-tip"><p id="editHelp">Say</p></div>
         <div class='modal-content'><span class='close' data-dismiss='modal'>x</span>
-          <div class='row justify-content-md-center ml-2 mt-4 mr-2'>
+          <div class='row justify-content-center ml-2 mt-4 mr-2'>
             <h4 class='center' id='editPlaylistsTitle'>Edit Playlists</h4>
           </div>
-          <div class='row justify-content-md-center mt-2'>
+          <div class='row justify-content-center mt-2'>
             <button id='deleteAll' onclick='clearPlaylists()'>Delete All Playlists</button>
           </div>
         </div>
@@ -184,23 +190,69 @@
       <div class='modal animated fadeIn' id='viewModal'>
         <div class="help-tip"><p id="viewHelp">Say</p></div>
         <div class='modal-content'><span class='close' data-dismiss='modal'>x</span>
-          <h4 class='center' id='viewVideosTitle'>View Videos</h4>
-          <form id='viewForm' style='margin-top: 10px; display: block; text-align: center;' method='post' onsubmit='return false;' autocomplete='on'></form>
+          <div class='row justify-content-center ml-2 mt-4 mr-2'>
+            <h4 class='center' id='viewVideosTitle'>View Videos</h4>
+          </div>
+          <div id="viewForm" class='justify-content-center ml-2 mt-4 mr-2'>
+
+          </div>
         </div>
       </div>
 
       <div class='modal animated fadeIn' id='videoModal'>
         <div class='modal-content'><span class='close' id='videoClose'>x</span>
-          <form id='videoForm' style='margin-top: 10px; display: block; text-align: center;' method='post' onsubmit='return false;' autocomplete='on'></form>
+          <form id='videoForm' method='post' onsubmit='return false;' autocomplete='on'></form>
         </div>
       </div>
 
       <div class='modal animated fadeIn' id='langModal'>
         <div class="help-tip"><p id="langHelp">Say</p></div>
         <div class='modal-content'><span class='close' data-dismiss='modal'>x</span>
-          <h4 class='center' id='changeLangTitle' style='margin: auto;'>Change Language</h4>
-          <form id='langForm' style='margin-top: 10px; display: block; text-align: center;' method='post' onsubmit='return false;' autocomplete='on'>
-            <div class='container' id='langRadioContainer' style='text-align: center; margin-top: 20px;'></div>
+          <div class='row justify-content-center ml-2 mt-4 mr-2'>
+            <h4 class='center' id='changeLangTitle'>Change Language</h4>
+          </div>
+          <div class='container justify-content-center ml-2 mt-2 mr-2' id='langRadioContainer'></div>
+        </div>
+      </div>
+
+      <div class='modal animated fadeIn' id='slaveModal'>
+        <div class="help-tip"><p id="slaveHelp">Say</p></div>
+        <div class='modal-content'><span class='close' data-dismiss='modal'>x</span>
+          <div class='row justify-content-center ml-2 mt-4 mr-2'>
+            <h4 class='center' id='slaveTitle'>Available Slaves</h4>
+          </div>
+          <div class='container' id='slaveCheckContainer'></div>
+          <div class='row justify-content-center ml-2 mt-2 mr-2'>
+            <button id="connectToListOfSlaves" data-dismiss='modal' onclick="connectToSlaves(getRadioSlaves())">Connect</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal" id="slavePresentationModal">
+        <div class="modal-content autoModal"><span class="close" id="slavePresentationClose">×</span>
+          <div>
+            <div class='row justify-content-center ml-2 mt-2 mr-2'>
+              <h4 id="slavePresentTitle">Please choose what to display on the slave</h4>
+            </div>
+              <div class="container" id="slavePresContainer"></div>
+          </div>
+          <div class='row justify-content-center'>
+            <button id="slaveSave" data-dismiss='modal'>Save</button>
+          </div>
+        </div>
+      </div>
+
+      <div class='modal animated fadeIn' id='uploadModal'>
+        <div class="help-tip"><p id="uploadHelp">Say</p></div>
+        <div class='modal-content'><span class='close' data-dismiss='modal'>x</span>
+          <div class='row justify-content-center ml-2 mt-4 mr-2'>
+            <h4 class='center' id='uploadTitle'>Upload</h4>
+          </div>
+          <form action="/post_pptx" enctype="multipart/form-data" method="post" style="display: block;">
+            <input type="file" name="pptx">
+            <div class='row justify-content-center ml-2 mt-4 mr-2'>
+              <input type="submit" value="Upload .pptx">
+            </div>
           </form>
         </div>
       </div>
@@ -208,80 +260,97 @@
       <div class='modal animated fadeIn' id='settingsModal'>
         <div class="help-tip"><p id="settingsHelp">Say</p></div>
         <div class='modal-content'><span class='close' data-dismiss='modal'>x</span>
-          <h4 class='center' id='settingsTitle' style='margin: auto;'>Settings</h4>
-          <form id='settingsForm' style='margin-top: 10px; display: block; text-align: center;' method='post' onsubmit='return false;' autocomplete='on'>
-            <div class='row'>
-              <p class='col m-2' id='robotPass'>Robot Password</p>
-            </div>
-            <div class='row'>
-              <input type="password" class='col m-2' id='robotPassIn' placeholder="Please enter your robots password"></input>
-            </div>
-            <hr>
-            <div class='row'>
-              <label style='margin: auto;'>Robot Controls<input id="robotControlCheck" type="checkbox" class="ios-switch"><div class="switch"></div></label>
-            </div>
-            <hr>
-            <button id='settingsSave' data-dismiss='modal' style='display: block; margin: auto;'>Save</button>
-          </form>
+          <div class='row justify-content-center ml-2 mt-4 mr-2'>
+            <h4 class='center' id='settingsTitle'>Settings</h4>
+          </div>
+          <div class='row justify-content-center ml-2 mt-2 mr-2'>
+            <p id='robotPass'>Robot Password</p>
+          </div>
+          <div class='row'>
+            <input type="password" class='col m-2 center' id='robotPassIn' placeholder="Your robots password"></input>
+          </div>
+          <hr>
+          <div class='row justify-content-center'>
+            <label>Robot Controls<input id="robotControlCheck" type="checkbox" class="ios-switch"><div class="switch"></div></label>
+          </div>
+          <hr>
+          <div class='row justify-content-center'>
+            <button id='settingsSave' data-dismiss='modal'>Save</button>
+          </div>
         </div>
       </div>
 
-      <form id='executionForm' method='post' onsubmit='return false;' autocomplete='on'>
-        <div>
-          <h4 id='executionFormTitle' style='text-align:center; padding-top: 15px;'>Behaviour Execution</h4>
+      <form id='executionForm'  method='post' onsubmit='return false;' autocomplete='on'>
+        <div class='row justify-content-center ml-2 mt-4 mr-2'>
+          <h4 id='executionFormTitle'>Behaviour Execution</h4>
         </div>
-        <div>
-          <button id='replayB' style='float: left; width: 49%; height: 66px;' onclick='playCurrent(&quot;main&quot;, this)'>Repeat </button>
-          <button id='nextB' style='float: right; width: 49%; height: 66px;' onclick='playNext(&quot;main&quot;, this)'>Next</button>
+        <div class='row justify-content-center'>
+          <button id='replayB' class='col ml-3 m-1' style='height: 66px;' onclick='playCurrent(&quot;main&quot;, this)'>Repeat </button>
+          <button id='nextB' class='col mr-3 m-1' style='height: 66px;' onclick='playNext(&quot;main&quot;, this)'>Next</button>
         </div>
-        <div>
-          <input class='soft-input' id='sayText' style='margin-bottom: 10px; margin-top: 5px; max-width: 49%;' type='text' placeholder='Enter text to say' tabindex='3' autofocus=''>
-          <button id='sayBtn' style='float: right; width: 49%; margin-top: 7px;' type='submit' tabindex='1' onclick='say()'>Submit</button>
+        <div class='row justify-content-center'>
+          <input class='col soft-input ml-3 m-1 w-50' id='sayText' type='text' placeholder='Enter text to say' tabindex='3' autofocus=''>
+          <button id='sayBtn' class='col mr-3 m-1 w-50' type='submit' tabindex='1' onclick='say()'>Submit</button>
         </div>
-        <div>
-          <button id='posB' style='float: left; width: 49%;' onclick='playNext(&quot;pos&quot;, this)'>Positive</button>
-          <button id='negB' style='float: right; width: 49%;' onclick='playNext(&quot;neg&quot;, this)'>Negative</button>
+        <div class='row justify-content-center'>
+          <button id='posB' class='col ml-3 m-1' onclick='playNext(&quot;pos&quot;, this)'>Positive</button>
+          <button id='negB' class='col mr-3 m-1' onclick='playNext(&quot;neg&quot;, this)'>Negative</button>
         </div>
-        <div>
-          <button class='red' id='stopB' style='float: centre; width: 100%; margin-top: 2%' onclick='stopBehaviour()'>STOP</button>
+        <div class='row'>
+          <button class='red w-100 ml-3 mr-3 m-1' id='stopB' onclick='stopBehaviour()'>STOP</button>
         </div>
       </form>
 
       <div id="controlsContainer" class="text-center m-2" style="display: none">
         <a href="#naoRobotControls" class="btn btn-info" data-toggle="collapse" onclick="activateMovement()">Nao Controls</a>
         <a href="#miroRobotControls" class="btn btn-info" data-toggle="collapse">Miro Controls</a>
+        <a href="#presentationControls" class="btn btn-info" data-toggle="collapse">Presentation Controls</a>
+
+        <div id="presentationControls" class="collapse" style="margin-top: 1%;">
+          <form id='presControlsContainer' style='display: block;' method='post' onsubmit='return false;' autocomplete='on'>
+            <div class='row justify-content-center ml-2 mt-4 mr-2'>
+              <h4 id='presentationTitle'>Presentation Controls</h4>
+            </div>
+            <div class="row">
+              <button id='previousPres' class="col m-2" onclick='prevSlide()'>Previous</button>
+              <button id='nextPres' class="col m-2" onclick='nextSlide()'>Next</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
         <div id="naoRobotControls" class="collapse" style="margin-top: 1%;">
           <form id='robotControlForm' style='display: block;' method='post' onsubmit='return false;' autocomplete='on'>
-            <div>
-              <h4 id='controlRobotTitle' style='text-align:center; padding-top: 15px;'>Robot Controls</h4>
+            <div class='row justify-content-center ml-2 mt-4 mr-2'>
+              <h4 id='controlRobotTitle'>Robot Controls</h4>
             </div>
             <div class="row">
-              <button id='turnLeft' class="col m-2" onpointerdown="setMovementValue(2, 1)" onpointerup="setMovementValue(2, 0)">⮢</button>
-              <button id='forward' class="col m-2" onpointerdown="setMovementValue(0, 1)" onpointerup="setMovementValue(0, 0)">⬆</button>
-              <button id='turnRight' class="col m-2" onpointerdown="setMovementValue(2, -1)" onpointerup="setMovementValue(2, 0)">⮣</button>
+              <button id='turnLeft' class="col m-2" onpointerdown="setMovementValue(2, 1)" onpointerup="setMovementValue(2, 0)">↰</button>
+              <button id='forward' class="col m-2" onpointerdown="setMovementValue(0, 1)" onpointerup="setMovementValue(0, 0)">↑</button>
+              <button id='turnRight' class="col m-2" onpointerdown="setMovementValue(2, -1)" onpointerup="setMovementValue(2, 0)">↱</button>
             </div>
             <div class="row">
-              <button id='left' class="col m-2" onpointerdown="setMovementValue(1, 1)" onpointerup="setMovementValue(1, 0)">⬅</button>
-              <button id='backwards' class="col m-2" onpointerdown="setMovementValue(0, -1)" onpointerup="setMovementValue(0, 0)">⬇</button>
-              <button id='right' class="col m-2" onpointerdown="setMovementValue(1, -1)" onpointerup="setMovementValue(1, 0)">➡</button>
+              <button id='left' class="col m-2" onpointerdown="setMovementValue(1, 1)" onpointerup="setMovementValue(1, 0)">←</button>
+              <button id='backwards' class="col m-2" onpointerdown="setMovementValue(0, -1)" onpointerup="setMovementValue(0, 0)">↓</button>
+              <button id='right' class="col m-2" onpointerdown="setMovementValue(1, -1)" onpointerup="setMovementValue(1, 0)">→</button>
             </div>
           </form>
         </div>
 
         <div id="miroRobotControls" class="collapse" style="margin-top: 1%;">
           <form id='controlsContainer' style='display: block;' method='post' onsubmit='return false;' autocomplete='on'>
-            <div>
-              <h4 id='miroRobotTitle' style='text-align:center; padding-top: 15px;'>Miro Controls</h4>
+            <div class='row justify-content-center ml-2 mt-4 mr-2'>
+              <h4 id='miroRobotTitle'>Miro Controls</h4>
             </div>
             <div class="row">
               <button id='invisButton1' class="col m-2" style="visibility: hidden"></button>
-              <button id='miroForward' class="col m-2" onpointerdown="moveMiro(200, 0)" onpointerup="stopMiro()">⬆</button>
+              <button id='miroForward' class="col m-2" onpointerdown="moveMiro(200, 0)" onpointerup="stopMiro()">↑</button>
               <button id='invisButton2' class="col m-2" style="visibility: hidden"></button>
             </div>
             <div class="row">
-              <button id='miroTurnLeft' class="col m-2" onpointerdown="moveMiro(0, 1.5708)" onpointerup="stopMiro()">⮢</button>
-              <button id='miroBackwards' class="col m-2" onpointerdown="moveMiro(-200, 0)" onpointerup="stopMiro()">⬇</button>
-              <button id='miroTurnRight' class="col m-2" onpointerdown="moveMiro(0, -1.5708)" onpointerup="stopMiro()">⮣</button>
+              <button id='miroTurnLeft' class="col m-2" onpointerdown="moveMiro(0, 1.5708)" onpointerup="stopMiro()">↰</button>
+              <button id='miroBackwards' class="col m-2" onpointerdown="moveMiro(-200, 0)" onpointerup="stopMiro()">↓</button>
+              <button id='miroTurnRight' class="col m-2" onpointerdown="moveMiro(0, -1.5708)" onpointerup="stopMiro()">↱</button>
             </div>
           </form>
         </div>
@@ -315,6 +384,7 @@
   <script src='js/cookies.js' type='text/javascript'></script>
   <script src='js/create_modal.js' type='text/javascript'></script>
   <script src='js/edit_modal.js' type='text/javascript'></script>
+  <script src='js/slave_modal.js' type='text/javascript'></script>
   <script src='js/lang_modal.js' type='text/javascript'></script>
   <script src='js/notifications.js' type='text/javascript'></script>
   <script src='js/settings.js' type='text/javascript'></script>
@@ -326,11 +396,11 @@
   <script src='classes/Robot.js' type='text/javascript'></script>
   <script src='classes/Session.js' type='text/javascript'></script>
   <script src='/libs/qimessaging/1.0/qimessaging.js'></script>
-  <script src='/libs/qimessaging/1.0/socket.io.min.js'></script>
   <script src='http://code.jquery.com/ui/1.11.4/jquery-ui.js'></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js'></script>
+  <script src="/libs/jquery.ajax-cross-origin.min.js"></script>
 
-  <!-- Menu Toggle Script -->
+  <!-- Menu/modal Script -->
   <script>
     $('#menu-toggle, .side-bar-toggler').click(function (e) {
       e.preventDefault();
@@ -424,6 +494,54 @@
     	}, 100);
     });
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+  <script>
+
+    var socket = io.connect(window.location.href.split(':8')[0] + ':3000');
+
+    socket.on('connect', function() {
+      socket.emit('recieveUserNameMaster', {
+        name: 'master-'
+      });
+    });
+
+    socket.on('message', function(data) {
+      console.log(data)
+      if (data.requestPresentation) {
+        $('#slaveModal')[0].style.display = 'none'
+        getPresentations().then((presentations) => {
+          getSlavePresentationAsync(presentations, function(pres) {
+            socket.emit('sendPresentationToSlave', {
+              socket: data.slaveSocket,
+              masterSocket: socket.id,
+              message: pres
+            });
+          })
+        })
+      }
+    });
+
+    function nextSlide() {
+      connectedSlaves.forEach((slave) => {
+        socket.emit('nextSlide', {
+          socket: slave,
+          masterSocket: socket.id,
+        });
+      });
+    }
+
+    function prevSlide() {
+      connectedSlaves.forEach((slave) => {
+        socket.emit('prevSlide', {
+          socket: slave,
+          masterSocket: socket.id,
+        });
+      });
+    }
+
+  </script>
+
+  <script src='/libs/qimessaging/1.0/socket.io.min.js'></script>
 
 </body>
 
