@@ -9,7 +9,7 @@ var loadedLanguageJSON = {};
 var recording = true;
 var time = null;
 var update = null;
-var advFeatureIDs = ['createPlaylistBtn', 'editPlaylistsBtn', 'advSettingsBtn'];
+var advFeatureIDs = ['createPlaylistBtn', 'editPlaylistsBtn', 'advSettingsBtn', 'slaveBtn', 'uploadBtn'];
 
 function closeModal(id) {
   $('#' + id)[0].style.display = 'none';
