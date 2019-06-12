@@ -13,6 +13,9 @@ var baseDir = __dirname.split('/routes')[0];
 var io = require('socket.io')
   .listen(3000);
 var socket = io.sockets;
+
+var pythonProcess = null;
+
 io.origins('*:*')
 
 var connectedUserMapSlave = new Map();
@@ -354,9 +357,6 @@ router.post('/post_pptx', function(req, res, next) {
         fs.writeFileSync(req.file.path.split('.')[0] + '.pdf', pdfBuffer);
         let composer = new pptComposer(); //instantiate
         composer.parse(req.file.path, function (err, json) {
-          // let titles = json['docProps/app.xml'].Properties.TitlesOfParts['0']['vt:vector']['0']['vt:lpstr']
-          // titles.shift();
-
           var input   = req.file.path.split('.')[0] + '.pdf';
 
           pdf2img.setOptions({
@@ -391,7 +391,6 @@ router.post('/presentations', function(req, res) {
 })
 
 router.post('/slave/getPresentation', function(req, res) {
-  console.log(req)
   let dir = './public/uploads/' + req.body.pres + '/images'
   let data = { dir: req.body.pres,
               img: fs.readdirSync(dir),
@@ -400,32 +399,49 @@ router.post('/slave/getPresentation', function(req, res) {
 })
 
 /* POST execute the file in order to move Miro in the direction */
-router.post('/moveMiro', function (req, res, next) {
-  exec('python ./miromove.py robot=sim01 x=' + req.body.velX + ' y=' + req.body.velY,
-    function (error, stdout, stderr) {
-      console.log('stdout: ' + stdout);
-      console.log('stderr: ' + stderr);
-      if (error !== null) {
-        console.log('exec error: ' + error);
-      }
-    })
+router.post('/barkMiro', function (req, res, next) {
+  let spawn = require("child_process").spawn;
+  let p = spawn("python", ["./public/robot_resources/bark.py", "robot=rob01"], {});
 
-  miroInt = setInterval(function () {
-    exec('python ./miromove.py robot=sim01 x=' + req.body.velX + ' y=' + req.body.velY,
-      function (error, stdout, stderr) {
-        console.log('stdout: ' + stdout);
-        console.log('stderr: ' + stderr);
-        if (error !== null) {
-          console.log('exec error: ' + error);
-        }
-      });
-  }, 1000);
+  p.on('close', (code) => {
+    console.log(`child process exited with code ${code}`);
+  });
+
+  res.send('Success');
+})
+
+/* POST execute the file in order to move Miro in the direction */
+router.post('/startMiro', function (req, res, next) {
+  if (pythonProcess != null) {
+    pythonProcess.kill('SIGTERM');
+  }
+  var spawn = require("child_process").spawn;
+  pythonProcess = spawn("python", ["./public/robot_resources/miromove.py", "robot=rob01"], {});
+
+  pythonProcess.on('close', (code) => {
+    console.log(`child process exited with code ${code}`);
+  });
+
+  res.send('Success');
+})
+
+router.post('/moveMiro', function (req, res, next) {
+  let fileName = './public/robot_resources/movement.json';
+  let data = fs.readFileSync(fileName);
+
+  let json = JSON.parse(data);
+  json.x = req.body.velX;
+  json.y = req.body.velY;
+
+  fs.writeFileSync(fileName, JSON.stringify(json));
+
   res.send('Success');
 })
 
 /* Clear the interval created by the MoveMiro*/
 router.post('/stopMiro', function (req, res, next) {
-  clearInterval(miroInt);
+  pythonProcess.kill('SIGTERM');
+  pythonProcess = null
   res.send('Success');
 })
 

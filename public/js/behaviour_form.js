@@ -1,21 +1,17 @@
-function playCurrent(type, btn) {
-  if (ses.getAssigned() === null) {
-    getLanguageValue('noPlaylists')
-      .then(value => {
-        alertMessage(value);
-      });
-
-    console.error('No playlist assigned to ' + btn.innerHTML + ' button.');
-  } else if (ses.getAssigned()
-    .getPlaylist(type)
-    .returnLast() !== 'Nothing') {
-    robot.startBehaviour(ses.getAssigned()
-      .getPlaylist(type)
-      .returnLast(), btn);
-  }
+function leftDecision() {
+  $('#rightD')[0].style.display = 'none'
+  $('#leftD')[0].style.display = 'none'
+  changeMemValue('pres_mode', 1);
 }
 
-function playNext(type, btn) {
+function rightDecision() {
+  $('#rightD')[0].style.display = 'none'
+  $('#leftD')[0].style.display = 'none'
+  changeMemValue('pres_mode', 0);
+  nextSlide();
+}
+
+function startBehaviour(type, btn) {
   if (ses.getAssigned() === null) {
     getLanguageValue('noPlaylists')
       .then(value => {
@@ -66,17 +62,10 @@ function updateView() {
     if (ses.getAssigned() !== null &&
       document.getElementsByClassName('donut-spinner')
       .length === 0) {
-      getLanguageValue('replayB')
-        .then(function (value) {
-          $('#replayB')[0].innerHTML = value + ': <br/><small>' +
-            ses.getAssigned()
-            .getPlaylist('main')
-            .returnLast() + '</small>';
-        });
 
-      getLanguageValue('nextB')
+      getLanguageValue('startB')
         .then(function (value) {
-          $('#nextB')[0].innerHTML = value + ': <br/><small>' +
+          $('#startB')[0].innerHTML = value + ': <br/><small>' +
             ses.getAssigned()
             .getPlaylist('main')
             .getNext() + '</small>';

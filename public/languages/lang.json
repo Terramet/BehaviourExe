@@ -1,636 +1,757 @@
 {
-  "Languages": {
-    "English": [
-      {
-        "text": [
-          "Connect",
-          "Attempting to connect...",
-          "Connected",
-          "Disconnected"
-        ],
-        "id": "connectBtn"
-      },
-      {
-        "text": "Settings",
-        "id": "settingsLabel"
-      },
-      {
-        "text": "Create Playlist",
-        "id": "createPlaylistBtn"
-      },
-      {
-        "text": "Edit Playlists",
-        "id": "editPlaylistsBtn"
-      },
-      {
-        "text": "Assign Playlist",
-        "id": "assignPlaylistsBtn"
-      },
-      {
-        "text": "Language",
-        "id": "changeLangBtn"
-      },
-      {
-        "text": "View Videos",
-        "id": "viewVideosBtn"
-      },
-      {
-        "text": "Connect To Slaves",
-        "id": "connectToSlavesBtn"
-      },
-      {
-        "text": "Please enter the IP Address of the robot below",
-        "id": "enterIPTitle"
-      },
-      {
-        "text": "Please enter the name of the child",
-        "id": "enterNameTitle"
-      },
-      {
-        "text": "Save",
-        "id": "connectSave"
-      },
-      {
-        "text": "Childs Name",
-        "id": "cName"
-      },
-      {
-        "NOTE": "DO NOT REMOVE %child% WHEN TRANSLATING THIS FILE",
-        "text": "You have a previous session stored for a child named: %child%. Would you like to restore it?",
-        "id": "restoreTitle"
-      },
-      {
-        "text": "Yes",
-        "id": "restoreYes"
-      },
-      {
-        "text": "No",
-        "id": "restoreNo"
-      },
-      {
-        "text": "Create Playlist",
-        "id": "createPlaylistTitle"
-      },
-      {
-        "text": "Enter a name for your playlist",
-        "id": "playlistName"
-      },
-      {
-        "text": "Assign Playlist",
-        "id": "assignPlaylistTitle"
-      },
-      {
-        "text": "Interaction",
-        "id": "mainBehave"
-      },
-      {
-        "text": "Positive",
-        "id": "positiveBehave"
-      },
-      {
-        "text": "Negative",
-        "id": "negativeBehave"
-      },
-      {
-        "text": "Save",
-        "id": "saveAssignments"
-      },
-      {
-        "text": "Edit Playlists",
-        "id": "editPlaylistsTitle"
-      },
-      {
-        "text": "Delete All Playlists",
-        "id": "deleteAll"
-      },
-      {
-        "text": "View Videos",
-        "id": "viewVideosTitle"
-      },
-      {
-        "text": "Change Language",
-        "id": "changeLangTitle"
-      },
-      {
-        "text": "Connect To Slaves",
-        "id": "connectSlavesTitle"
-      },
-      {
-        "text": "Connect",
-        "id": "connectToListOfSlaves"
-      },
-      {
-        "text": "Behaviour Execution",
-        "id": "executionFormTitle"
-      },
-      {
-        "text": "Repeat",
-        "id": "replayB"
-      },
-      {
-        "text": "Next",
-        "id": "nextB"
-      },
-      {
-        "text": "Say",
-        "id": "sayBtn"
-      },
-      {
-        "text": "Positive",
-        "id": "posB"
-      },
-      {
-        "text": "Negative",
-        "id": "negB"
-      },
-      {
-        "text": "STOP",
-        "id": "stopB"
-      },
-      {
-        "text": "Connection to the robot has been lost. The page will now refresh.",
-        "id": "connectionLostAlert"
-      },
-      {
-        "text": "Connecting to the robot failed: ",
-        "id": "connectIPCatch"
-      },
-      {
-        "text": "You may need to connect manually. Click the Connect button in the menu to get started.",
-        "id": "helpManualConnect"
-      },
-      {
-        "text": "No playlist assigned to buttons. \nPlease go to Menu > Assign Playlist.",
-        "id": "noPlaylists"
-      },
-      {
-        "text": "To get the IP Address of your Nao robot: Fully press down the button on his chest, then release and he will read it aloud.",
-        "id": "connectHelp"
-      },
-      {
-        "text": "The list on the left is a list of all the behaviours your robot has installed. Simply drag the a behaviour from the left box, to the right box, give your playlist a name and click save.",
-        "id": "createHelp"
-      },
-      {
-        "text": "Select one language from the ones available, it will automatically change to that language as soon as you select it",
-        "id": "langHelp"
-      },
-      {
-        "text": "Clicking one of the button names will open a new small window that will play the corresponding video.",
-        "id": "viewHelp"
-      },
-      {
-        "text": "Currently the only thing you are able to do with edit is to delete all playlist, this is irreversable!",
-        "id": "editHelp"
-      },
-      {
-        "text": "Each button here has a list box. Selecting one of the items from the list will assign that playlist to the corresponding button. </br></br> The button will turn red if the playlist selected has behaviours that are not currently installed on the robot. </br></br> The button will turn green if it is a valid playlist.",
-        "id": "assignHelp"
-      },
-      {
-        "text": "Advanced Mode is: ON",
-        "id": "advModeON"
-      },
-      {
-        "text": "Advanced Mode is: OFF",
-        "id": "advModeOFF"
-      },
-      {
-        "text": "Robot password saved!",
-        "id": "passSave"
-      },
-      {
-        "text": "Could not connect to robot. Make sure your robots password was entered correctly!",
-        "id": "robotAuthenticationFailed"
-      },
-      {
-        "text": "You can change your robots password by going to Menu > Settings!",
-        "id": "robotAuthenticationFailedHelp"
-      },
-      {
-        "text": "Settings",
-        "id": "advSettingsBtn"
-      },
-      {
-        "text": "Advanced Mode",
-        "id": "advLable"
-      }
-    ],
-    "Français": [
-      {
-        "text": [
-          "Relier",
-          "Tenter de se connecter...",
-          "Connecté",
-          "Débranché"
-        ],
-        "id": "connectBtn"
-      },
-      {
-        "text": "Paramètres",
-        "id": "settingsLabel"
-      },
-      {
-        "text": "Créer une playlist",
-        "id": "createPlaylistBtn"
-      },
-      {
-        "text": "Editer la playlist",
-        "id": "editPlaylistsBtn"
-      },
-      {
-        "text": "Attribuer une liste de lecture",
-        "id": "assignPlaylistsBtn"
-      },
-      {
-        "text": "La langue",
-        "id": "changeLangBtn"
-      },
-      {
-        "text": "Voir les vidéos",
-        "id": "viewVideosBtn"
-      },
-      {
-        "text": "Se connecter à des esclaves",
-        "id": "connectToSlavesBtn"
-      },
-      {
-        "text": "S'il vous plaît entrer l'adresse IP du robot ci-dessous",
-        "id": "enterIPTitle"
-      },
-      {
-        "text": "S'il vous plaît entrer le nom de l'enfant",
-        "id": "enterNameTitle"
-      },
-      {
-        "text": "Nom de l'enfant",
-        "id": "cName"
-      },
-      {
-        "NOTE": "DO NOT REMOVE %child% WHEN TRANSLATING THIS FILE",
-        "text": "Vous avez une session précédente stockée pour un enfant nommé: %child%. Voulez-vous le restaurer?",
-        "id": "restoreTitle"
-      },
-      {
-        "text": "Oui",
-        "id": "restoreYes"
-      },
-      {
-        "text": "Non",
-        "id": "restoreNo"
-      },
-      {
-        "text": "Créer une playlist",
-        "id": "createPlaylistTitle"
-      },
-      {
-        "text": "Entrez un nom pour votre playlist",
-        "id": "playlistName"
-      },
-      {
-        "text": "Attribuer une liste de lecture",
-        "id": "assignPlaylistTitle"
-      },
-      {
-        "text": "Interaction",
-        "id": "mainBehave"
-      },
-      {
-        "text": "Positif",
-        "id": "positiveBehave"
-      },
-      {
-        "text": "Négatif",
-        "id": "negativeBehave"
-      },
-      {
-        "text": "Enregistrer",
-        "id": "saveAssignments"
-      },
-      {
-        "text": "Editer les playlists",
-        "id": "editPlaylistsTitle"
-      },
-      {
-        "text": "Supprimer toutes les listes de lecture",
-        "id": "deleteAll"
-      },
-      {
-        "text": "Voir les vidéos",
-        "id": "viewVideosTitle"
-      },
-      {
-        "text": "Changer de langue",
-        "id": "changeLangTitle"
-      },
-      {
-        "text": "Exécution du comportement",
-        "id": "executionFormTitle"
-      },
-      {
-        "text": "Répéter",
-        "id": "replayB"
-      },
-      {
-        "text": "Prochain",
-        "id": "nextB"
-      },
-      {
-        "text": "Dire",
-        "id": "sayBtn"
-      },
-      {
-        "text": "Positif",
-        "id": "posB"
-      },
-      {
-        "text": "Négatif",
-        "id": "negB"
-      },
-      {
-        "text": "ARRÊTEZ",
-        "id": "stopB"
-      },
-      {
-        "text": "La connexion au robot a été perdue. La page va maintenant s'actualiser.",
-        "id": "connectionLostAlert"
-      },
-      {
-        "text": "La connexion au robot a échoué: ",
-        "id": "connectIPCatch"
-      },
-      {
-        "text": "Aucune playlist assignée aux boutons. \nVeuillez accéder à Paramètres > Attribuer une liste de lecture.",
-        "id": "noPlaylists"
-      },
-      {
-        "text": "Pour obtenir l'adresse IP de votre robot Nao: Appuyez à fond sur le bouton situé sur sa poitrine, puis relâchez-le et il la lira à voix haute.",
-        "id": "connectHelp"
-      },
-      {
-        "text": "La liste à gauche est une liste de tous les comportements installés par votre robot. Faites simplement glisser le comportement a de la case de gauche vers la case de droite, donnez un nom à votre liste de lecture et cliquez sur Enregistrer.",
-        "id": "createHelp"
-      },
-      {
-        "text": "Sélectionnez une langue parmi celles disponibles, elle passera automatiquement à cette langue dès que vous la sélectionnez.",
-        "id": "langHelp"
-      },
-      {
-        "text": "En cliquant sur l'un des noms de bouton, une nouvelle petite fenêtre s'ouvre pour lire la vidéo corrélée.",
-        "id": "viewHelp"
-      },
-      {
-        "text": "Actuellement, la seule chose que vous puissiez faire avec l'édition est de supprimer toute la liste de lecture, c'est irréversible",
-        "id": "editHelp"
-      },
-      {
-        "text": "Chaque bouton ici a une liste. La sélection de l'un des éléments de la liste attribue cette playlist au bouton correspondant. </br> </br> Le bouton devient rouge si la playlist sélectionnée a des comportements qui ne sont pas actuellement installés sur le robot. </br> </br> Le bouton devient vert s'il s'agit d'une liste de lecture valide. ",
-        "id": "assignHelp"
-      },
-      {
-        "text": "Le mode avancé est: SUR",
-        "id": "advModeON"
-      },
-      {
-        "text": "Le mode avancé est: DÉSACTIVÉ",
-        "id": "advModeOFF"
-      },
-      {
-        "text": "Robot mot de passe enregistré!",
-        "id": "passSave"
-      },
-      {
-        "text": "Impossible de se connecter au robot. Assurez-vous que le mot de passe de votre robot a été entré correctement!",
-        "id": "robotAuthenticationFailed"
-      },
-      {
-        "text": "Vous pouvez changer le mot de passe de votre robot en allant dans Menu > Paramètres!",
-        "id": "robotAuthenticationFailedHelp"
-      },
-      {
-        "text": "Settings",
-        "id": "advSettingsBtn"
-      }
-    ],
-    "Italiano": [
-      {
-        "text": [
-          "Collegare",
-          "Tentativo di connessione...",
-          "Collegato",
-          "Scollegato"
-        ],
-        "id": "connectBtn"
-      },
-      {
-        "text": "Settings",
-        "id": "settingsLabel"
-      },
-      {
-        "text": "Crea una Playlist",
-        "id": "createPlaylistBtn"
-      },
-      {
-        "text": "Modifca la Playlist",
-        "id": "editPlaylistsBtn"
-      },
-      {
-        "text": "Assegna la Playlist",
-        "id": "assignPlaylistsBtn"
-      },
-      {
-        "text": "Linguaggio",
-        "id": "changeLangBtn"
-      },
-      {
-        "text": "Guarda i Video",
-        "id": "viewVideosBtn"
-      },
-      {
-        "text": "Connect To Slaves",
-        "id": "connectToSlavesBtn"
-      },
-      {
-        "text": "Per favore inserisci qui sotto l'indirizzo IP del robot",
-        "id": "enterIPTitle"
-      },
-      {
-        "text": "Per ottenere l'indirizzo IP del tuo robot Nao: premi completamente il pulsante sul petto e lui lo leggerà ad alta voce.",
-        "id": "connectHelp"
-      },
-      {
-        "text": "Per favore inserisci il nome del Bambino",
-        "id": "enterNameTitle"
-      },
-      {
-        "text": "Salva",
-        "id": "connectSave"
-      },
-      {
-        "text": "Nome del Bambino",
-        "id": "cName"
-      },
-      {
-        "NOTE": "DO NOT REMOVE %child% WHEN TRANSLATING THIS FILE",
-        "text": "Hai una sessione precedente memorizzata per un bambino di nome: %child%. Vorresti ripristinarlo?",
-        "id": "restoreTitle"
-      },
-      {
-        "text": "Yes",
-        "id": "restoreYes"
-      },
-      {
-        "text": "No",
-        "id": "restoreNo"
-      },
-      {
-        "text": "Crea la Playlist",
-        "id": "createPlaylistTitle"
-      },
-      {
-        "text": "Inserisci un nome per la tua playlist",
-        "id": "playlistName"
-      },
-      {
-        "text": "Assegna la Playlist",
-        "id": "assignPlaylistTitle"
-      },
-      {
-        "text": "Interazione",
-        "id": "mainBehave"
-      },
-      {
-        "text": "Positiva",
-        "id": "positiveBehave"
-      },
-      {
-        "text": "Negativa",
-        "id": "negativeBehave"
-      },
-      {
-        "text": "Salva",
-        "id": "saveAssignments"
-      },
-      {
-        "text": "Modifica la Playlist",
-        "id": "editPlaylistsTitle"
-      },
-      {
-        "text": "Cancella tutte le Playlist",
-        "id": "deleteAll"
-      },
-      {
-        "text": "Guarda i video",
-        "id": "viewVideosTitle"
-      },
-      {
-        "text": "Cambia lingua",
-        "id": "changeLangTitle"
-      },
-      {
-        "text": "Connetti agli schiavi",
-        "id": "connectSlavesTitle"
-      },
-      {
-        "text": "Collegare",
-        "id": "connectToListOfSlaves"
-      },
-      {
-        "text": "Esecuzione del comportamento",
-        "id": "executionFormTitle"
-      },
-      {
-        "text": "Ripetere",
-        "id": "replayB"
-      },
-      {
-        "text": "Avanti",
-        "id": "nextB"
-      },
-      {
-        "text": "Leggi",
-        "id": "sayBtn"
-      },
-      {
-        "text": "Positivo",
-        "id": "posB"
-      },
-      {
-        "text": "Negativo",
-        "id": "negB"
-      },
-      {
-        "text": "STOP",
-        "id": "stopB"
-      },
-      {
-        "text": "La connessione al robot è stata persa. La pagina verrà aggiornata.",
-        "id": "connectionLostAlert"
-      },
-      {
-        "text": "Connessione al robot fallita:",
-        "id": "connectIPCatch"
-      },
-      {
-        "text": "Potrebbe essere necessario connettersi manualmente. Fai clic sul pulsante Connetti nel menu per iniziare.",
-        "id": "helpManualConnect"
-      },
-      {
-        "text": "Nessuna playlist assegnata ai pulsanti. \nVai a Menu > Assegna Playlist.",
-        "id": "noPlaylists"
-      },
-      {
-        "text": "Per ottenere l'indirizzo IP del tuo robot Nao: premi completamente il pulsante sul petto, quindi rilascialo e lui lo leggerà ad alta voce.",
-        "id": "connectHelp"
-      },
-      {
-        "text": "L'elenco a sinistra è un elenco di tutti i comportamenti che il tuo robot ha installato. Basta trascinare un comportamento dalla casella di sinistra, alla casella di destra, dare un nome alla playlist e fare clic su Salva.",
-        "id": "createHelp"
-      },
-      {
-        "text": "Seleziona una lingua tra quelle disponibili, cambierà automaticamente in quella lingua non appena la selezioni",
-        "id": "langHelp"
-      },
-      {
-        "text": "Facendo clic su uno dei nomi dei pulsanti si aprirà una nuova piccola finestra che riprodurrà il video correlato.",
-        "id": "viewHelp"
-      },
-      {
-        "text": "Attualmente l'unica cosa che puoi fare con edit è cancellare tutte le playlist, questo è irreversibile!",
-        "id": "editHelp"
-      },
-      {
-        "text": "Ogni pulsante qui ha una casella di riepilogo. Selezionando una delle voci dall'elenco assegnerai quella playlist al pulsante corrispondente. </br> </br> Il pulsante diventerà rosso se la playlist selezionata presenta comportamenti che non sono attualmente installati sul robot. </br> </br> Il pulsante diventerà verde se è una playlist valida.",
-        "id": "assignHelp"
-      },
-      {
-        "text": "La modalità avanzata è: ATTIVA",
-        "id": "advModeON"
-      },
-      {
-        "text": "La modalità avanzata è: DISATTIVATA",
-        "id": "advModeOFF"
-      },
-      {
-        "text": "Password del robot salvata!",
-        "id": "passSave"
-      },
-      {
-        "text": "Impossibile connettersi al robot. Assicurati che la password del tuo robot sia stata inserita correttamente!",
-        "id": "robotAuthenticationFailed"
-      },
-      {
-        "text": "Puoi cambiare la password del tuo robot andando su Menu > Impostazioni!",
-        "id": "robotAuthenticationFailedHelp"
-      },
-      {
-        "text": "Impostazioni",
-        "id": "advSettingsBtn"
-      },
-      {
-        "text": "Modalità avanzata",
-        "id": "advLable"
-      }
-    ]
-  }
+   "Languages":{
+      "English":[
+         {
+            "text":[
+               "Connect",
+               "Attempting to connect...",
+               "Connected",
+               "Disconnected"
+            ],
+            "id":"connectBtn"
+         },
+         {
+            "text":"Create Playlist",
+            "id":"createPlaylistBtn"
+         },
+         {
+            "text":"Edit Playlists",
+            "id":"editPlaylistsBtn"
+         },
+         {
+            "text":"Assign Playlist",
+            "id":"assignPlaylistsBtn"
+         },
+         {
+            "text":"Language",
+            "id":"changeLangBtn"
+         },
+         {
+            "text":"View Videos",
+            "id":"viewVideosBtn"
+         },
+         {
+            "text":"Slaves",
+            "id":"slaveBtn"
+         },
+         {
+            "text":"Upload",
+            "id":"uploadBtn"
+         },
+         {
+            "text":"Settings",
+            "id":"advSettingsBtn"
+         },
+         {
+            "text":"To get the IP Address of your Nao robot: Fully press down the button on his chest, then release and he will read it aloud.",
+            "id":"connectHelp"
+         },
+         {
+            "text":"Please enter the IP Address of the robot below",
+            "id":"enterIPTitle"
+         },
+         {
+            "text":"Save",
+            "id":"connectSave"
+         },
+         {
+            "text":"Please enter the name of the child",
+            "id":"enterNameTitle"
+         },
+         {
+            "text":"Allow robot to record",
+            "id":"robotRecordCheck"
+         },
+         {
+            "text":"Save",
+            "id":"childSave"
+         },
+         {
+            "text":"You have a previous session stored for a child named: %child%. Would you like to restore it?",
+            "id":"restoreTitle"
+         },
+         {
+            "text":"Yes",
+            "id":"restoreYes"
+         },
+         {
+            "text":"No",
+            "id":"restoreNo"
+         },
+         {
+            "text":"You must be connected to nao for this modal. If connected the available box will contain a list of the currently installed behaviours. To make a playlist simply drag and drop the items within the Available list into the appropriate list box",
+            "id":"createHelp"
+         },
+         {
+            "text":"Create Playlist",
+            "id":"createPlaylistTitle"
+         },
+         {
+            "text":"Save",
+            "id":"savePlaylistBtn"
+         },
+         {
+            "text":"Available",
+            "id":"avaListBox"
+         },
+         {
+            "text":"Main Behaviours",
+            "id":"mainListBox"
+         },
+         {
+            "text":"Positive Behaviours",
+            "id":"posListBox"
+         },
+         {
+            "text":"Negative Behaviours",
+            "id":"negListBox"
+         },
+         {
+            "text":"Each button here has a list box. Selecting one of the items from the list will assign that playlist to the corresponding button. </br></br> The button will turn red if the playlist selected has behaviours that are not currently installed on the robot. </br></br> The button will turn green if it is a valid playlist.",
+            "id":"assignHelp"
+         },
+         {
+            "text":"Assign Playlist",
+            "id":"assignPlaylistTitle"
+         },
+         {
+            "text":"Playlist",
+            "id":"mainBehave"
+         },
+         {
+            "text":"Save",
+            "id":"saveAssignments"
+         },
+         {
+            "text":"Currently the only thing you are able to do with edit is to delete all playlist, this is irreversible!",
+            "id":"editHelp"
+         },
+         {
+            "text":"Edit Playlists",
+            "id":"editPlaylistsTitle"
+         },
+         {
+            "text":"Delete All Playlists",
+            "id":"deleteAll"
+         },
+         {
+            "text":"Clicking one of the button names will open a new small window that will play the corresponding video.",
+            "id":"viewHelp"
+         },
+         {
+            "text":"View Videos",
+            "id":"viewVideosTitle"
+         },
+         {
+            "text":"Select one language from the ones available, it will automatically change to that language as soon as you select it.",
+            "id":"langHelp"
+         },
+         {
+            "text":"Change Language",
+            "id":"changeLangTitle"
+         },
+         {
+            "text":"Make sure you have a browser that is connected to the web page server. Then on that webpage go to (Your PC's IP address):8080/slave.",
+            "id":"slaveHelp"
+         },
+         {
+            "text":"Please choose what to display on the slave",
+            "id":"slavePresentTitle"
+         },
+         {
+            "text":"Save",
+            "id":"slaveSave"
+         },
+         {
+            "text":"Click the choose file button, then navigate to where you have your presentation and select it. Click upload when ready.",
+            "id":"uploadHelp"
+         },
+         {
+            "text":"Upload",
+            "id":"uploadTitle"
+         },
+         {
+            "text":"Be careful. If you want your robot to record, the robot password MUST be correct otherwise they will be lost. The additional controls allows you to control MIRO and Nao with onscreen buttons.",
+            "id":"settingsHelp"
+         },
+         {
+            "text":"Settings",
+            "id":"settingsTitle"
+         },
+         {
+            "text":"Robot Password",
+            "id":"robotPass"
+         },
+         {
+            "text":"Save",
+            "id":"settingsSave"
+         },
+         {
+            "text":"Behaviour Execution",
+            "id":"executionFormTitle"
+         },
+         {
+            "text":"Start",
+            "id":"startB"
+         },
+         {
+            "text":"Repeat",
+            "id":"replayB"
+         },
+         {
+            "text":"Next",
+            "id":"nextB"
+         },
+         {
+            "text":"Say",
+            "id":"sayBtn"
+         },
+         {
+            "text":"Positive",
+            "id":"posB"
+         },
+         {
+            "text":"Negative",
+            "id":"negB"
+         },
+         {
+            "text":"STOP",
+            "id":"stopB"
+         },
+         {
+            "text":"Nao Controls",
+            "id":"naoExpand"
+         },
+         {
+            "text":"Miro Controls",
+            "id":"miroExpand"
+         },
+         {
+            "text":"Presentation Controls",
+            "id":"presExpand"
+         },
+         {
+            "text":"Presentation Controls",
+            "id":"presentationTitle"
+         },
+         {
+            "text":"Previous",
+            "id":"previousPres"
+         },
+         {
+            "text":"Next",
+            "id":"nextPres"
+         },
+         {
+            "text":"Robot Controls",
+            "id":"controlRobotTitle"
+         },
+         {
+            "text":"MIRO Controls",
+            "id":"miroRobotTitle"
+         }
+      ],
+      "Français":[
+         {
+            "text":[
+               "Relier",
+               "Tenter de se connecter...",
+               "Connecté",
+               "Débranché"
+            ],
+            "id":"connectBtn"
+         },
+         {
+            "text":"Créer une playlist",
+            "id":"createPlaylistBtn"
+         },
+         {
+            "text":"Editer les playlists",
+            "id":"editPlaylistsBtn"
+         },
+         {
+            "text":"Attribuer une liste de lecture",
+            "id":"assignPlaylistsBtn"
+         },
+         {
+            "text":"La langue",
+            "id":"changeLangBtn"
+         },
+         {
+            "text":"Voir les vidéos",
+            "id":"viewVideosBtn"
+         },
+         {
+            "text":"Des esclaves",
+            "id":"slaveBtn"
+         },
+         {
+            "text":"Télécharger",
+            "id":"uploadBtn"
+         },
+         {
+            "text":"Settings",
+            "id":"advSettingsBtn"
+         },
+         {
+            "text":"Pour obtenir l'adresse IP de votre robot Nao: Appuyez à fond sur le bouton situé sur sa poitrine, puis relâchez-le et il la lira à voix haute.",
+            "id":"connectHelp"
+         },
+         {
+            "text":"S'il vous plaît entrer l'adresse IP du robot ci-dessous",
+            "id":"enterIPTitle"
+         },
+         {
+            "text":"Sauvegarder",
+            "id":"connectSave"
+         },
+         {
+            "text":"S'il vous plaît entrer le nom de l'enfant",
+            "id":"enterNameTitle"
+         },
+         {
+            "text":"Allow robot to record",
+            "id":"robotRecordCheck"
+         },
+         {
+            "text":"Sauvegarder",
+            "id":"childSave"
+         },
+         {
+            "text":"Vous avez une session précédente stockée pour un enfant nommé: %child%. Voulez-vous le restaurer?",
+            "id":"restoreTitle"
+         },
+         {
+            "text":"Oui",
+            "id":"restoreYes"
+         },
+         {
+            "text":"Non",
+            "id":"restoreNo"
+         },
+         {
+            "text":"Vous devez être connecté à nao pour ce modal. Si connecté, la boîte disponible contiendra une liste des comportements actuellement installés. Pour créer une liste de lecture, faites simplement glisser les éléments de la liste Disponible dans la zone de liste appropriée.",
+            "id":"createHelp"
+         },
+         {
+            "text":"Créer une playlist",
+            "id":"createPlaylistTitle"
+         },
+         {
+            "text":"Sauvegarder",
+            "id":"savePlaylistBtn"
+         },
+         {
+            "text":"Disponible",
+            "id":"avaListBox"
+         },
+         {
+            "text":"Comportements principaux",
+            "id":"mainListBox"
+         },
+         {
+            "text":"Comportements positifs",
+            "id":"posListBox"
+         },
+         {
+            "text":"Comportements Négatifs",
+            "id":"negListBox"
+         },
+         {
+            "text":"Chaque bouton ici a une zone de liste. En sélectionnant l'un des éléments de la liste, cette playlist sera assignée au bouton correspondant. </br> </br> Le bouton devient rouge si la liste de lecture sélectionnée présente des comportements qui ne sont pas installés sur le robot. </br> </br> Le bouton devient vert s'il s'agit d'une liste de lecture valide.",
+            "id":"assignHelp"
+         },
+         {
+            "text":"Attribuer une liste de lecture",
+            "id":"assignPlaylistTitle"
+         },
+         {
+            "text":"Playlist",
+            "id":"mainBehave"
+         },
+         {
+            "text":"Sauvegarder",
+            "id":"saveAssignments"
+         },
+         {
+            "text":"Actuellement, la seule chose que vous puissiez faire avec l'édition est de supprimer toute la liste de lecture, c'est irréversible!",
+            "id":"editHelp"
+         },
+         {
+            "text":"Editer les playlists",
+            "id":"editPlaylistsTitle"
+         },
+         {
+            "text":"Supprimer toutes les listes de lecture",
+            "id":"deleteAll"
+         },
+         {
+            "text":"En cliquant sur l'un des noms de boutons, une nouvelle petite fenêtre s'ouvre pour lire la vidéo correspondante.",
+            "id":"viewHelp"
+         },
+         {
+            "text":"Voir les vidéos",
+            "id":"viewVideosTitle"
+         },
+         {
+            "text":"Select one language from the ones available, it will automatically change to that language as soon as you select it.",
+            "id":"langHelp"
+         },
+         {
+            "text":"Change Language",
+            "id":"changeLangTitle"
+         },
+         {
+            "text":"Assurez-vous que votre navigateur est connecté au serveur de pages Web. Ensuite, sur cette page Web, accédez à (Adresse IP de votre ordinateur):8080/slave.",
+            "id":"slaveHelp"
+         },
+         {
+            "text":"Veuillez choisir ce qu'il faut afficher sur l'esclave",
+            "id":"slavePresentTitle"
+         },
+         {
+            "text":"Sauvegarder",
+            "id":"slaveSave"
+         },
+         {
+            "text":"Cliquez sur le bouton Choisir un fichier, puis accédez à l'emplacement de votre présentation et sélectionnez-la. Cliquez sur télécharger lorsque vous êtes prêt.",
+            "id":"uploadHelp"
+         },
+         {
+            "text":"Télécharger",
+            "id":"uploadTitle"
+         },
+         {
+            "text":"Faites attention. Si vous voulez que votre robot enregistre, le mot de passe du robot DOIT être correct, sinon ils seront perdus. Les commandes supplémentaires vous permettent de contrôler MIRO et Nao à l’aide de boutons à l’écran.",
+            "id":"settingsHelp"
+         },
+         {
+            "text":"Réglages",
+            "id":"settingsTitle"
+         },
+         {
+            "text":"Mot de passe du robot",
+            "id":"robotPass"
+         },
+         {
+            "text":"Save",
+            "id":"settingsSave"
+         },
+         {
+            "text":"Behaviour Execution",
+            "id":"executionFormTitle"
+         },
+         {
+            "text":"Début",
+            "id":"startB"
+         },
+         {
+            "text":"Répéter",
+            "id":"replayB"
+         },
+         {
+            "text":"Suivant",
+            "id":"nextB"
+         },
+         {
+            "text":"Dire",
+            "id":"sayBtn"
+         },
+         {
+            "text":"Positif",
+            "id":"posB"
+         },
+         {
+            "text":"Négatif",
+            "id":"negB"
+         },
+         {
+            "text":"ARRÊTEZ",
+            "id":"stopB"
+         },
+         {
+            "text":"Contrôles de Nao",
+            "id":"naoExpand"
+         },
+         {
+            "text":"Commandes de MIRO",
+            "id":"miroExpand"
+         },
+         {
+            "text":"Commandes de présentation",
+            "id":"presExpand"
+         },
+         {
+            "text":"Commandes de présentation",
+            "id":"presentationTitle"
+         },
+         {
+            "text":"Précédent",
+            "id":"previousPres"
+         },
+         {
+            "text":"Suivant",
+            "id":"nextPres"
+         },
+         {
+            "text":"Contrôles de Nao",
+            "id":"controlRobotTitle"
+         },
+         {
+            "text":"Commandes de MIRO",
+            "id":"miroRobotTitle"
+         }
+      ],
+      "Italiano":[
+         {
+            "text":[
+               "Collegare",
+               "Tentativo di connessione...",
+               "Collegato",
+               "Scollegato"
+            ],
+            "id":"connectBtn"
+         },
+         {
+            "text":"Crea una Playlist",
+            "id":"createPlaylistBtn"
+         },
+         {
+            "text":"Modifca la Playlist",
+            "id":"editPlaylistsBtn"
+         },
+         {
+            "text":"Assegna la Playlist",
+            "id":"assignPlaylistsBtn"
+         },
+         {
+            "text":"Linguaggio",
+            "id":"changeLangBtn"
+         },
+         {
+            "text":"Guarda i Video",
+            "id":"viewVideosBtn"
+         },
+         {
+            "text":"Schiavi",
+            "id":"slaveBtn"
+         },
+         {
+            "text":"Caricare",
+            "id":"uploadBtn"
+         },
+         {
+            "text":"Impostazioni",
+            "id":"advSettingsBtn"
+         },
+         {
+            "text":"Per ottenere l'indirizzo IP del tuo robot Nao: premi completamente il pulsante sul petto, quindi rilascialo e lui lo leggerà ad alta voce.",
+            "id":"connectHelp"
+         },
+         {
+            "text":"Si prega di inserire l'indirizzo IP del robot qui sotto",
+            "id":"enterIPTitle"
+         },
+         {
+            "text":"Salvare",
+            "id":"connectSave"
+         },
+         {
+            "text":"Si prega di inserire il nome del bambino",
+            "id":"enterNameTitle"
+         },
+         {
+            "text":"Allow robot to record",
+            "id":"robotRecordCheck"
+         },
+         {
+            "text":"Salvare",
+            "id":"childSave"
+         },
+         {
+            "text":"Hai una sessione precedente memorizzata per un bambino di nome:% child%. Vorresti ripristinarlo?",
+            "id":"restoreTitle"
+         },
+         {
+            "text":"Sì",
+            "id":"restoreYes"
+         },
+         {
+            "text":"No",
+            "id":"restoreNo"
+         },
+         {
+            "text":"Devi essere connesso a nao per questa modale. Se connesso, la casella disponibile conterrà un elenco dei comportamenti correntemente installati. Per creare una playlist basta trascinare e rilasciare gli elementi all'interno dell'elenco Disponibile nella casella di riepilogo appropriata.",
+            "id":"createHelp"
+         },
+         {
+            "text":"Crea una playlist",
+            "id":"createPlaylistTitle"
+         },
+         {
+            "text":"Salvare",
+            "id":"savePlaylistBtn"
+         },
+         {
+            "text":"A disposizione",
+            "id":"avaListBox"
+         },
+         {
+            "text":"Comportamenti principali",
+            "id":"mainListBox"
+         },
+         {
+            "text":"Comportamenti positivi",
+            "id":"posListBox"
+         },
+         {
+            "text":"Comportamenti negativi",
+            "id":"negListBox"
+         },
+         {
+            "text":"Ogni pulsante qui ha una casella di riepilogo. Selezionando uno degli elementi dall'elenco assegnerà quella playlist al pulsante corrispondente. </br> </br> Il pulsante diventerà rosso se la playlist selezionata presenta dei comportamenti che non sono attualmente installati sul robot. </br> </br> Il pulsante diventerà verde se è una playlist valida.",
+            "id":"assignHelp"
+         },
+         {
+            "text":"Assegna la Playlist",
+            "id":"assignPlaylistTitle"
+         },
+         {
+            "text":"Playlist",
+            "id":"mainBehave"
+         },
+         {
+            "text":"Salvare",
+            "id":"saveAssignments"
+         },
+         {
+            "text":"Attualmente l'unica cosa che puoi fare con edit è cancellare tutte le playlist, questo è irreversibile!",
+            "id":"editHelp"
+         },
+         {
+            "text":"Modifca la Playlist",
+            "id":"editPlaylistsTitle"
+         },
+         {
+            "text":"Elimina tutte le playlist",
+            "id":"deleteAll"
+         },
+         {
+            "text":"Cliccando su uno dei nomi dei pulsanti si aprirà una nuova piccola finestra che riprodurrà il video corrispondente.",
+            "id":"viewHelp"
+         },
+         {
+            "text":"Guarda i video",
+            "id":"viewVideosTitle"
+         },
+         {
+            "text":"Select one language from the ones available, it will automatically change to that language as soon as you select it.",
+            "id":"langHelp"
+         },
+         {
+            "text":"Cambia lingua",
+            "id":"changeLangTitle"
+         },
+         {
+            "text":"Assicurati di avere un browser connesso al server della pagina web. Quindi su quella pagina web andare su (Indirizzo IP del tuo PC):8080/slave.",
+            "id":"slaveHelp"
+         },
+         {
+            "text":"Si prega di scegliere cosa visualizzare sullo schiavo",
+            "id":"slavePresentTitle"
+         },
+         {
+            "text":"Salvare",
+            "id":"slaveSave"
+         },
+         {
+            "text":"Fai clic sul pulsante Scegli il file, quindi vai a dove hai la presentazione e selezionala. Fai clic su carica quando sei pronto.",
+            "id":"uploadHelp"
+         },
+         {
+            "text":"Caricare",
+            "id":"uploadTitle"
+         },
+         {
+            "text":"Stai attento. Se vuoi che il tuo robot registri, la password del robot DEVE essere corretta altrimenti andranno persi. I controlli aggiuntivi ti permettono di controllare MIRO e Nao con i pulsanti sullo schermo.",
+            "id":"settingsHelp"
+         },
+         {
+            "text":"Impostazioni",
+            "id":"settingsTitle"
+         },
+         {
+            "text":"Password del robot",
+            "id":"robotPass"
+         },
+         {
+            "text":"Salvare",
+            "id":"settingsSave"
+         },
+         {
+            "text":"Esecuzione del comportamento",
+            "id":"executionFormTitle"
+         },
+         {
+            "text":"Inizio",
+            "id":"startB"
+         },
+         {
+            "text":"Ripetere",
+            "id":"replayB"
+         },
+         {
+            "text":"Il prossimo",
+            "id":"nextB"
+         },
+         {
+            "text":"Dire",
+            "id":"sayBtn"
+         },
+         {
+            "text":"Positivo",
+            "id":"posB"
+         },
+         {
+            "text":"Negativo",
+            "id":"negB"
+         },
+         {
+            "text":"FERMARE",
+            "id":"stopB"
+         },
+         {
+            "text":"Controlli Nao",
+            "id":"naoExpand"
+         },
+         {
+            "text":"Miro controlla",
+            "id":"miroExpand"
+         },
+         {
+            "text":"Controlli di presentazione",
+            "id":"presExpand"
+         },
+         {
+            "text":"Controlli di presentazione",
+            "id":"presentationTitle"
+         },
+         {
+            "text":"Precedente",
+            "id":"previousPres"
+         },
+         {
+            "text":"Il prossimo",
+            "id":"nextPres"
+         },
+         {
+            "text":"Controlli Nao",
+            "id":"controlRobotTitle"
+         },
+         {
+            "text":"Miro controlla",
+            "id":"miroRobotTitle"
+         }
+      ]
+   }
 }

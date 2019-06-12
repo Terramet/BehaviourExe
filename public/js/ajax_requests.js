@@ -21,6 +21,24 @@ function loadLanguage() {
   });
 }
 
+function startMiro() {
+  $.ajax({
+      type: 'POST',
+      contentType: 'application/json',
+      url: removeHASH() + 'startMiro',
+      success: (data) => { console.log(data) }
+    })
+}
+
+function barkMiro() {
+  $.ajax({
+      type: 'POST',
+      contentType: 'application/json',
+      url: removeHASH() + 'barkMiro',
+      success: (data) => { console.log(data) }
+    })
+}
+
 function moveMiro(x, y) {
   var data = {};
   data.velX = x;
@@ -47,15 +65,33 @@ function stopMiro() {
 function savePlaylist() {
   let name = $('#playlistName')[0].value;
   let mainListElements = $('#behaveListMain')[0].childNodes;
+  console.log(mainListElements)
   mainListElements = Array.prototype.slice.call(mainListElements);
   let posListElements = $('#behaveListPositive')[0].childNodes;
+  console.log(posListElements)
   posListElements = Array.prototype.slice.call(posListElements);
   let negListElements = $('#behaveListNegative')[0].childNodes;
+  console.log(negListElements)
   negListElements = Array.prototype.slice.call(negListElements);
 
-  mainPlaylist = new Playlist(mainListElements, 'main' + name);
-  posPlaylist = new Playlist(posListElements, 'pos' + name);
-  negPlaylist = new Playlist(negListElements, 'neg' + name);
+  let mainList = []
+  mainListElements.forEach( e => {
+    mainList.push(e.innerText)
+  })
+
+  let posList = []
+  posListElements.forEach( e => {
+    posList.push(e.innerText)
+  })
+
+  let negList = []
+  negListElements.forEach( e => {
+    negList.push(e.innerText)
+  })
+
+  mainPlaylist = new Playlist(mainList, 'main' + name);
+  posPlaylist = new Playlist(posList, 'pos' + name);
+  negPlaylist = new Playlist(negList, 'neg' + name);
 
   playlist = new TriPlaylist(name, mainPlaylist, posPlaylist, negPlaylist);
 

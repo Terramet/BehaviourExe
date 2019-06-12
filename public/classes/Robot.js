@@ -6,6 +6,7 @@ class Robot {
     this.movement = [0,0,0];
     this.listenersActive = false;
     this.moveInterval = null;
+    this.outerB = null;
   }
 
   startSession(ip, callbackConnect = null, callbackDisconnect = null) {
@@ -40,18 +41,43 @@ class Robot {
     this.connected = state;
   }
 
+  raiseDecision(left, right, mes) {
+    console.log('start')
+    this.session.service('ALMemory')
+      .done(function (m) {
+        m.subscriber("Decision").done(function (sub) {
+          sub.signal.connect(function (value) {
+            left.style.display = 'block'
+            left.innerHTML = value[0]
+            right.style.display = 'block'
+            right.innerHTML = value[1]
+            // enable vibration support
+            navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+
+            if (navigator.vibrate) {
+            	navigator.vibrate(1000);
+            }
+            mes("Robot has a decision for you to make.")
+          });
+        });
+    });
+  }
+
   startBehaviourManager(callbackStart = null, callbackStop = null) {
     this.session.service('ALBehaviorManager')
       .done(function (bm) {
-        bm.behaviorStarted.connect(function (data) {
-          console.log(data);
-          if (callbackStart !== null) {
+        bm.behaviorStarted.connect((data) => {;
+          if (callbackStart !== null && this.outerB == null) {
+            this.outerB = data;
+            console.log(data)
             callbackStart(data);
           }
         });
 
-        bm.behaviorStopped.connect(function (data) {
-          if (callbackStop !== null) {
+        bm.behaviorStopped.connect((data) => {
+          if (callbackStop !== null && data == this.outerB) {
+            this.outerB = null;
+            console.log(data)
             callbackStop(data);
           }
         });
@@ -69,11 +95,14 @@ class Robot {
   }
 
   isBehaviorInstalled(behaviour) {
+    console.log(behaviour);
+
     let prom = new Promise((resolve, reject) => {
       this.session.service('ALBehaviorManager')
         .then(function (bm) {
           bm.isBehaviorInstalled(behaviour)
             .then(function (a) {
+              console.log(a);
               resolve(a);
             });
         });

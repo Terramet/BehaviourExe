@@ -10,6 +10,7 @@ var recording = true;
 var time = null;
 var update = null;
 var advFeatureIDs = ['createPlaylistBtn', 'editPlaylistsBtn', 'advSettingsBtn', 'slaveBtn', 'uploadBtn'];
+var miroActive = false;
 
 function closeModal(id) {
   $('#' + id)[0].style.display = 'none';
@@ -109,6 +110,7 @@ function createSession() {
           connectBtn.innerText = value;
         });
 
+      robot.raiseDecision($('#leftD')[0], $('#rightD')[0], function(msg) { infoMessage(msg) } );
       robot.setConnected(true);
 
       let modal = $('#connectModal')[0];
@@ -154,12 +156,14 @@ function createSession() {
 
       robot.startBehaviourManager(function (data) {
         if (data.includes('/.') && data !== 'run_dialog_dev/.') {
+          let s = $('#startB')[0];
           let r = $('#replayB')[0];
           let n = $('#nextB')[0];
           let p = $('#posB')[0];
           let neg = $('#negB')[0];
-          r.setAttribute('disabled', '');
-          n.setAttribute('disabled', '');
+          s.classList.add('d-none');
+          r.classList.remove('d-none');
+          n.classList.remove('d-none');
           p.setAttribute('disabled', '');
           neg.setAttribute('disabled', '');
           let spin = document.getElementsByClassName('donut-spinner');
@@ -180,12 +184,14 @@ function createSession() {
 
         function (data) {
           if (data.includes('/.') && data !== 'run_dialog_dev/.') {
+            let s = $('#startB')[0];
             let r = $('#replayB')[0];
             let n = $('#nextB')[0];
             let p = $('#posB')[0];
             let neg = $('#negB')[0];
-            r.removeAttribute('disabled');
-            n.removeAttribute('disabled');
+            s.classList.remove('d-none');
+            r.classList.add('d-none');
+            n.classList.add('d-none');
             p.removeAttribute('disabled');
             neg.removeAttribute('disabled');
 
@@ -238,6 +244,7 @@ function attemptAutoConnect() {
           connectBtn.innerText = value;
         });
 
+      robot.raiseDecision($('#leftD')[0], $('#rightD')[0], function(msg) { infoMessage(msg) } );
       robot.setConnected(true);
 
       let modal = $('#connectModal')[0];
@@ -256,50 +263,50 @@ function attemptAutoConnect() {
           ses = new Session(aData.cName, loadedPlaylists);
         }
 
-          robot.startBehaviourManager(function (data) {
+        robot.startBehaviourManager(function (data) {
+          if (data.includes('/.') && data !== 'run_dialog_dev/.') {
+            let s = $('#startBtnCont')[0];
+            let r = $('#nextReplayBtnCont')[0];
+            let p = $('#posB')[0];
+            let neg = $('#negB')[0];
+            s.classList.add('d-none');
+            r.classList.remove('d-none');
+            p.setAttribute('disabled', '');
+            neg.setAttribute('disabled', '');
+            let spin = document.getElementsByClassName('donut-spinner');
+            if (spin.length !== 0) {
+              for (let i = 0; i < spin.length; i++) {
+                spin[i].remove();
+              };
+            }
+
+            if (aData.record == true) {
+              startRec(data);
+            }
+
+            time = getTime();
+            console.log('Behaviour ' + data + ' started successfully.');
+          }
+        },
+
+          function (data) {
             if (data.includes('/.') && data !== 'run_dialog_dev/.') {
-              let r = $('#replayB')[0];
-              let n = $('#nextB')[0];
+              let s = $('#startBtnCont')[0];
+              let r = $('#nextReplayBtnCont')[0];
               let p = $('#posB')[0];
               let neg = $('#negB')[0];
-              r.setAttribute('disabled', '');
-              n.setAttribute('disabled', '');
-              p.setAttribute('disabled', '');
-              neg.setAttribute('disabled', '');
-              let spin = document.getElementsByClassName('donut-spinner');
-              if (spin.length !== 0) {
-                for (let i = 0; i < spin.length; i++) {
-                  spin[i].remove();
-                };
-              }
+              s.classList.remove('d-none');
+              r.classList.add('d-none');
+              p.removeAttribute('disabled');
+              neg.removeAttribute('disabled');
 
               if (aData.record == true) {
-                startRec(data);
+                stopRec(data);
               }
 
-              time = getTime();
-              console.log('Behaviour ' + data + ' started successfully.');
+              console.log('Behaviour finished.');
             }
-          },
-
-            function (data) {
-              if (data.includes('/.') && data !== 'run_dialog_dev/.') {
-                let r = $('#replayB')[0];
-                let n = $('#nextB')[0];
-                let p = $('#posB')[0];
-                let neg = $('#negB')[0];
-                r.removeAttribute('disabled');
-                n.removeAttribute('disabled');
-                p.removeAttribute('disabled');
-                neg.removeAttribute('disabled');
-
-                if (aData.record == true) {
-                  stopRec(data);
-                }
-
-                console.log('Behaviour finished.');
-              }
-            });
+          });
 
         changeMemValue('child_name', aData.cName);
 
@@ -473,5 +480,15 @@ function activateMovement() {
     robot.startMovementListeners();
   } else {
     robot.stopMovementListeners();
+  }
+}
+
+function activateMiroMovement() {
+  if(!miroActive) {
+    miroActive = true;
+    startMiro();
+  } else {
+    miroActive = false;
+    stopMiro();
   }
 }

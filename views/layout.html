@@ -3,7 +3,7 @@
 
 <head>
 
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
   <meta name='description' content=''>
   <meta name='author' content=''>
@@ -26,38 +26,38 @@
     <div id='sidebar-wrapper'>
       <ul class='sidebar-nav'>
         <li class='sidebar-brand text-black'>
-          <a class="side-bar-toggler" id='connectBtn' href='#' data-toggle='modal' data-target='#connectModal'>
+          <a class='side-bar-toggler' id='connectBtn' href='#' data-toggle='modal' data-target='#connectModal'>
             Connect
           </a>
         </li>
-        <div class="show-large">
+        <div class='show-large'>
           <li>
-            <a class="side-bar-toggler" href='#' data-toggle='modal' data-target='#createModal' id='createPlaylistBtn'>Create Playlist</a>
+            <a class='side-bar-toggler' href='#' data-toggle='modal' data-target='#createModal' id='createPlaylistBtn'>Create Playlist</a>
           </li>
           <li>
-            <a class="side-bar-toggler" href='#' data-toggle='modal' data-target='#editModal' id='editPlaylistsBtn'>Edit Playlists</a>
+            <a class='side-bar-toggler' href='#' data-toggle='modal' data-target='#editModal' id='editPlaylistsBtn'>Edit Playlists</a>
           </li>
         </div>
         <li>
-          <a class="side-bar-toggler" href='#' data-toggle='modal' data-target='#assignModal' id='assignPlaylistsBtn'>Assign Playlist</a>
+          <a class='side-bar-toggler' href='#' data-toggle='modal' data-target='#assignModal' id='assignPlaylistsBtn'>Assign Playlist</a>
         </li>
         <li>
-          <a class="side-bar-toggler" href='#' data-toggle='modal' data-target='#langModal' id='changeLangBtn'>Language</a>
+          <a class='side-bar-toggler' href='#' data-toggle='modal' data-target='#langModal' id='changeLangBtn'>Language</a>
         </li>
         <li>
-          <a class="side-bar-toggler" href='#' data-toggle='modal' data-target='#viewModal' id='viewVideosBtn'>View Videos</a>
+          <a class='side-bar-toggler' href='#' data-toggle='modal' data-target='#viewModal' id='viewVideosBtn'>View Videos</a>
         </li>
         <li>
-          <a class="side-bar-toggler" href='#' data-toggle='modal' data-target='#slaveModal' onclick='populateSlaveModal()' id='slaveBtn'>Slaves</a>
+          <a class='side-bar-toggler' href='#' data-toggle='modal' data-target='#slaveModal' onclick='populateSlaveModal()' id='slaveBtn'>Slaves</a>
         </li>
         <li>
-          <a class="side-bar-toggler" href='#' data-toggle='modal' data-target='#uploadModal' id='uploadBtn'>Upload</a>
+          <a class='side-bar-toggler' href='#' data-toggle='modal' data-target='#uploadModal' id='uploadBtn'>Upload</a>
         </li>
         <li>
-          <a class="side-bar-toggler" href='#' data-toggle='modal' data-target='#settingsModal' onclick='updateSettings()' id='advSettingsBtn'>Settings</a>
+          <a class='side-bar-toggler' href='#' data-toggle='modal' data-target='#settingsModal' onclick='updateSettings()' id='advSettingsBtn'>Settings</a>
         </li>
         <li>
-          <label>Advanced Mode<input id="advCheck" type="checkbox" class="ios-switch"><div class="switch"></div></label>
+          <label>Advanced Mode<input id='advCheck' type='checkbox' class='ios-switch'><div class='switch'></div></label>
         </li>
       </ul>
     </div>
@@ -73,7 +73,7 @@
 
       <!-- The Modal-->
       <div class='modal animated fadeIn' id='connectModal'>
-      <div class="help-tip"><p id="connectHelp">Say</p></div>
+      <div class='help-tip'><p id='connectHelp'>Say</p></div>
         <!-- Modal content-->
         <div class='modal-content autoModal'><span class='close' data-dismiss='modal'>×</span>
           <div class='row justify-content-center ml-2 mt-4'>
@@ -84,7 +84,7 @@
           </div>
           <div class='row justify-content-center'>
             <button id='connectSave' data-dismiss='modal' onclick='createSession()'>Save</button>
-            <!-- <button class="col m-2" data-dismiss='modal'>Close</button> -->
+            <!-- <button class='col m-2' data-dismiss='modal'>Close</button> -->
           </div>
         </div>
       </div>
@@ -98,7 +98,7 @@
             <input id='cName'type='text' class='w-75 ml-4 mr-4 mb-4' placeholder='Childs name' tabindex='1' required='' autofocus=''>
           </div>
           <div class='row justify-content-center ml-4 mr-4 mb-4'>
-            <label>Allow robot to record<input id="robotRecordCheck" type="checkbox" class="ios-switch"><div class="switch"></div></label>
+            <label>Allow robot to record<input id='robotRecordCheck' type='checkbox' class='ios-switch'><div class='switch'></div></label>
           </div>
           <div class='row justify-content-center'>
             <button id='childSave' data-dismiss='modal' style='display: block; margin: auto;'>Save</button>
@@ -119,38 +119,38 @@
       </div>
 
       <div class='modal animated fadeIn' id='createModal'>
-        <div class="help-tip"><p id="createHelp">Say</p></div>
+        <div class='help-tip'><p id='createHelp'>Say</p></div>
         <div class='modal-content'><span class='close' data-dismiss='modal'>×</span>
           <h4 class='center' id='createPlaylistTitle'>Create Playlist</h4>
           <div class='row justify-content-center p-3'>
             <input id='playlistName' class='col-6' type='text'  placeholder='Enter a name for your playlist' tabindex='3' autofocus=''>
-            <input id='savePlaylistBtn' class='col-2' data-dismiss='modal' type='submit' value='Save' onclick='savePlaylist()'>
+            <button id='savePlaylistBtn' class='col-2' data-dismiss='modal' onclick='savePlaylist()'>Save</button>
           </div>
-          <div class="drag-container">
-          	<ul class="drag-list">
-          		<li class="drag-column drag-column-available">
-          			<span class="drag-column-header">
-          				<h2 class="text-sm-center">Available</h2>
+          <div class='drag-container'>
+          	<ul class='drag-list'>
+          		<li class='drag-column drag-column-available'>
+          			<span class='drag-column-header'>
+          				<h2 class='text-sm-center' id='avaListBox'>Available</h2>
           			</span>
-          			<ul class="drag-inner-list" id="behaveListAvailable"></ul>
+          			<ul class='drag-inner-list' id='behaveListAvailable'></ul>
           		</li>
-          		<li class="drag-column drag-column-main">
-          			<span class="drag-column-header">
-          				<h2 class="text-sm-center">Main Behaviours</h2>
+          		<li class='drag-column drag-column-main'>
+          			<span class='drag-column-header'>
+          				<h2 class='text-sm-center' id='mainListBox'>Main Behaviours</h2>
           			</span>
-          			<ul class="drag-inner-list" id="behaveListMain"></ul>
+          			<ul class='drag-inner-list' id='behaveListMain'></ul>
           		</li>
-          		<li class="drag-column drag-column-pos">
-          			<span class="drag-column-header">
-          				<h2 class="text-sm-center">Positive Behaviours</h2>
+          		<li class='drag-column drag-column-pos'>
+          			<span class='drag-column-header'>
+          				<h2 class='text-sm-center' id='posListBox'>Positive Behaviours</h2>
           			</span>
-          			<ul class="drag-inner-list" id="behaveListPositive"></ul>
+          			<ul class='drag-inner-list' id='behaveListPositive'></ul>
           		</li>
-          		<li class="drag-column drag-column-neg">
-          			<span class="drag-column-header">
-          				<h2 class="text-sm-center">Negative Behaviours</h2>
+          		<li class='drag-column drag-column-neg'>
+          			<span class='drag-column-header'>
+          				<h2 class='text-sm-center' id='negListBox'>Negative Behaviours</h2>
           			</span>
-          			<ul class="drag-inner-list" id="behaveListNegative"></ul>
+          			<ul class='drag-inner-list' id='behaveListNegative'></ul>
           		</li>
           	</ul>
           </div>
@@ -158,10 +158,9 @@
       </div>
 
       <div class='modal animated fadeIn' id='assignModal'>
-        <div class="help-tip"><p id="assignHelp">Say</p></div>
+        <div class='help-tip'><p id='assignHelp'>Say</p></div>
         <div class='modal-content autoModal'><span class='close' data-dismiss='modal'>×</span>
           <h4 class='center p-2' id='assignPlaylistTitle'>Assign Playlist</h4>
-          <!-- <form id='assignForm' style='margin: auto; margin-top: 20px; display: block; text-align:center;' onsubmit='return false;' method='post' autocomplete='on'> -->
             <div class='container-fluid'>
               <div class='row'>
                 <button class='col m-2' id='mainBehave'>Playlist</button>
@@ -171,12 +170,11 @@
                 <button class='center' id='saveAssignments' data-dismiss='modal' onclick='saveAssigned()'>Save</button>
               </div>
             </div>
-          <!-- </form> -->
         </div>
       </div>
 
       <div class='modal animated fadeIn' id='editModal'>
-        <div class="help-tip"><p id="editHelp">Say</p></div>
+        <div class='help-tip'><p id='editHelp'>Say</p></div>
         <div class='modal-content'><span class='close' data-dismiss='modal'>x</span>
           <div class='row justify-content-center ml-2 mt-4 mr-2'>
             <h4 class='center' id='editPlaylistsTitle'>Edit Playlists</h4>
@@ -188,12 +186,12 @@
       </div>
 
       <div class='modal animated fadeIn' id='viewModal'>
-        <div class="help-tip"><p id="viewHelp">Say</p></div>
+        <div class='help-tip'><p id='viewHelp'>Say</p></div>
         <div class='modal-content'><span class='close' data-dismiss='modal'>x</span>
           <div class='row justify-content-center ml-2 mt-4 mr-2'>
             <h4 class='center' id='viewVideosTitle'>View Videos</h4>
           </div>
-          <div id="viewForm" class='justify-content-center ml-2 mt-4 mr-2'>
+          <div id='viewForm' class='justify-content-center ml-2 mt-4 mr-2'>
 
           </div>
         </div>
@@ -206,7 +204,7 @@
       </div>
 
       <div class='modal animated fadeIn' id='langModal'>
-        <div class="help-tip"><p id="langHelp">Say</p></div>
+        <div class='help-tip'><p id='langHelp'>Say</p></div>
         <div class='modal-content'><span class='close' data-dismiss='modal'>x</span>
           <div class='row justify-content-center ml-2 mt-4 mr-2'>
             <h4 class='center' id='changeLangTitle'>Change Language</h4>
@@ -216,49 +214,49 @@
       </div>
 
       <div class='modal animated fadeIn' id='slaveModal'>
-        <div class="help-tip"><p id="slaveHelp">Say</p></div>
+        <div class='help-tip'><p id='slaveHelp'>Say</p></div>
         <div class='modal-content'><span class='close' data-dismiss='modal'>x</span>
           <div class='row justify-content-center ml-2 mt-4 mr-2'>
             <h4 class='center' id='slaveTitle'>Available Slaves</h4>
           </div>
           <div class='container' id='slaveCheckContainer'></div>
           <div class='row justify-content-center ml-2 mt-2 mr-2'>
-            <button id="connectToListOfSlaves" data-dismiss='modal' onclick="connectToSlaves(getRadioSlaves())">Connect</button>
+            <button id='connectToListOfSlaves' data-dismiss='modal' onclick='connectToSlaves(getRadioSlaves())'>Connect</button>
           </div>
         </div>
       </div>
 
-      <div class="modal" id="slavePresentationModal">
-        <div class="modal-content autoModal"><span class="close" id="slavePresentationClose">×</span>
+      <div class='modal' id='slavePresentationModal'>
+        <div class='modal-content autoModal'><span class='close' id='slavePresentationClose'>×</span>
           <div>
             <div class='row justify-content-center ml-2 mt-2 mr-2'>
-              <h4 id="slavePresentTitle">Please choose what to display on the slave</h4>
+              <h4 id='slavePresentTitle'>Please choose what to display on the slave</h4>
             </div>
-              <div class="container" id="slavePresContainer"></div>
+              <div class='container' id='slavePresContainer'></div>
           </div>
           <div class='row justify-content-center'>
-            <button id="slaveSave" data-dismiss='modal'>Save</button>
+            <button id='slaveSave' data-dismiss='modal'>Save</button>
           </div>
         </div>
       </div>
 
       <div class='modal animated fadeIn' id='uploadModal'>
-        <div class="help-tip"><p id="uploadHelp">Say</p></div>
+        <div class='help-tip'><p id='uploadHelp'>Say</p></div>
         <div class='modal-content'><span class='close' data-dismiss='modal'>x</span>
           <div class='row justify-content-center ml-2 mt-4 mr-2'>
             <h4 class='center' id='uploadTitle'>Upload</h4>
           </div>
-          <form action="/post_pptx" enctype="multipart/form-data" method="post" style="display: block;">
-            <input type="file" name="pptx">
+          <form action='/post_pptx' enctype='multipart/form-data' method='post' style='display: block;'>
+            <input type='file' name='pptx'>
             <div class='row justify-content-center ml-2 mt-4 mr-2'>
-              <input type="submit" value="Upload .pptx">
+              <input type='submit' value='Upload .pptx'>
             </div>
           </form>
         </div>
       </div>
 
       <div class='modal animated fadeIn' id='settingsModal'>
-        <div class="help-tip"><p id="settingsHelp">Say</p></div>
+        <div class='help-tip'><p id='settingsHelp'>Say</p></div>
         <div class='modal-content'><span class='close' data-dismiss='modal'>x</span>
           <div class='row justify-content-center ml-2 mt-4 mr-2'>
             <h4 class='center' id='settingsTitle'>Settings</h4>
@@ -267,11 +265,11 @@
             <p id='robotPass'>Robot Password</p>
           </div>
           <div class='row'>
-            <input type="password" class='col m-2 center' id='robotPassIn' placeholder="Your robots password"></input>
+            <input type='password' class='col m-2 center' id='robotPassIn' placeholder='Your robots password'></input>
           </div>
           <hr>
           <div class='row justify-content-center'>
-            <label>Additional Controls<input id="robotControlCheck" type="checkbox" class="ios-switch"><div class="switch"></div></label>
+            <label>Additional Controls<input id='robotControlCheck' type='checkbox' class='ios-switch'><div class='switch'></div></label>
           </div>
           <hr>
           <div class='row justify-content-center'>
@@ -284,9 +282,12 @@
         <div class='row justify-content-center ml-2 mt-4 mr-2'>
           <h4 id='executionFormTitle'>Behaviour Execution</h4>
         </div>
-        <div class='row justify-content-center'>
-          <button id='replayB' class='col ml-3 m-1' style='height: 66px;' onclick='playCurrent(&quot;main&quot;, this)'>Repeat </button>
-          <button id='nextB' class='col mr-3 m-1' style='height: 66px;' onclick='playNext(&quot;main&quot;, this)'>Next</button>
+        <div id='startBtnCont' class='row justify-content-center'>
+          <button id='startB' class='col ml-3 mr-3 m-1' style='height: 66px;' onclick='startBehaviour(&quot;main&quot;, this)'>Start </button>
+        </div>
+        <div id='nextReplayBtnCont' class='row justify-content-center'>
+          <button id='leftD' class='col ml-3 m-1' style='height: 66px; display: None' onclick='leftDecision($(&quot;#leftD&quot;)[0], $(&quot;#rightD&quot;)[0])'>Repeat </button>
+          <button id='rightD' class='col mr-3 m-1' style='height: 66px; display: None' onclick='rightDecision($(&quot;#rightD&quot;)[0], $(&quot;#leftD&quot;)[0])'>Next</button>
         </div>
         <div class='row justify-content-center'>
           <input class='col soft-input ml-3 m-1 w-50' id='sayText' type='text' placeholder='Enter text to say' tabindex='3' autofocus=''>
@@ -301,63 +302,63 @@
         </div>
       </form>
 
-      <div id="controlsContainer" class="text-center m-2" style="display: none">
-        <a href="#naoRobotControls" class="btn btn-info" data-toggle="collapse" onclick="activateMovement()">Nao Controls</a>
-        <a href="#miroRobotControls" class="btn btn-info" data-toggle="collapse">Miro Controls</a>
-        <a href="#presentationControls" class="btn btn-info" data-toggle="collapse">Presentation Controls</a>
+      <div id='controlsContainer' class='text-center m-2' style='display: none'>
+        <a id='naoExpand' href='#naoRobotControls' class='btn btn-info' data-toggle='collapse' onclick='activateMovement()'>Nao Controls</a>
+        <a id='miroExpand' href='#miroRobotControls' class='btn btn-info' data-toggle='collapse' onclick='activateMiroMovement()'>Miro Controls</a>
+        <a id='presExpand' href='#presentationControls' class='btn btn-info' data-toggle='collapse'>Presentation Controls</a>
 
-        <div id="presentationControls" class="collapse" style="margin-top: 1%;">
+        <div id='presentationControls' class='collapse' style='margin-top: 1%;'>
           <form id='presControlsContainer' style='display: block;' method='post' onsubmit='return false;' autocomplete='on'>
             <div class='row justify-content-center ml-2 mt-4 mr-2'>
               <h4 id='presentationTitle'>Presentation Controls</h4>
             </div>
-            <div class="row">
-              <button id='previousPres' class="col m-2" onclick='prevSlide()'>Previous</button>
-              <button id='nextPres' class="col m-2" onclick='nextSlide()'>Next</button>
+            <div class='row'>
+              <button id='previousPres' class='col m-2' onclick='prevSlide()'>Previous</button>
+              <button id='nextPres' class='col m-2' onclick='nextSlide()'>Next</button>
             </div>
           </form>
         </div>
       </div>
 
-        <div id="naoRobotControls" class="collapse" style="margin-top: 1%;">
+        <div id='naoRobotControls' class='collapse' style='margin-top: 1%;'>
           <form id='robotControlForm' style='display: block;' method='post' onsubmit='return false;' autocomplete='on'>
             <div class='row justify-content-center ml-2 mt-4 mr-2'>
               <h4 id='controlRobotTitle'>Robot Controls</h4>
             </div>
-            <div class="row">
-              <button id='turnLeft' class="col m-2" onpointerdown="setMovementValue(2, 1)" onpointerup="setMovementValue(2, 0)">↰</button>
-              <button id='forward' class="col m-2" onpointerdown="setMovementValue(0, 1)" onpointerup="setMovementValue(0, 0)">↑</button>
-              <button id='turnRight' class="col m-2" onpointerdown="setMovementValue(2, -1)" onpointerup="setMovementValue(2, 0)">↱</button>
+            <div class='row'>
+              <button id='turnLeft' class='col m-2 unselectable' onpointerdown='setMovementValue(2, 1)' onpointerup='setMovementValue(2, 0)'>↰</button>
+              <button id='forward' class='col m-2 unselectable' onpointerdown='setMovementValue(0, 1)' onpointerup='setMovementValue(0, 0)'>↑</button>
+              <button id='turnRight' class='col m-2 unselectable' onpointerdown='setMovementValue(2, -1)' onpointerup='setMovementValue(2, 0)'>↱</button>
             </div>
-            <div class="row">
-              <button id='left' class="col m-2" onpointerdown="setMovementValue(1, 1)" onpointerup="setMovementValue(1, 0)">←</button>
-              <button id='backwards' class="col m-2" onpointerdown="setMovementValue(0, -1)" onpointerup="setMovementValue(0, 0)">↓</button>
-              <button id='right' class="col m-2" onpointerdown="setMovementValue(1, -1)" onpointerup="setMovementValue(1, 0)">→</button>
+            <div class='row'>
+              <button id='left' class='col m-2 unselectable' onpointerdown='setMovementValue(1, 1)' onpointerup='setMovementValue(1, 0)'>←</button>
+              <button id='backwards' class='col m-2 unselectable' onpointerdown='setMovementValue(0, -1)' onpointerup='setMovementValue(0, 0)'>↓</button>
+              <button id='right' class='col m-2 unselectable' onpointerdown='setMovementValue(1, -1)' onpointerup='setMovementValue(1, 0)'>→</button>
             </div>
           </form>
         </div>
 
-        <div id="miroRobotControls" class="collapse" style="margin-top: 1%;">
+        <div id='miroRobotControls' class='collapse' style='margin-top: 1%;'>
           <form id='controlsContainer' style='display: block;' method='post' onsubmit='return false;' autocomplete='on'>
             <div class='row justify-content-center ml-2 mt-4 mr-2'>
               <h4 id='miroRobotTitle'>Miro Controls</h4>
             </div>
-            <div class="row">
-              <button id='invisButton1' class="col m-2" style="visibility: hidden"></button>
-              <button id='miroForward' class="col m-2" onpointerdown="moveMiro(200, 0)" onpointerup="stopMiro()">↑</button>
-              <button id='invisButton2' class="col m-2" style="visibility: hidden"></button>
+            <div class='row'>
+              <button id='miroBark' class='col m-2 unselectable' onclick="barkMiro()">Bark</button>
+              <button id='miroForward' class='col m-2 unselectable' onpointerdown='moveMiro(400, 0)' onpointerup='moveMiro(0, 0)'>↑</button>
+              <button id='invisButton2' class='col m-2 unselectable' style='visibility: hidden'></button>
             </div>
-            <div class="row">
-              <button id='miroTurnLeft' class="col m-2" onpointerdown="moveMiro(0, 1.5708)" onpointerup="stopMiro()">↰</button>
-              <button id='miroBackwards' class="col m-2" onpointerdown="moveMiro(-200, 0)" onpointerup="stopMiro()">↓</button>
-              <button id='miroTurnRight' class="col m-2" onpointerdown="moveMiro(0, -1.5708)" onpointerup="stopMiro()">↱</button>
+            <div class='row'>
+              <button id='miroTurnLeft' class='col m-2 unselectable' onpointerdown='moveMiro(0, 1.5)' onpointerup='moveMiro(0, 0)'>↰</button>
+              <button id='miroBackwards' class='col m-2 unselectable' onpointerdown='moveMiro(-400, 0)' onpointerup='moveMiro(0, 0)'>↓</button>
+              <button id='miroTurnRight' class='col m-2 unselectable' onpointerdown='moveMiro(0, -1.5)' onpointerup='moveMiro(0, 0)'>↱</button>
             </div>
           </form>
         </div>
       </div>
 
-      <span class="fixed-bottom">
-        <p class="text-center" id='update-status'></p>
+      <span class='fixed-bottom' style='visibility: hidden'>
+        <p class='text-center' id='update-status'></p>
       </span>
     </div>
 
@@ -398,10 +399,13 @@
   <script src='/libs/qimessaging/1.0/qimessaging.js'></script>
   <script src='http://code.jquery.com/ui/1.11.4/jquery-ui.js'></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js'></script>
-  <script src="/libs/jquery.ajax-cross-origin.min.js"></script>
+  <script src='/libs/jquery.ajax-cross-origin.min.js'></script>
 
   <!-- Menu/modal Script -->
   <script>
+
+    window.onbeforeunload = function () {stopBehaviour();}
+
     $('#menu-toggle, .side-bar-toggler').click(function (e) {
       e.preventDefault();
       $('#wrapper').toggleClass('toggled');
@@ -420,7 +424,6 @@
     $('.behave').on('change', function (e) {
       loadedPlaylists.forEach(p => {
         if (this.value === p.name) {
-          console.log(p);
           checkBehaveList(p).then((result) => {
             if (!result) {
               this.parentElement.getElementsByTagName('button')[0].classList.remove('green');
@@ -472,7 +475,6 @@
     	document.getElementById('behaveListMain'),
     	document.getElementById('behaveListPositive'),
     	document.getElementById('behaveListNegative'),
-    	document.getElementById('5')
     ])
 
     .on('drag', function(el) {
@@ -494,7 +496,7 @@
     	}, 100);
     });
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js'></script>
   <script>
 
     var socket = io.connect(window.location.href.split(':8')[0] + ':3000');
@@ -538,11 +540,8 @@
         });
       });
     }
-
   </script>
-
   <script src='/libs/qimessaging/1.0/socket.io.min.js'></script>
-
 </body>
 
 </html>
