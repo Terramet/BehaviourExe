@@ -28,6 +28,18 @@ function startMiro() {
       url: removeHASH() + 'startMiro',
       success: (data) => { console.log(data) }
     })
+    
+  var data = {};
+  data.velX = 0;
+  data.velY = 0;
+  $.ajax({
+      type: 'POST',
+      data: JSON.stringify(data),
+      contentType: 'application/json',
+      url: removeHASH() + 'moveMiro',
+      success: (data) => { console.log(data) }
+
+    })
 }
 
 function barkMiro() {

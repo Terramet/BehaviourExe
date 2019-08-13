@@ -42,7 +42,6 @@ class Robot {
   }
 
   raiseDecision(left, right, mes) {
-    console.log('start')
     this.session.service('ALMemory')
       .done(function (m) {
         m.subscriber("Decision").done(function (sub) {
@@ -128,11 +127,25 @@ class Robot {
       });
   }
 
+  miroBarkOnNaoSpeech() {
+    console.log('start')
+    this.session.service("ALMemory").done(function (ALMemory) {
+      ALMemory.subscriber("ALTextToSpeech/CurrentWord").done(function (sub){
+        sub.signal.connect(function(value){
+            if(value.toUpperCase() == "MIRO") {
+              console.log(value);
+              barkMiro();
+            }
+        });
+      });
+    })
+  }
+
   say(data) {
     this.session.service('ALAnimatedSpeech')
       .then(function (as) {
         as.say(data);
-      });
+    });
   }
 
   getRobotName() {

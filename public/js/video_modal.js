@@ -13,5 +13,6 @@ function playVideo(data) {
   s.setAttribute('type', 'video/mp4');
   v.appendChild(s);
   vForm.appendChild(v);
+  vForm.style.display = 'block';
   vModal.style.display = 'block';
 }

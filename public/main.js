@@ -112,6 +112,7 @@ function createSession() {
 
       robot.raiseDecision($('#leftD')[0], $('#rightD')[0], function(msg) { infoMessage(msg) } );
       robot.setConnected(true);
+      robot.miroBarkOnNaoSpeech();
 
       let modal = $('#connectModal')[0];
       modal.style.display = 'none';
@@ -246,6 +247,7 @@ function attemptAutoConnect() {
 
       robot.raiseDecision($('#leftD')[0], $('#rightD')[0], function(msg) { infoMessage(msg) } );
       robot.setConnected(true);
+      robot.miroBarkOnNaoSpeech();
 
       let modal = $('#connectModal')[0];
       modal.style.display = 'none';

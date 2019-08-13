@@ -346,6 +346,8 @@ router.get('/check_update', function (req, res, next) {
   });
 });
 
+//  2vsd-gn1c-hbbj
+
 router.post('/post_pptx', function(req, res, next) {
   if(fs.existsSync(req.file.path)) {
     console.log(req.file)
@@ -407,7 +409,7 @@ router.post('/barkMiro', function (req, res, next) {
     console.log(`child process exited with code ${code}`);
   });
 
-  res.send('Success');
+  res.send('Miro bark Success');
 })
 
 /* POST execute the file in order to move Miro in the direction */
@@ -422,7 +424,7 @@ router.post('/startMiro', function (req, res, next) {
     console.log(`child process exited with code ${code}`);
   });
 
-  res.send('Success');
+  res.send('Start miro Success');
 })
 
 router.post('/moveMiro', function (req, res, next) {
@@ -435,14 +437,14 @@ router.post('/moveMiro', function (req, res, next) {
 
   fs.writeFileSync(fileName, JSON.stringify(json));
 
-  res.send('Success');
+  res.send('Move Miro success');
 })
 
 /* Clear the interval created by the MoveMiro*/
 router.post('/stopMiro', function (req, res, next) {
   pythonProcess.kill('SIGTERM');
   pythonProcess = null
-  res.send('Success');
+  res.send('Stop Miro Success');
 })
 
 /* Force the server to restart in order to update it. Will not update is server is started with -nu or --no-update*/
