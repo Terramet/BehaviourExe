@@ -11,9 +11,7 @@ function saveAssigned() {
 
   assigned = new Assigned(p);
   ses.setAssigned(assigned);
-
-  // $('#assignModal')[0].style.display = 'none'
-
+  
   console.log('Successfully assigned: <br/>'
   + p.getName() + ' as the main behaviour list. <br/>')
 }

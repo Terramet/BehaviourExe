@@ -111,7 +111,6 @@ class Robot {
   }
 
   startBehaviour(behaviour, btn) {
-    btn.innerHTML = '<div class=\'donut-spinner\'></div>';
     this.session.service('ALBehaviorManager')
       .then((bm) => {
         if (this.isBehaviorInstalled(behaviour)) {

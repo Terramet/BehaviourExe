@@ -163,16 +163,10 @@ function createSession() {
           let p = $('#posB')[0];
           let neg = $('#negB')[0];
           s.classList.add('d-none');
-          r.classList.remove('d-none');
+          // r.classList.remove('d-none');
           n.classList.remove('d-none');
           p.setAttribute('disabled', '');
           neg.setAttribute('disabled', '');
-          let spin = document.getElementsByClassName('donut-spinner');
-          if (spin.length !== 0) {
-            for (let i = 0; i < spin.length; i++) {
-              spin[i].remove();
-            };
-          }
 
           if (aData.record == true) {
             startRec(data);
@@ -191,7 +185,7 @@ function createSession() {
             let p = $('#posB')[0];
             let neg = $('#negB')[0];
             s.classList.remove('d-none');
-            r.classList.add('d-none');
+            // r.classList.add('d-none');
             n.classList.add('d-none');
             p.removeAttribute('disabled');
             neg.removeAttribute('disabled');
@@ -275,12 +269,6 @@ function attemptAutoConnect() {
             r.classList.remove('d-none');
             p.setAttribute('disabled', '');
             neg.setAttribute('disabled', '');
-            let spin = document.getElementsByClassName('donut-spinner');
-            if (spin.length !== 0) {
-              for (let i = 0; i < spin.length; i++) {
-                spin[i].remove();
-              };
-            }
 
             if (aData.record == true) {
               startRec(data);
