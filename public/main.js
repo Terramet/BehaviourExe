@@ -12,6 +12,36 @@ var update = null;
 var advFeatureIDs = ['createPlaylistBtn', 'editPlaylistsBtn', 'advSettingsBtn', 'slaveBtn', 'uploadBtn'];
 var miroActive = false;
 
+function keyDownHandler(event) {
+  if(event.keyCode == 39) {
+      rightPressed = moveMiro(0, -1.5);
+  }
+  else if(event.keyCode == 37) {
+      leftPressed = moveMiro(0, 1.5);
+  }
+  if(event.keyCode == 40) {
+    downPressed = moveMiro(-400, 0);
+  }
+  else if(event.keyCode == 38) {
+    upPressed = moveMiro(400, 0);
+  }
+}
+
+function keyUpHandler(event) {
+  if(event.keyCode == 39) {
+      rightPressed = moveMiro(0, 0);
+  }
+  else if(event.keyCode == 37) {
+      leftPressed = moveMiro(0, 0);
+  }
+  if(event.keyCode == 40) {
+    downPressed = moveMiro(0, 0);
+  }
+  else if(event.keyCode == 38) {
+    upPressed = moveMiro(0, 0);
+  }
+}
+
 function closeModal(id) {
   $('#' + id)[0].style.display = 'none';
 }

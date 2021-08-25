@@ -51,13 +51,6 @@ class miro_ros_client:
 		period = 2 * sync_rate # two seconds per period
 		z = self.count / period
 
-
-		# point cameras down
-
-
-		# publish
-
-
 		self.body_vel = None
 		self.body_vel = Twist()
 
@@ -68,7 +61,7 @@ class miro_ros_client:
 
 		q.body_vel = self.body_vel
 		self.pub_platform_control.publish(q)
-
+		print("Hi")
 		# count
 		self.count = self.count + 1
 		if self.count == 400:
@@ -76,14 +69,39 @@ class miro_ros_client:
 
 	def loop(self):
 		while True:
+			# ignore until active
+			if not self.active:
+				return
+
+			# store object
+			self.platform_sensors = object
+
+			# send downstream command, ignoring upstream data
+			q = platform_control()
+
+			# timing
+			sync_rate = 50
+			period = 2 * sync_rate # two seconds per period
+			z = self.count / period
+
+			self.body_vel = None
+			self.body_vel = Twist()
+
+			with open("/home/dualbootlt/Desktop/BehaviourExe/public/robot_resources/movement.json") as json_file:
+				data = json.load(json_file)
+				self.body_vel.linear.x = float(data['x'])
+				self.body_vel.angular.z = float(data['y'])
+
+			q.body_vel = self.body_vel
+			self.pub_platform_control.publish(q)
+			print("Hi")
+			# count
+			self.count = self.count + 1
+			if self.count == 400:
+				self.count = 0
 			if rospy.core.is_shutdown():
 				break
-			time.sleep(1)
-			print "tick"
-			if rospy.core.is_shutdown():
-				break
-			time.sleep(1)
-			print "tock"
+			time.sleep(0.1)
 
 	def __init__(self):
 
@@ -142,8 +160,6 @@ class miro_ros_client:
 					platform_control, queue_size=0)
 		self.pub_core_control = rospy.Publisher(topic_root + "/core/control",
 					core_control, queue_size=0)
-		self.pub_core_config = rospy.Publisher(topic_root + "/core/config",
-					core_config, queue_size=0)
 		self.pub_bridge_config = rospy.Publisher(topic_root + "/bridge/config",
 					bridge_config, queue_size=0)
 		self.pub_bridge_stream = rospy.Publisher(topic_root + "/bridge/stream",
@@ -159,6 +175,7 @@ class miro_ros_client:
 		self.active = True
 
 if __name__ == "__main__":
+	print("Hi")
 	rospy.init_node("miromove_py", anonymous=True)
 	main = miro_ros_client()
 	main.loop()

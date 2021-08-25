@@ -464,6 +464,8 @@
       $.when(loadLanguage(), loadPlaylists()).then(function () {
         advancedFeatures(checkCookieData('advMode'));
         attemptAutoConnect();
+        document.addEventListener('keydown', keyDownHandler, false);
+        document.addEventListener('keyup', keyUpHandler, false);
       });
     });
   </script>
