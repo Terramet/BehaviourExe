@@ -1,0 +1,29 @@
+Current local version: 1.0.4
+Current release version: 1.0.4
+[0mGET /vendor/bootstrap/css/bootstrap.css [36m304 [0m9.530 ms - -[0m
+[0mGET /css/side-bar.css [36m304 [0m7.676 ms - -[0m
+[0mGET /css/style.css [36m304 [0m7.512 ms - -[0m
+[0mGET /css/animate.css [36m304 [0m0.492 ms - -[0m
+[0mGET /vendor/jquery/jquery.min.js [36m304 [0m0.402 ms - -[0m
+[0mGET /vendor/bootstrap/js/bootstrap.bundle.min.js [36m304 [0m0.470 ms - -[0m
+[0mGET /main.js [36m304 [0m1.084 ms - -[0m
+[0mGET /js/ajax_requests.js [36m304 [0m0.887 ms - -[0m
+[0mGET /js/assign_modal.js [36m304 [0m0.423 ms - -[0m
+[0mGET /js/behaviour_form.js [36m304 [0m1.013 ms - -[0m
+[0mGET /js/cookies.js [36m304 [0m0.900 ms - -[0m
+[0mGET /js/create_modal.js [36m304 [0m0.453 ms - -[0m
+[0mGET /js/edit_modal.js [36m304 [0m0.448 ms - -[0m
+[0mGET /js/lang_modal.js [36m304 [0m0.431 ms - -[0m
+[0mGET /js/notifications.js [36m304 [0m0.305 ms - -[0m
+[0mGET /js/settings.js [36m304 [0m0.484 ms - -[0m
+[0mGET /js/video_modal.js [36m304 [0m1.066 ms - -[0m
+[0mGET /js/view_modal.js [36m304 [0m0.979 ms - -[0m
+[0mGET /classes/Assigned.js [36m304 [0m0.385 ms - -[0m
+[0mGET /classes/Playlist.js [36m304 [0m0.990 ms - -[0m
+[0mGET /classes/Robot.js [36m304 [0m0.943 ms - -[0m
+[0mGET /classes/Session.js [36m304 [0m0.550 ms - -[0m
+[0mGET /libs/qimessaging/1.0/qimessaging.js [36m304 [0m1.906 ms - -[0m
+[0mGET /libs/qimessaging/1.0/socket.io.min.js [36m304 [0m1.779 ms - -[0m
+[0mGET /playlists/load [36m304 [0m19.902 ms - -[0m
+[0mGET /language/load [36m304 [0m23.596 ms - -[0m
+error: Forever detected script was killed by signal: SIGKILL

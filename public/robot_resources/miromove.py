@@ -94,7 +94,7 @@ class miro_ros_client:
 
 			q.body_vel = self.body_vel
 			self.pub_platform_control.publish(q)
-			print("Hi")
+			#print("Hi")
 			# count
 			self.count = self.count + 1
 			if self.count == 400:
@@ -175,7 +175,6 @@ class miro_ros_client:
 		self.active = True
 
 if __name__ == "__main__":
-	print("Hi")
 	rospy.init_node("miromove_py", anonymous=True)
 	main = miro_ros_client()
 	main.loop()

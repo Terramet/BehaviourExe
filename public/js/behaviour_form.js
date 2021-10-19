@@ -50,9 +50,13 @@ function stopRec(data) {
   setTimeout(copyRecording(time), 2000);
 }
 
-function say() {
-  let str = $('#sayText')[0].value;
-  let textToSay = str.replace(/%c/g, ses.getName());
+function say(optional = null) {
+  if (optional === null) {
+    str = $('#sayText')[0].value;
+    textToSay = str.replace(/%c/g, ses.getName());
+  } else {
+    textToSay = optional;
+  }
   robot.say(textToSay);
   console.log('Robot said: ' + textToSay + '.');
 }

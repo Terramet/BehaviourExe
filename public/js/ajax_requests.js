@@ -28,7 +28,7 @@ function startMiro() {
       url: removeHASH() + 'startMiro',
       success: (data) => { console.log(data) }
     })
-    
+
   var data = {};
   data.velX = 0;
   data.velY = 0;
@@ -301,6 +301,7 @@ function viewVideos() {
 }
 
 function getPresentations() {
+  console.log('Requesting Presentations')
   return $.ajax({
     url: window.location.href + 'presentations',
     type:'POST',
