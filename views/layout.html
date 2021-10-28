@@ -131,6 +131,14 @@
     <!-- Page Content -->
     <div style='height: 100%' id='page-content-wrapper'>
 
+      <div id="loadModal" class="modal fade bd-example-modal-lg" data-backdrop="static" data-keyboard="false" tabindex="-1">
+          <div class="modal-dialog modal-sm">
+              <div class="modal-content" style="width: 48px">
+                  <span class="fa fa-spinner fa-spin fa-3x"></span>
+              </div>
+          </div>
+      </div>
+
       <div class='container-fluid'>
         <a href='#menu-toggle' class='btn-lg btn-secondary font-weight-bold' id='menu-toggle'>&#8801;</a>
         <span id='message-holder'></span>
@@ -312,7 +320,7 @@
             <h4 class='center' id='uploadTitle'>Upload</h4>
           </div>
           <form action='/post_pptx' enctype='multipart/form-data' method='post' style='display: block;'>
-            <input type='file' name='pptx'>
+            <input type='file' name='pptx' accept=".pptx">
             <div class='row justify-content-center ml-2 mt-4 mr-2'>
               <input type='submit' value='Upload .pptx'>
             </div>
@@ -465,6 +473,10 @@
       </div>
 
       <span class='fixed-bottom' style='visibility: hidden'>
+        <p id='log'></p>
+      </span>
+
+      <span class='fixed-bottom' style='visibility: hidden'>
         <p class='text-center' id='update-status'></p>
       </span>
     </div>
@@ -504,8 +516,8 @@
   <script src='classes/Robot.js' type='text/javascript'></script>
   <script src='classes/Session.js' type='text/javascript'></script>
   <script src='/libs/qimessaging/1.0/qimessaging.js'></script>
-  <script src='http://code.jquery.com/ui/1.11.4/jquery-ui.js'></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js'></script>
+  <script src='vendor/jquery/jquery-ui.js'></script>
+  <script src='vendor/dragula/dragula.min.js'></script>
   <script src='/libs/jquery.ajax-cross-origin.min.js'></script>
 
   <!-- Menu/modal Script -->
@@ -605,7 +617,7 @@
     	}, 100);
     });
   </script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js'></script>
+  <script src='vendor/socket.io/2.2.0/socket.io.js'></script>
   <script>
 
     var socket = io.connect(window.location.href.split(':8')[0] + ':3000');
@@ -649,6 +661,18 @@
         });
       });
     }
+
+    // (function () {
+    //   var old = console.log;
+    //   var logger = document.getElementById('log');
+    //   console.log = function (message) {
+    //     if (typeof message == 'object') {
+    //       logger.innerHTML += (JSON && JSON.stringify ? JSON.stringify(message) : message) + '<br />';
+    //     } else {
+    //       logger.innerHTML += message + '<br />';
+    //     }
+    //   }
+    // })();
 
   </script>
   <script src='/libs/qimessaging/1.0/socket.io.min.js'></script>

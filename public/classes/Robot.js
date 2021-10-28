@@ -51,11 +51,11 @@ class Robot {
             right.style.display = 'block'
             right.innerHTML = value[1]
             // enable vibration support
-            navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
-
-            if (navigator.vibrate) {
-            	navigator.vibrate(1000);
-            }
+            // navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+            //
+            // if (navigator.vibrate) {
+            // 	navigator.vibrate(1000);
+            // }
             mes("Robot has a decision for you to make.")
           });
         });

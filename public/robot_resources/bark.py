@@ -22,5 +22,5 @@ if __name__ == "__main__":
 		time.sleep(0.1)
 
 	b = bridge_stream()
-	b.sound_index_P3 = 5
+	b.sound_index_P3 = 6
 	pub_bridge_stream.publish(b)

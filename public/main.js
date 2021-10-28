@@ -20,10 +20,10 @@ function keyDownHandler(event) {
       leftPressed = moveMiro(0, 1.5);
   }
   if(event.keyCode == 40) {
-    downPressed = moveMiro(-400, 0);
+      downPressed = moveMiro(-400, 0);
   }
   else if(event.keyCode == 38) {
-    upPressed = moveMiro(400, 0);
+      upPressed = moveMiro(400, 0);
   }
 }
 
@@ -35,10 +35,10 @@ function keyUpHandler(event) {
       leftPressed = moveMiro(0, 0);
   }
   if(event.keyCode == 40) {
-    downPressed = moveMiro(0, 0);
+      downPressed = moveMiro(0, 0);
   }
   else if(event.keyCode == 38) {
-    upPressed = moveMiro(0, 0);
+      upPressed = moveMiro(0, 0);
   }
 }
 
@@ -258,7 +258,7 @@ function attemptAutoConnect() {
 
   robot = new Robot();
 
-  robot.startSession('nao.local', function () {
+  robot.startSession('nao.local', function () { //192.168.8.100
       $('#executionForm')[0].style.display = 'block';
       $('#connectBtn')
         .parent()[0].classList.remove('red');
