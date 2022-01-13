@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "adm-zip": "^0.4.11",
-    "follow-redirects": "^1.5.9",
+    "follow-redirects": "^1.14.7",
     "https": "^1.0.0",
     "node-promise": "^0.5.13"
   }
